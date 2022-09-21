@@ -1,0 +1,21 @@
+{
+  "name": "assessment-survey-js",
+  "version": "0.0.1",
+  "description": "typescript implementation of the assessment / survey",
+  "main": "app.js",
+  "scripts": {
+    "build": "tsc"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/curiouslearning/assessment-survey-js.git"
+  },
+  "author": "willow",
+  "license": "BSD-2-Clause",
+  "bugs": {
+    "url": "https://github.com/curiouslearning/assessment-survey-js/issues"
+  },
+  "devDependencies": {
+    "typescript": "~4.8.3"
+  }
+}
