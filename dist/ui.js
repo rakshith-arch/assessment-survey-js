@@ -1,35 +1,35 @@
 //functions to show/hide the different containers
-const landingcont = document.getElementById("landwrap");
-const gamecont = document.getElementById("gamewrap");
-const endcont = document.getElementById("endwrap");
+const landingCont = document.getElementById("landWrap");
+const gameCont = document.getElementById("gameWrap");
+const endCont = document.getElementById("endWrap");
 function showlanding() {
-    landingcont.style.display = "block";
-    gamecont.style.display = "none";
-    endcont.style.display = "none";
+    landingCont.style.display = "block";
+    gameCont.style.display = "none";
+    endCont.style.display = "none";
 }
 function showgame() {
-    landingcont.style.display = "none";
-    gamecont.style.display = "block";
-    endcont.style.display = "none";
+    landingCont.style.display = "none";
+    gameCont.style.display = "block";
+    endCont.style.display = "none";
 }
 function showend() {
-    landingcont.style.display = "none";
-    gamecont.style.display = "none";
-    endcont.style.display = "block";
+    landingCont.style.display = "none";
+    gameCont.style.display = "none";
+    endCont.style.display = "block";
 }
 //add button listeners
-document.getElementById("b1").addEventListener("click", function () {
-    buttonpress(1);
+document.getElementById("answerButton1").addEventListener("click", function () {
+    buttonPress(1);
 });
-document.getElementById("b2").addEventListener("click", function () {
-    buttonpress(2);
+document.getElementById("answerButton2").addEventListener("click", function () {
+    buttonPress(2);
 });
-document.getElementById("b3").addEventListener("click", function () {
-    buttonpress(3);
+document.getElementById("answerButton3").addEventListener("click", function () {
+    buttonPress(3);
 });
-document.getElementById("b4").addEventListener("click", function () {
-    buttonpress(4);
+document.getElementById("answerButton4").addEventListener("click", function () {
+    buttonPress(4);
 });
-function buttonpress(num) {
+function buttonPress(num) {
     console.log(num);
 }
