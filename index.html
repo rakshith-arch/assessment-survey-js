@@ -1,38 +1,41 @@
 <!DOCTYPE html>
 <html>
-<head>
-<link rel="stylesheet" href="css/style.css">
+	<head>
+		<title>Assessment / Survey</title>
 
-</head>
+		<meta name="description" content="Assessment/Survey from Curious Learning">
+		<meta name="viewport" content="width=device-width,initial-scale=1.0">
 
-<body>
-<div class="landingpagewrapper" id="landwrap" style="display:block">
-click to begin!
-</div>
+		<link rel="stylesheet" href="css/style.css">
+	</head>
 
-<div class="questionviewwrapper" id="gamewrap" style="display:none">
-	<div class="questioncontainer"
-	</div>
-	<div class="feedbackcontainer" style="visibility:hidden">
-		good job!
-	</div>
-	<div class="answercontainer">
-		<div class="answerbutton button1" id="b1">1</div>
-		<div class="answerbutton button2" id="b2">2</div>
-		<div class="answerbutton button3" id="b3">3</div>
-		<div class="answerbutton button4" id="b4">4</div>
-	</div>
-</div>
+	<body>
+		<div class="landingPageWrapper" id="landWrap" style="display:block">
+			click to begin!
+		</div>
 
+		<div class="questionViewWrapper" id="gameWrap" style="display:none">
 
-<div class="endingpagewrapper" id="endwrap" style="display:none">
-click to exit!
-</div>
+			<div class="questionContainer"> </div>
 
+			<div class="feedbackContainer" style="visibility:hidden">
+				good job!
+			</div>
 
+			<div class="answerContainer">
+				<div class="answerButton" id="answerButton1">1</div>
+				<div class="answerButton" id="answerButton2">2</div>
+				<div class="answerButton" id="answerButton3">3</div>
+				<div class="answerButton" id="answerButton4">4</div>
+			</div>
+		</div>
 
+		<div class="endingPageWrapper" id="endWrap" style="display:none">
+			click to exit!
+		</div>
 
-<script src="dist/ui.js"></script>
-<script src="dist/survey/survey.js"></script>
-</body>
+		<script>var exports = {};</script>
+		<script src="dist/ui.js"></script>
+		<script src="dist/bundle.js"></script>
+	</body>
 </html>
