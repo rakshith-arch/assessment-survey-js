@@ -4,9 +4,9 @@ const gamecont = document.getElementById("gamewrap");
 const endcont = document.getElementById("endwrap");
 
 function showlanding(){
-landingcont.style.display = "block";
-gamecont.style.display = "none";
-endcont.style.display = "none";
+	landingcont.style.display = "block";
+	gamecont.style.display = "none";
+	endcont.style.display = "none";
 }
 
 function showgame(){
@@ -21,21 +21,22 @@ function showend(){
 	endcont.style.display = "block";
 }
 
-
-
 //add button listeners
 
-document.getElementById("b1").addEventListener("click",function(){
-buttonpress(1);
+document.getElementById("b1").addEventListener("click", function() {
+	buttonpress(1);
 });
-document.getElementById("b2").addEventListener("click",function(){
-buttonpress(2);
+
+document.getElementById("b2").addEventListener("click", function() {
+	buttonpress(2);
 });
-document.getElementById("b3").addEventListener("click",function(){
-buttonpress(3);
+
+document.getElementById("b3").addEventListener("click", function() {
+	buttonpress(3);
 });
-document.getElementById("b4").addEventListener("click",function(){
-buttonpress(4);
+
+document.getElementById("b4").addEventListener("click", function() {
+	buttonpress(4);
 });
 
 
