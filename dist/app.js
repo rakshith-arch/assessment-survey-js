@@ -10,7 +10,7 @@ class App {
         this.appType = (0, urlUtils_1.getAppType)(window.location.href);
         console.log(this.appType);
         // TODO: make separate UI controllers for survey and assessment
-        showgame();
+        showGame();
     }
 }
 const app = new App();

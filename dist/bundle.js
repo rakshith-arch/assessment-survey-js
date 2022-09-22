@@ -36,7 +36,7 @@
                 this.appType = (0, urlUtils_1.getAppType)(window.location.href);
                 console.log(this.appType);
                 // TODO: make separate UI controllers for survey and assessment
-                showgame();
+                showGame();
             }
         }
         const app = new App();
@@ -45,17 +45,17 @@
     const landingCont = document.getElementById("landWrap");
     const gameCont = document.getElementById("gameWrap");
     const endCont = document.getElementById("endWrap");
-    function showlanding() {
+    function showLanding() {
         landingCont.style.display = "block";
         gameCont.style.display = "none";
         endCont.style.display = "none";
     }
-    function showgame() {
+    function showGame() {
         landingCont.style.display = "none";
         gameCont.style.display = "block";
         endCont.style.display = "none";
     }
-    function showend() {
+    function showEnd() {
         landingCont.style.display = "none";
         gameCont.style.display = "none";
         endCont.style.display = "block";
@@ -109,7 +109,7 @@
     });
     //this is where the code will go for linearly iterating through the
     //questions in a data.json file that identifies itself as a survey
-    showgame();
+    showGame();
     
     'marker:resolver';
 
