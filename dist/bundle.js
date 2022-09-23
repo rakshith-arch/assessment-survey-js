@@ -27,7 +27,50 @@
             return urlRef.pathname;
         }
     });
-    define("app", ["require", "exports", "components/urlUtils"], function (require, exports, urlUtils_1) {
+    define("components/uiController", ["require", "exports"], function (require, exports) {
+        "use strict";
+        Object.defineProperty(exports, "__esModule", { value: true });
+        exports.showEnd = exports.showGame = exports.showLanding = void 0;
+        //functions to show/hide the different containers
+        const landingCont = document.getElementById("landWrap");
+        const gameCont = document.getElementById("gameWrap");
+        const endCont = document.getElementById("endWrap");
+        function showLanding() {
+            landingCont.style.display = "block";
+            gameCont.style.display = "none";
+            endCont.style.display = "none";
+        }
+        exports.showLanding = showLanding;
+        function showGame() {
+            landingCont.style.display = "none";
+            gameCont.style.display = "block";
+            endCont.style.display = "none";
+        }
+        exports.showGame = showGame;
+        function showEnd() {
+            landingCont.style.display = "none";
+            gameCont.style.display = "none";
+            endCont.style.display = "block";
+        }
+        exports.showEnd = showEnd;
+        //add button listeners
+        document.getElementById("answerButton1").addEventListener("click", function () {
+            buttonPress(1);
+        });
+        document.getElementById("answerButton2").addEventListener("click", function () {
+            buttonPress(2);
+        });
+        document.getElementById("answerButton3").addEventListener("click", function () {
+            buttonPress(3);
+        });
+        document.getElementById("answerButton4").addEventListener("click", function () {
+            buttonPress(4);
+        });
+        function buttonPress(num) {
+            console.log(num);
+        }
+    });
+    define("app", ["require", "exports", "components/urlUtils", "components/uiController"], function (require, exports, urlUtils_1, uiController_1) {
         "use strict";
         Object.defineProperty(exports, "__esModule", { value: true });
         class App {
@@ -36,46 +79,11 @@
                 this.appType = (0, urlUtils_1.getAppType)(window.location.href);
                 console.log(this.appType);
                 // TODO: make separate UI controllers for survey and assessment
-                showGame();
+                (0, uiController_1.showGame)();
             }
         }
         const app = new App();
     });
-    //functions to show/hide the different containers
-    const landingCont = document.getElementById("landWrap");
-    const gameCont = document.getElementById("gameWrap");
-    const endCont = document.getElementById("endWrap");
-    function showLanding() {
-        landingCont.style.display = "block";
-        gameCont.style.display = "none";
-        endCont.style.display = "none";
-    }
-    function showGame() {
-        landingCont.style.display = "none";
-        gameCont.style.display = "block";
-        endCont.style.display = "none";
-    }
-    function showEnd() {
-        landingCont.style.display = "none";
-        gameCont.style.display = "none";
-        endCont.style.display = "block";
-    }
-    //add button listeners
-    document.getElementById("answerButton1").addEventListener("click", function () {
-        buttonPress(1);
-    });
-    document.getElementById("answerButton2").addEventListener("click", function () {
-        buttonPress(2);
-    });
-    document.getElementById("answerButton3").addEventListener("click", function () {
-        buttonPress(3);
-    });
-    document.getElementById("answerButton4").addEventListener("click", function () {
-        buttonPress(4);
-    });
-    function buttonPress(num) {
-        console.log(num);
-    }
     //this is where the logic for handling the buckets will go
     //
     //once we start adding in the assessment functionality
@@ -107,9 +115,11 @@
         }
         exports.UnityBridge = UnityBridge;
     });
-    //this is where the code will go for linearly iterating through the
-    //questions in a data.json file that identifies itself as a survey
-    showGame();
+    define("survey/survey", ["require", "exports", "components/uiController"], function (require, exports, uiController_2) {
+        "use strict";
+        Object.defineProperty(exports, "__esModule", { value: true });
+        (0, uiController_2.showGame)();
+    });
     
     'marker:resolver';
 

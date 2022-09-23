@@ -4,18 +4,19 @@
   "description": "typescript implementation of the assessment / survey",
   "main": "bundle.js",
   "scripts": {
-    "build": "tsc"
+    "build": "tsc && tsc-bundle tsconfig.json"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/curiouslearning/assessment-survey-js.git"
   },
-  "author": "willow",
+  "author": "george and willow",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/curiouslearning/assessment-survey-js/issues"
   },
   "devDependencies": {
-    "typescript": "~4.8.3"
+    "typescript": "~4.8.3",
+    "typescript-bundle": "^1.0.18"
   }
 }

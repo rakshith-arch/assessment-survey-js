@@ -3,19 +3,19 @@ const landingCont = document.getElementById("landWrap");
 const gameCont = document.getElementById("gameWrap");
 const endCont = document.getElementById("endWrap");
 
-function showLanding(){
+export function showLanding(): void{
 	landingCont.style.display = "block";
 	gameCont.style.display = "none";
 	endCont.style.display = "none";
 }
 
-function showGame(){
+export function showGame(): void{
 	landingCont.style.display = "none";
 	gameCont.style.display = "block";
 	endCont.style.display = "none";
 }
 
-function showEnd(){
+export function showEnd(): void{
 	landingCont.style.display = "none";
 	gameCont.style.display = "none";
 	endCont.style.display = "block";

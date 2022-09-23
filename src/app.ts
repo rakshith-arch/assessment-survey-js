@@ -2,6 +2,7 @@
  * App class that represents an entry point of the application.
  */
 import { getAppType } from './components/urlUtils';
+import { showGame } from './components/uiController';
 
 class App {
 
