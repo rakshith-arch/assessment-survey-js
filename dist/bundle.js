@@ -1,4 +1,4 @@
-(() => {
+var Bundle = (() => {
     const defines = {};
     const entry = [null];
     function define(name, dependencies, factory) {
@@ -27,14 +27,53 @@
             return urlRef.pathname;
         }
     });
+    // this is where we can define the format of the data for a
+    // question, the correct answer, and the foil answers
+    define("components/questionData", ["require", "exports"], function (require, exports) {
+        "use strict";
+        Object.defineProperty(exports, "__esModule", { value: true });
+    });
     define("components/uiController", ["require", "exports"], function (require, exports) {
         "use strict";
         Object.defineProperty(exports, "__esModule", { value: true });
-        exports.showEnd = exports.showGame = exports.showLanding = void 0;
-        //functions to show/hide the different containers
+        exports.showEnd = exports.showGame = exports.showLanding = exports.showQuestion = void 0;
         const landingCont = document.getElementById("landWrap");
         const gameCont = document.getElementById("gameWrap");
         const endCont = document.getElementById("endWrap");
+        const b1 = document.getElementById("answerButton1");
+        const b2 = document.getElementById("answerButton2");
+        const b3 = document.getElementById("answerButton3");
+        const b4 = document.getElementById("answerButton4");
+        const buttons = [b1, b2, b3, b4];
+        //add button listeners
+        b1.addEventListener("click", function () {
+            buttonPress(1);
+        });
+        b2.addEventListener("click", function () {
+            buttonPress(2);
+        });
+        b3.addEventListener("click", function () {
+            buttonPress(3);
+        });
+        b4.addEventListener("click", function () {
+            buttonPress(4);
+        });
+        //function to display a new question
+        function showQuestion(newQ) {
+            for (var aNum in newQ.answers) {
+                let curAnswer = newQ.answers[aNum];
+                let answerCode = "";
+                if ('answerText' in curAnswer) {
+                    answerCode += curAnswer.answerText;
+                }
+                else if ('answerImg' in curAnswer) {
+                    answerCode += "<img src='" + curAnswer.answerImg + "'";
+                }
+                buttons[aNum].innerHTML = answerCode;
+            }
+        }
+        exports.showQuestion = showQuestion;
+        //functions to show/hide the different containers
         function showLanding() {
             landingCont.style.display = "block";
             gameCont.style.display = "none";
@@ -53,35 +92,42 @@
             endCont.style.display = "block";
         }
         exports.showEnd = showEnd;
-        //add button listeners
-        document.getElementById("answerButton1").addEventListener("click", function () {
-            buttonPress(1);
-        });
-        document.getElementById("answerButton2").addEventListener("click", function () {
-            buttonPress(2);
-        });
-        document.getElementById("answerButton3").addEventListener("click", function () {
-            buttonPress(3);
-        });
-        document.getElementById("answerButton4").addEventListener("click", function () {
-            buttonPress(4);
-        });
+        //handle button press
         function buttonPress(num) {
             console.log(num);
         }
     });
-    define("app", ["require", "exports", "components/urlUtils", "components/uiController"], function (require, exports, urlUtils_1, uiController_1) {
+    //this is where the code will go for linearly iterating through the
+    //questions in a data.json file that identifies itself as a survey
+    define("survey/survey", ["require", "exports", "components/uiController"], function (require, exports, uiController_1) {
         "use strict";
         Object.defineProperty(exports, "__esModule", { value: true });
+        exports.Survey = void 0;
+        class Survey {
+            constructor() {
+                console.log("survey initialized");
+            }
+            runSurvey() {
+                (0, uiController_1.showGame)();
+            }
+        }
+        exports.Survey = Survey;
+    });
+    define("app", ["require", "exports", "components/urlUtils", "survey/survey"], function (require, exports, urlUtils_1, survey_1) {
+        "use strict";
+        Object.defineProperty(exports, "__esModule", { value: true });
+        exports.App = void 0;
         class App {
             constructor() {
                 console.log("Initializing app...");
                 this.appType = (0, urlUtils_1.getAppType)(window.location.href);
                 console.log(this.appType);
                 // TODO: make separate UI controllers for survey and assessment
-                (0, uiController_1.showGame)();
+                const surv = new survey_1.Survey();
+                surv.runSurvey();
             }
         }
+        exports.App = App;
         const app = new App();
     });
     //this is where the logic for handling the buckets will go
@@ -89,8 +135,6 @@
     //once we start adding in the assessment functionality
     // this is where we can have the classes and functions for building the events
     // to send to an analytics recorder (firebase? lrs?)
-    // this is where we can define the format of the data for a
-    // question, the correct answer, and the foil answers
     /**
      * Module that wraps Unity calls for sending messages from the webview to Unity.
      */
@@ -114,11 +158,6 @@
             }
         }
         exports.UnityBridge = UnityBridge;
-    });
-    define("survey/survey", ["require", "exports", "components/uiController"], function (require, exports, uiController_2) {
-        "use strict";
-        Object.defineProperty(exports, "__esModule", { value: true });
-        (0, uiController_2.showGame)();
     });
     
     'marker:resolver';

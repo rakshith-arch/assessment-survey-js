@@ -2,9 +2,9 @@
  * App class that represents an entry point of the application.
  */
 import { getAppType } from './components/urlUtils';
-import { showGame } from './components/uiController';
+import { Survey } from './survey/survey';
 
-class App {
+export class App {
 
     /** Could be 'assessment' or 'survey' based on the URL structure */
     private appType;
@@ -14,7 +14,8 @@ class App {
         this.appType = getAppType(window.location.href);
         console.log(this.appType);
         // TODO: make separate UI controllers for survey and assessment
-        showGame();
+				const surv = new Survey();
+        surv.runSurvey();
     }
 }
 
