@@ -16,6 +16,7 @@ const b4 = document.getElementById("answerButton4");
 
 const buttons = [b1, b2, b3, b4];
 var bCallback: Function;
+var buttonsActive: boolean = true;
 
 
 //add button listeners
@@ -86,9 +87,11 @@ export function showEnd(): void{
 export function setFeedbackVisibile(b: boolean){
 	if(b){
 		fT.style.visibility = "visible";
+		buttonsActive = false;
 	}
 	else{
 		fT.style.visibility = "hidden";
+		buttonsActive = true;
 	}
 }
 
@@ -100,6 +103,9 @@ export function setButtonAction(callback: Function): void{
 }
 
 function buttonPress(num: number){
-	console.log(num);
-	bCallback(num);
+	if (buttonsActive){
+		console.log(num);
+		bCallback(num);
+	}
+
 }

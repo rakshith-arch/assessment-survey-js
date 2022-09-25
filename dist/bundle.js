@@ -48,6 +48,7 @@ var Bundle = (() => {
         const b4 = document.getElementById("answerButton4");
         const buttons = [b1, b2, b3, b4];
         var bCallback;
+        var buttonsActive = true;
         //add button listeners
         b1.addEventListener("click", function () {
             buttonPress(1);
@@ -103,9 +104,11 @@ var Bundle = (() => {
         function setFeedbackVisibile(b) {
             if (b) {
                 fT.style.visibility = "visible";
+                buttonsActive = false;
             }
             else {
                 fT.style.visibility = "hidden";
+                buttonsActive = true;
             }
         }
         exports.setFeedbackVisibile = setFeedbackVisibile;
@@ -115,8 +118,10 @@ var Bundle = (() => {
         }
         exports.setButtonAction = setButtonAction;
         function buttonPress(num) {
-            console.log(num);
-            bCallback(num);
+            if (buttonsActive) {
+                console.log(num);
+                bCallback(num);
+            }
         }
     });
     //this is where the code will go for linearly iterating through the

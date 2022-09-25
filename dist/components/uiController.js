@@ -12,6 +12,7 @@ const b3 = document.getElementById("answerButton3");
 const b4 = document.getElementById("answerButton4");
 const buttons = [b1, b2, b3, b4];
 var bCallback;
+var buttonsActive = true;
 //add button listeners
 b1.addEventListener("click", function () {
     buttonPress(1);
@@ -67,9 +68,11 @@ exports.showEnd = showEnd;
 function setFeedbackVisibile(b) {
     if (b) {
         fT.style.visibility = "visible";
+        buttonsActive = false;
     }
     else {
         fT.style.visibility = "hidden";
+        buttonsActive = true;
     }
 }
 exports.setFeedbackVisibile = setFeedbackVisibile;
@@ -79,6 +82,8 @@ function setButtonAction(callback) {
 }
 exports.setButtonAction = setButtonAction;
 function buttonPress(num) {
-    console.log(num);
-    bCallback(num);
+    if (buttonsActive) {
+        console.log(num);
+        bCallback(num);
+    }
 }
