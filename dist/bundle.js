@@ -124,9 +124,36 @@ var Bundle = (() => {
             }
         }
     });
+    // this is where we can have the classes and functions for building the events
+    // to send to an analytics recorder (firebase? lrs?)
+    define("components/analyticsEvents", ["require", "exports"], function (require, exports) {
+        "use strict";
+        Object.defineProperty(exports, "__esModule", { value: true });
+        exports.sendFinished = exports.sendAnswered = exports.sendInit = exports.setUuid = void 0;
+        var uuid;
+        function setUuid(newUuid) {
+            uuid = newUuid;
+        }
+        exports.setUuid = setUuid;
+        function sendInit() {
+            var eventString = "user " + uuid + " opened the assessment";
+            console.log(eventString);
+        }
+        exports.sendInit = sendInit;
+        function sendAnswered(theQ, theA) {
+            var ans = theQ.answers[theA - 1];
+            var eventString = "user " + uuid + " ansered " + theQ.qName + " with " + ans.answerName;
+            console.log(eventString);
+        }
+        exports.sendAnswered = sendAnswered;
+        function sendFinished() {
+            var eventString = "user " + uuid + " finished the assessment";
+        }
+        exports.sendFinished = sendFinished;
+    });
     //this is where the code will go for linearly iterating through the
     //questions in a data.json file that identifies itself as a survey
-    define("survey/survey", ["require", "exports", "components/uiController"], function (require, exports, uiController_1) {
+    define("survey/survey", ["require", "exports", "components/uiController", "components/analyticsEvents"], function (require, exports, uiController_1, analyticsEvents_1) {
         "use strict";
         Object.defineProperty(exports, "__esModule", { value: true });
         exports.Survey = void 0;
@@ -134,7 +161,7 @@ var Bundle = (() => {
             constructor() {
                 this.onQuestionEnd = () => {
                     (0, uiController_1.setFeedbackVisibile)(false);
-                    console.log(this.qNum);
+                    this.qNum += 1;
                     if (this.hasAnotherQueston()) {
                         (0, uiController_1.showQuestion)(this.getNextQuestion());
                     }
@@ -144,7 +171,7 @@ var Bundle = (() => {
                     }
                 };
                 this.tryAnswer = (ans) => {
-                    // TODO:  send info to analytics event builder
+                    (0, analyticsEvents_1.sendAnswered)(this.qList[this.qNum], ans);
                     (0, uiController_1.setFeedbackVisibile)(true);
                     setTimeout(() => { this.onQuestionEnd(); }, 2000);
                 };
@@ -189,13 +216,12 @@ var Bundle = (() => {
             }
             getNextQuestion() {
                 var res = this.qList[this.qNum];
-                this.qNum += 1;
                 return res;
             }
         }
         exports.Survey = Survey;
     });
-    define("App", ["require", "exports", "components/urlUtils", "survey/survey"], function (require, exports, urlUtils_1, survey_1) {
+    define("App", ["require", "exports", "components/urlUtils", "survey/survey", "components/analyticsEvents"], function (require, exports, urlUtils_1, survey_1, analyticsEvents_2) {
         "use strict";
         Object.defineProperty(exports, "__esModule", { value: true });
         exports.App = void 0;
@@ -205,6 +231,8 @@ var Bundle = (() => {
                 this.appType = (0, urlUtils_1.getAppType)(window.location.href);
                 console.log(this.appType);
                 // TODO: make separate UI controllers for survey and assessment
+                (0, analyticsEvents_2.setUuid)("testinguuid");
+                (0, analyticsEvents_2.sendInit)();
                 const surv = new survey_1.Survey();
                 surv.runSurvey();
             }
@@ -215,8 +243,6 @@ var Bundle = (() => {
     //this is where the logic for handling the buckets will go
     //
     //once we start adding in the assessment functionality
-    // this is where we can have the classes and functions for building the events
-    // to send to an analytics recorder (firebase? lrs?)
     /**
      * Module that wraps Unity calls for sending messages from the webview to Unity.
      */

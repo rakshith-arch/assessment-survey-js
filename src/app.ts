@@ -3,6 +3,7 @@
  */
 import { getAppType } from './components/urlUtils';
 import { Survey } from './survey/survey';
+import { setUuid, sendInit} from './components/analyticsEvents'
 
 
 export class App {
@@ -15,6 +16,9 @@ export class App {
         this.appType = getAppType(window.location.href);
         console.log(this.appType);
         // TODO: make separate UI controllers for survey and assessment
+
+				setUuid("testinguuid");
+				sendInit();
 				const surv = new Survey();
         surv.runSurvey();
     }

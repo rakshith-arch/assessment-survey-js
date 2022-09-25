@@ -3,6 +3,7 @@
 
 import { showQuestion, showGame, showEnd, setButtonAction, setFeedbackVisibile } from '../components/uiController';
 import { qData, answerData } from '../components/questionData';
+import { sendAnswered } from '../components/analyticsEvents'
 
 
 
@@ -32,8 +33,8 @@ export class Survey {
 	public onQuestionEnd = () => {
 
 		setFeedbackVisibile(false);
-		console.log(this.qNum);
 
+		this.qNum += 1;
 		if (this.hasAnotherQueston()){
 			showQuestion(this.getNextQuestion());
 		}
@@ -45,7 +46,9 @@ export class Survey {
 
 
 	public tryAnswer = (ans: number) => {
-			// TODO:  send info to analytics event builder
+
+			sendAnswered(this.qList[this.qNum], ans)
+
 			setFeedbackVisibile(true);
 			setTimeout(() =>{this.onQuestionEnd()}, 2000);
 	}
@@ -95,7 +98,7 @@ export class Survey {
 
 	public getNextQuestion(): qData{
 		var res = this.qList[this.qNum];
-		this.qNum += 1;
+
 		return res;
 	}
 

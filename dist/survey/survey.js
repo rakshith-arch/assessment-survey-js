@@ -4,11 +4,12 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Survey = void 0;
 const uiController_1 = require("../components/uiController");
+const analyticsEvents_1 = require("../components/analyticsEvents");
 class Survey {
     constructor() {
         this.onQuestionEnd = () => {
             (0, uiController_1.setFeedbackVisibile)(false);
-            console.log(this.qNum);
+            this.qNum += 1;
             if (this.hasAnotherQueston()) {
                 (0, uiController_1.showQuestion)(this.getNextQuestion());
             }
@@ -18,7 +19,7 @@ class Survey {
             }
         };
         this.tryAnswer = (ans) => {
-            // TODO:  send info to analytics event builder
+            (0, analyticsEvents_1.sendAnswered)(this.qList[this.qNum], ans);
             (0, uiController_1.setFeedbackVisibile)(true);
             setTimeout(() => { this.onQuestionEnd(); }, 2000);
         };
@@ -63,7 +64,6 @@ class Survey {
     }
     getNextQuestion() {
         var res = this.qList[this.qNum];
-        this.qNum += 1;
         return res;
     }
 }
