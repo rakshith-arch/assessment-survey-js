@@ -1,9 +1,13 @@
 import { qData, answerData } from './questionData';
 
 
+
 const landingCont = document.getElementById("landWrap");
 const gameCont = document.getElementById("gameWrap");
 const endCont = document.getElementById("endWrap");
+
+const qT = document.getElementById("qWrap");
+const fT = document.getElementById("feedbackWrap");
 
 const b1 = document.getElementById("answerButton1");
 const b2 = document.getElementById("answerButton2");
@@ -11,6 +15,7 @@ const b3 = document.getElementById("answerButton3");
 const b4 = document.getElementById("answerButton4");
 
 const buttons = [b1, b2, b3, b4];
+var bCallback: Function;
 
 
 //add button listeners
@@ -36,7 +41,7 @@ b4.addEventListener("click", function() {
 export function showQuestion(newQ: qData): void{
 
 
-	//// TODO: show the question prompt
+	qT.innerHTML = newQ.promptText;
 
 		//showing the answers on each button
 		for (var aNum in newQ.answers){
@@ -75,8 +80,23 @@ export function showEnd(): void{
 	endCont.style.display = "block";
 }
 
+export function setFeedbackVisibile(b: boolean){
+	if(b){
+		fT.style.visibility = "visible";
+	}
+	else{
+		fT.style.visibility = "hidden";
+	}
+}
+
+
 //handle button press
+
+export function setButtonAction(callback: Function): void{
+	bCallback = callback;
+}
 
 function buttonPress(num: number){
 	console.log(num);
+	bCallback(num);
 }

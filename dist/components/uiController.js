@@ -1,14 +1,17 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.showEnd = exports.showGame = exports.showLanding = exports.showQuestion = void 0;
+exports.setButtonAction = exports.setFeedbackVisibile = exports.showEnd = exports.showGame = exports.showLanding = exports.showQuestion = void 0;
 const landingCont = document.getElementById("landWrap");
 const gameCont = document.getElementById("gameWrap");
 const endCont = document.getElementById("endWrap");
+const qT = document.getElementById("qWrap");
+const fT = document.getElementById("feedbackWrap");
 const b1 = document.getElementById("answerButton1");
 const b2 = document.getElementById("answerButton2");
 const b3 = document.getElementById("answerButton3");
 const b4 = document.getElementById("answerButton4");
 const buttons = [b1, b2, b3, b4];
+var bCallback;
 //add button listeners
 b1.addEventListener("click", function () {
     buttonPress(1);
@@ -24,7 +27,7 @@ b4.addEventListener("click", function () {
 });
 //function to display a new question
 function showQuestion(newQ) {
-    //// TODO: show the question prompt
+    qT.innerHTML = newQ.promptText;
     //showing the answers on each button
     for (var aNum in newQ.answers) {
         let curAnswer = newQ.answers[aNum];
@@ -58,7 +61,21 @@ function showEnd() {
     endCont.style.display = "block";
 }
 exports.showEnd = showEnd;
+function setFeedbackVisibile(b) {
+    if (b) {
+        fT.style.visibility = "visible";
+    }
+    else {
+        fT.style.visibility = "hidden";
+    }
+}
+exports.setFeedbackVisibile = setFeedbackVisibile;
 //handle button press
+function setButtonAction(callback) {
+    bCallback = callback;
+}
+exports.setButtonAction = setButtonAction;
 function buttonPress(num) {
     console.log(num);
+    bCallback(num);
 }

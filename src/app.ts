@@ -4,6 +4,7 @@
 import { getAppType } from './components/urlUtils';
 import { Survey } from './survey/survey';
 
+
 export class App {
 
     /** Could be 'assessment' or 'survey' based on the URL structure */
@@ -18,5 +19,6 @@ export class App {
         surv.runSurvey();
     }
 }
+
 
 const app = new App();
