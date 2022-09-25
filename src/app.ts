@@ -3,6 +3,7 @@
  */
 import { getAppType, getUUID } from './components/urlUtils';
 import { Survey } from './survey/survey';
+import { UnityBridge } from './components/unityBridge'
 import { setUuid, sendInit} from './components/analyticsEvents'
 
 
@@ -11,7 +12,11 @@ export class App {
     /** Could be 'assessment' or 'survey' based on the URL structure */
     private appType;
 
-    constructor() {
+		public unity;
+
+    constructor(){
+				this.unity = new UnityBridge();
+				this.unity.sendLoaded();
         console.log("Initializing app...");
         this.appType = getAppType();
         console.log(this.appType);
@@ -20,7 +25,7 @@ export class App {
 				setUuid(getUUID());
 				sendInit();
 				const surv = new Survey();
-        surv.runSurvey();
+        surv.runSurvey(this);
     }
 }
 

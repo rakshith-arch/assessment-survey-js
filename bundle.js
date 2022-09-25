@@ -18,14 +18,12 @@ var Bundle = (() => {
         exports.getUUID = exports.getAppType = void 0;
         function getAppType() {
             const pathParams = getPathName();
-            console.log(pathParams);
             const appType = pathParams.get('appType');
             return appType;
         }
         exports.getAppType = getAppType;
         function getUUID() {
             const pathParams = getPathName();
-            console.log(pathParams);
             const appType = pathParams.get('uuid');
             return appType;
         }
@@ -198,13 +196,15 @@ var Bundle = (() => {
                 this.qNum = 0;
                 (0, uiController_1.setButtonAction)(this.tryAnswer);
             }
-            runSurvey() {
+            runSurvey(applink) {
+                this.aLink = applink;
                 this.qList = this.buildQuestionList();
                 (0, uiController_1.showQuestion)(this.getNextQuestion());
             }
             onEnd() {
                 (0, analyticsEvents_1.sendFinished)();
                 (0, uiController_1.showEnd)();
+                this.aLink.unity.sendClose();
             }
             buildQuestionList() {
                 //hard-coded test data for right now
@@ -244,28 +244,6 @@ var Bundle = (() => {
         }
         exports.Survey = Survey;
     });
-    define("App", ["require", "exports", "components/urlUtils", "survey/survey", "components/analyticsEvents"], function (require, exports, urlUtils_1, survey_1, analyticsEvents_2) {
-        "use strict";
-        Object.defineProperty(exports, "__esModule", { value: true });
-        exports.App = void 0;
-        class App {
-            constructor() {
-                console.log("Initializing app...");
-                this.appType = (0, urlUtils_1.getAppType)();
-                console.log(this.appType);
-                // TODO: make separate UI controllers for survey and assessment
-                (0, analyticsEvents_2.setUuid)((0, urlUtils_1.getUUID)());
-                (0, analyticsEvents_2.sendInit)();
-                const surv = new survey_1.Survey();
-                surv.runSurvey();
-            }
-        }
-        exports.App = App;
-        const app = new App();
-    });
-    //this is where the logic for handling the buckets will go
-    //
-    //once we start adding in the assessment functionality
     /**
      * Module that wraps Unity calls for sending messages from the webview to Unity.
      */
@@ -287,9 +265,49 @@ var Bundle = (() => {
                     this.unityReference.call(message);
                 }
             }
+            sendLoaded() {
+                if (this.unityReference !== null) {
+                    this.unityReference.call("loaded");
+                }
+                else {
+                    console.log("would call Unity loaded now");
+                }
+            }
+            sendClose() {
+                if (this.unityReference !== null) {
+                    this.unityReference.call("close");
+                }
+                else {
+                    console.log("would close Unity now");
+                }
+            }
         }
         exports.UnityBridge = UnityBridge;
     });
+    define("App", ["require", "exports", "components/urlUtils", "survey/survey", "components/unityBridge", "components/analyticsEvents"], function (require, exports, urlUtils_1, survey_1, unityBridge_1, analyticsEvents_2) {
+        "use strict";
+        Object.defineProperty(exports, "__esModule", { value: true });
+        exports.App = void 0;
+        class App {
+            constructor() {
+                this.unity = new unityBridge_1.UnityBridge();
+                this.unity.sendLoaded();
+                console.log("Initializing app...");
+                this.appType = (0, urlUtils_1.getAppType)();
+                console.log(this.appType);
+                // TODO: make separate UI controllers for survey and assessment
+                (0, analyticsEvents_2.setUuid)((0, urlUtils_1.getUUID)());
+                (0, analyticsEvents_2.sendInit)();
+                const surv = new survey_1.Survey();
+                surv.runSurvey(this);
+            }
+        }
+        exports.App = App;
+        const app = new App();
+    });
+    //this is where the logic for handling the buckets will go
+    //
+    //once we start adding in the assessment functionality
     
     'marker:resolver';
 

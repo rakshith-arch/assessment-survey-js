@@ -4,13 +4,14 @@
 import { showQuestion, showGame, showEnd, setButtonAction, setFeedbackVisibile } from '../components/uiController';
 import { qData, answerData } from '../components/questionData';
 import { sendAnswered, sendFinished } from '../components/analyticsEvents'
-
+import { App } from '../App';
 
 
 export class Survey {
 
 	public qList: qData[];
 	public qNum: number;
+	public aLink: App;
 
 
 	constructor (){
@@ -21,8 +22,9 @@ export class Survey {
 	}
 
 
-	public runSurvey(): void{
+	public runSurvey(applink: App): void{
 
+		this.aLink = applink;
 		this.qList = this.buildQuestionList();
 
 		showQuestion(this.getNextQuestion());
@@ -47,6 +49,7 @@ export class Survey {
 	public onEnd(){
 			sendFinished();
 			showEnd();
+			this.aLink.unity.sendClose();
 	}
 
 
