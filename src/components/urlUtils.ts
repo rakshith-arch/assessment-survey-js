@@ -3,15 +3,20 @@
  */
 
 
-
-
-export function getAppType(url: string): string {
-    const pathname = getPathName(url);
-    const pathParts = pathname.split('/');
-    return pathParts[1];
+export function getAppType(): string {
+  const pathParams = getPathName();
+  const appType = pathParams.get('appType');
+  return appType;
 }
 
-function getPathName(url: string): string {
-    const urlRef = new URL(url);
-    return urlRef.pathname;
+export function getUUID(): string{
+	const pathParams = getPathName();
+	const appType = pathParams.get('uuid');
+	return appType;
+}
+
+function getPathName(){
+	const queryString = window.location.search;
+	const urlParams = new URLSearchParams(queryString);
+	return urlParams;
 }

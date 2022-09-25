@@ -110,7 +110,6 @@ export function setButtonAction(callback: Function): void{
 
 function buttonPress(num: number){
 	if (buttonsActive){
-		console.log(num);
 		bCallback(num);
 	}
 

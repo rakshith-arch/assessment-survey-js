@@ -15,16 +15,25 @@ var Bundle = (() => {
     define("components/urlUtils", ["require", "exports"], function (require, exports) {
         "use strict";
         Object.defineProperty(exports, "__esModule", { value: true });
-        exports.getAppType = void 0;
-        function getAppType(url) {
-            const pathname = getPathName(url);
-            const pathParts = pathname.split('/');
-            return pathParts[1];
+        exports.getUUID = exports.getAppType = void 0;
+        function getAppType() {
+            const pathParams = getPathName();
+            console.log(pathParams);
+            const appType = pathParams.get('appType');
+            return appType;
         }
         exports.getAppType = getAppType;
-        function getPathName(url) {
-            const urlRef = new URL(url);
-            return urlRef.pathname;
+        function getUUID() {
+            const pathParams = getPathName();
+            console.log(pathParams);
+            const appType = pathParams.get('uuid');
+            return appType;
+        }
+        exports.getUUID = getUUID;
+        function getPathName() {
+            const queryString = window.location.search;
+            const urlParams = new URLSearchParams(queryString);
+            return urlParams;
         }
     });
     // this is where we can define the format of the data for a
@@ -124,7 +133,6 @@ var Bundle = (() => {
         exports.setButtonAction = setButtonAction;
         function buttonPress(num) {
             if (buttonsActive) {
-                console.log(num);
                 bCallback(num);
             }
         }
@@ -148,11 +156,17 @@ var Bundle = (() => {
         function sendAnswered(theQ, theA) {
             var ans = theQ.answers[theA - 1];
             var eventString = "user " + uuid + " ansered " + theQ.qName + " with " + ans.answerName;
+            eventString += ", all answers were [";
+            for (var aNum in theQ.answers) {
+                eventString += theQ.answers[aNum].answerName + ",";
+            }
+            eventString += "]";
             console.log(eventString);
         }
         exports.sendAnswered = sendAnswered;
         function sendFinished() {
             var eventString = "user " + uuid + " finished the assessment";
+            console.log(eventString);
         }
         exports.sendFinished = sendFinished;
     });
@@ -172,7 +186,7 @@ var Bundle = (() => {
                     }
                     else {
                         console.log("no questions left");
-                        (0, uiController_1.showEnd)();
+                        this.onEnd();
                     }
                 };
                 this.tryAnswer = (ans) => {
@@ -188,25 +202,29 @@ var Bundle = (() => {
                 this.qList = this.buildQuestionList();
                 (0, uiController_1.showQuestion)(this.getNextQuestion());
             }
+            onEnd() {
+                (0, analyticsEvents_1.sendFinished)();
+                (0, uiController_1.showEnd)();
+            }
             buildQuestionList() {
                 //hard-coded test data for right now
                 var q1 = { qName: "q1", promptText: "question 1 text", answers: [
-                        { answerName: "a1", answerText: "answer 1" },
-                        { answerName: "a2", answerText: "answer 2" },
-                        { answerName: "a3", answerText: "answer 3" },
-                        { answerName: "a4", answerText: "answer 4" }
+                        { answerName: "q1a1", answerText: "answer 1" },
+                        { answerName: "q1a2", answerText: "answer 2" },
+                        { answerName: "q1a3", answerText: "answer 3" },
+                        { answerName: "q1a4", answerText: "answer 4" }
                     ] };
                 var q2 = { qName: "q2", promptText: "question 2 text, with an image", promptImg: "img/hill_v01.png", answers: [
-                        { answerName: "a1", answerText: "answer 1" },
-                        { answerName: "a2", answerText: "slightly different answer 2" },
-                        { answerName: "a3", answerText: "completley new answer 3" },
-                        { answerName: "a4", answerText: "answer 4" }
+                        { answerName: "q2a1", answerText: "answer 1" },
+                        { answerName: "q2a2", answerText: "slightly different answer 2" },
+                        { answerName: "q2a3", answerText: "completley new answer 3" },
+                        { answerName: "q2a4", answerText: "answer 4" }
                     ] };
                 var q3 = { qName: "q3", promptText: "the last question", answers: [
-                        { answerName: "a1", answerText: "ahhh an image", answerImg: "img/hill_v01.png" },
-                        { answerName: "a2", answerText: "almost done" },
-                        { answerName: "a3", answerText: "yay" },
-                        { answerName: "a4", answerText: "woohoo" }
+                        { answerName: "q3a1", answerText: "ahhh an image", answerImg: "img/hill_v01.png" },
+                        { answerName: "q3a2", answerText: "almost done" },
+                        { answerName: "q3a3", answerText: "yay" },
+                        { answerName: "q3a4", answerText: "woohoo" }
                     ] };
                 // TODO: import this from a data.json file instead
                 return [q1, q2, q3];
@@ -233,10 +251,10 @@ var Bundle = (() => {
         class App {
             constructor() {
                 console.log("Initializing app...");
-                this.appType = (0, urlUtils_1.getAppType)(window.location.href);
+                this.appType = (0, urlUtils_1.getAppType)();
                 console.log(this.appType);
                 // TODO: make separate UI controllers for survey and assessment
-                (0, analyticsEvents_2.setUuid)("testinguuid");
+                (0, analyticsEvents_2.setUuid)((0, urlUtils_1.getUUID)());
                 (0, analyticsEvents_2.sendInit)();
                 const surv = new survey_1.Survey();
                 surv.runSurvey();

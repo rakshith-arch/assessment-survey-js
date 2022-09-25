@@ -1,7 +1,7 @@
 /**
  * App class that represents an entry point of the application.
  */
-import { getAppType } from './components/urlUtils';
+import { getAppType, getUUID } from './components/urlUtils';
 import { Survey } from './survey/survey';
 import { setUuid, sendInit} from './components/analyticsEvents'
 
@@ -13,11 +13,11 @@ export class App {
 
     constructor() {
         console.log("Initializing app...");
-        this.appType = getAppType(window.location.href);
+        this.appType = getAppType();
         console.log(this.appType);
         // TODO: make separate UI controllers for survey and assessment
 
-				setUuid("testinguuid");
+				setUuid(getUUID());
 				sendInit();
 				const surv = new Survey();
         surv.runSurvey();

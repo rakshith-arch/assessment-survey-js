@@ -3,7 +3,7 @@
 
 import { showQuestion, showGame, showEnd, setButtonAction, setFeedbackVisibile } from '../components/uiController';
 import { qData, answerData } from '../components/questionData';
-import { sendAnswered } from '../components/analyticsEvents'
+import { sendAnswered, sendFinished } from '../components/analyticsEvents'
 
 
 
@@ -40,8 +40,13 @@ export class Survey {
 		}
 		else{
 			console.log("no questions left");
-			showEnd();
+			this.onEnd();
 		}
+	}
+
+	public onEnd(){
+			sendFinished();
+			showEnd();
 	}
 
 
@@ -60,22 +65,22 @@ export class Survey {
 
  		//hard-coded test data for right now
 		var q1: qData = {qName: "q1",promptText: "question 1 text",answers:[
-			{answerName:"a1",answerText:"answer 1"},
-			{answerName:"a2",answerText:"answer 2"},
-			{answerName:"a3",answerText:"answer 3"},
-			{answerName:"a4",answerText:"answer 4"}
+			{answerName:"q1a1",answerText:"answer 1"},
+			{answerName:"q1a2",answerText:"answer 2"},
+			{answerName:"q1a3",answerText:"answer 3"},
+			{answerName:"q1a4",answerText:"answer 4"}
 		]};
 		var q2: qData = {qName: "q2",promptText: "question 2 text, with an image", promptImg:"img/hill_v01.png",answers:[
-			{answerName:"a1",answerText:"answer 1"},
-			{answerName:"a2",answerText:"slightly different answer 2"},
-			{answerName:"a3",answerText:"completley new answer 3"},
-			{answerName:"a4",answerText:"answer 4"}
+			{answerName:"q2a1",answerText:"answer 1"},
+			{answerName:"q2a2",answerText:"slightly different answer 2"},
+			{answerName:"q2a3",answerText:"completley new answer 3"},
+			{answerName:"q2a4",answerText:"answer 4"}
 		]};
 		var q3: qData = {qName: "q3",promptText: "the last question",answers:[
-			{answerName:"a1",answerText:"ahhh an image", answerImg:"img/hill_v01.png"},
-			{answerName:"a2",answerText:"almost done"},
-			{answerName:"a3",answerText:"yay"},
-			{answerName:"a4",answerText:"woohoo"}
+			{answerName:"q3a1",answerText:"ahhh an image", answerImg:"img/hill_v01.png"},
+			{answerName:"q3a2",answerText:"almost done"},
+			{answerName:"q3a3",answerText:"yay"},
+			{answerName:"q3a4",answerText:"woohoo"}
 		]};
 
 		// TODO: import this from a data.json file instead
