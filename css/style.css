@@ -21,6 +21,11 @@ body {
 			background-size:cover;
 }
 
+.bodyWrapper img{
+	max-width: 400px;
+	max-height:400px;
+}
+
 .answerContainer {
 	margin:0 auto;
 	display:grid;

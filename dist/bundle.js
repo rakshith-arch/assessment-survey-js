@@ -67,7 +67,12 @@ var Bundle = (() => {
         });
         //function to display a new question
         function showQuestion(newQ) {
-            qT.innerHTML = newQ.promptText;
+            let qCode = "";
+            qCode += newQ.promptText;
+            if ('promptImg' in newQ) {
+                qCode += "<img src='" + newQ.promptImg + "'></img>";
+            }
+            qT.innerHTML = qCode;
             //showing the answers on each button
             for (var aNum in newQ.answers) {
                 let curAnswer = newQ.answers[aNum];
@@ -76,7 +81,7 @@ var Bundle = (() => {
                     answerCode += curAnswer.answerText;
                 }
                 else if ('answerImg' in curAnswer) {
-                    answerCode += "<img src='" + curAnswer.answerImg + "'";
+                    answerCode += "<img src='" + curAnswer.answerImg + "'></img>";
                 }
                 buttons[aNum].innerHTML = answerCode;
             }
@@ -191,7 +196,7 @@ var Bundle = (() => {
                         { answerName: "a3", answerText: "answer 3" },
                         { answerName: "a4", answerText: "answer 4" }
                     ] };
-                var q2 = { qName: "q2", promptText: "question 2 text", answers: [
+                var q2 = { qName: "q2", promptText: "question 2 text", promptImg: "img/hill_v01.png", answers: [
                         { answerName: "a1", answerText: "answer 1" },
                         { answerName: "a2", answerText: "slightly different answer 2" },
                         { answerName: "a3", answerText: "completley new answer 3" },

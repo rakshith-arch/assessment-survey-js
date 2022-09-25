@@ -31,7 +31,12 @@ landingCont.addEventListener("click", function () {
 });
 //function to display a new question
 function showQuestion(newQ) {
-    qT.innerHTML = newQ.promptText;
+    let qCode = "";
+    qCode += newQ.promptText;
+    if ('promptImg' in newQ) {
+        qCode += "<img src='" + newQ.promptImg + "'></img>";
+    }
+    qT.innerHTML = qCode;
     //showing the answers on each button
     for (var aNum in newQ.answers) {
         let curAnswer = newQ.answers[aNum];
@@ -40,7 +45,7 @@ function showQuestion(newQ) {
             answerCode += curAnswer.answerText;
         }
         else if ('answerImg' in curAnswer) {
-            answerCode += "<img src='" + curAnswer.answerImg + "'";
+            answerCode += "<img src='" + curAnswer.answerImg + "'></img>";
         }
         buttons[aNum].innerHTML = answerCode;
     }

@@ -65,7 +65,7 @@ export class Survey {
 			{answerName:"a3",answerText:"answer 3"},
 			{answerName:"a4",answerText:"answer 4"}
 		]};
-		var q2: qData = {qName: "q2",promptText: "question 2 text",answers:[
+		var q2: qData = {qName: "q2",promptText: "question 2 text", promptImg:"img/hill_v01.png",answers:[
 			{answerName:"a1",answerText:"answer 1"},
 			{answerName:"a2",answerText:"slightly different answer 2"},
 			{answerName:"a3",answerText:"completley new answer 3"},
