@@ -63,6 +63,16 @@ padding-top:50px;
 
 }
 
+.visible {
+  visibility: visible;
+  opacity: 1;
+  transition: opacity .5s linear;
+}
+.hidden {
+  visibility: hidden;
+  opacity: 0;
+  transition: visibility 0s .25s, opacity .25s linear;
+}
 
 .answerContainer {
 	margin:0 auto;

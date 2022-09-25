@@ -115,11 +115,13 @@ var Bundle = (() => {
         exports.showEnd = showEnd;
         function setFeedbackVisibile(b) {
             if (b) {
-                fT.style.visibility = "visible";
+                fT.classList.remove("hidden");
+                fT.classList.add("visible");
                 buttonsActive = false;
             }
             else {
-                fT.style.visibility = "hidden";
+                fT.classList.remove("visible");
+                fT.classList.add("hidden");
                 buttonsActive = true;
             }
         }
