@@ -25,7 +25,7 @@ export class App {
 				setUuid(getUUID());
 				sendInit();
 				const surv = new Survey();
-        surv.runSurvey(this);
+        surv.run(this);
     }
 }
 

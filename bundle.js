@@ -198,7 +198,7 @@ var Bundle = (() => {
                 this.qNum = 0;
                 (0, uiController_1.setButtonAction)(this.tryAnswer);
             }
-            runSurvey(applink) {
+            run(applink) {
                 this.aLink = applink;
                 this.qList = this.buildQuestionList();
                 (0, uiController_1.showQuestion)(this.getNextQuestion());
@@ -301,15 +301,71 @@ var Bundle = (() => {
                 (0, analyticsEvents_2.setUuid)((0, urlUtils_1.getUUID)());
                 (0, analyticsEvents_2.sendInit)();
                 const surv = new survey_1.Survey();
-                surv.runSurvey(this);
+                surv.run(this);
             }
         }
         exports.App = App;
         const app = new App();
     });
-    //this is where the logic for handling the buckets will go
-    //
-    //once we start adding in the assessment functionality
+    define("assessment/bucketData", ["require", "exports"], function (require, exports) {
+        "use strict";
+        Object.defineProperty(exports, "__esModule", { value: true });
+    });
+    define("assessment/assessment", ["require", "exports", "components/uiController", "components/analyticsEvents"], function (require, exports, uiController_2, analyticsEvents_3) {
+        "use strict";
+        Object.defineProperty(exports, "__esModule", { value: true });
+        exports.Assessment = void 0;
+        class Assessment {
+            constructor() {
+                this.tryAnswer = (ans) => {
+                    (0, analyticsEvents_3.sendAnswered)(this.curQ, ans);
+                    (0, uiController_2.setFeedbackVisibile)(true);
+                    setTimeout(() => { this.onQuestionEnd(); }, 2000);
+                };
+                this.onQuestionEnd = () => {
+                    (0, uiController_2.setFeedbackVisibile)(false);
+                    if (this.hasAnotherQueston()) {
+                        (0, uiController_2.showQuestion)(this.getNextQuestion());
+                    }
+                    else {
+                        console.log("no questions left");
+                        this.onEnd();
+                    }
+                };
+                console.log("app initialized");
+                (0, uiController_2.setButtonAction)(this.tryAnswer);
+            }
+            run(applink) {
+                this.aLink = applink;
+                this.buckets = this.buildBuckets();
+                (0, uiController_2.showQuestion)(this.getFirstQuestion());
+            }
+            buildBuckets() {
+                var res = null;
+                return res;
+            }
+            onEnd() {
+                (0, analyticsEvents_3.sendFinished)();
+                (0, uiController_2.showEnd)();
+                this.aLink.unity.sendClose();
+            }
+            getNextQuestion() {
+                var res = null;
+                // // TODO: : build next question from buckets
+                return res;
+            }
+            getFirstQuestion() {
+                var res = null;
+                // // TODO: : build first question from buckets
+                return res;
+            }
+            hasAnotherQueston() {
+                //// TODO: check buckets, check if done
+                return true;
+            }
+        }
+        exports.Assessment = Assessment;
+    });
     
     'marker:resolver';
 

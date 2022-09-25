@@ -22,7 +22,7 @@ export class Survey {
 	}
 
 
-	public runSurvey(applink: App): void{
+	public run(applink: App): void{
 
 		this.aLink = applink;
 		this.qList = this.buildQuestionList();
