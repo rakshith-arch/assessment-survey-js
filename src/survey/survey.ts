@@ -5,9 +5,10 @@ import { showQuestion, showGame, showEnd, setButtonAction, setFeedbackVisibile }
 import { qData, answerData } from '../components/questionData';
 import { sendAnswered, sendFinished } from '../components/analyticsEvents'
 import { App } from '../App';
+import { baseQuiz } from '../baseQuiz';
 
 
-export class Survey {
+export class Survey extends baseQuiz {
 
 	public qList: qData[];
 	public qNum: number;
@@ -15,6 +16,7 @@ export class Survey {
 
 
 	constructor (){
+		super();
 		console.log("survey initialized");
 		this.qNum = 0;
 		setButtonAction(this.tryAnswer);
@@ -44,12 +46,6 @@ export class Survey {
 			console.log("no questions left");
 			this.onEnd();
 		}
-	}
-
-	public onEnd(){
-			sendFinished();
-			showEnd();
-			this.aLink.unity.sendClose();
 	}
 
 

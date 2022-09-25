@@ -170,19 +170,33 @@ var Bundle = (() => {
         }
         exports.sendFinished = sendFinished;
     });
+    define("baseQuiz", ["require", "exports", "components/analyticsEvents", "components/uiController"], function (require, exports, analyticsEvents_1, uiController_1) {
+        "use strict";
+        Object.defineProperty(exports, "__esModule", { value: true });
+        exports.baseQuiz = void 0;
+        class baseQuiz {
+            onEnd() {
+                (0, analyticsEvents_1.sendFinished)();
+                (0, uiController_1.showEnd)();
+                this.aLink.unity.sendClose();
+            }
+        }
+        exports.baseQuiz = baseQuiz;
+    });
     //this is where the code will go for linearly iterating through the
     //questions in a data.json file that identifies itself as a survey
-    define("survey/survey", ["require", "exports", "components/uiController", "components/analyticsEvents"], function (require, exports, uiController_1, analyticsEvents_1) {
+    define("survey/survey", ["require", "exports", "components/uiController", "components/analyticsEvents", "baseQuiz"], function (require, exports, uiController_2, analyticsEvents_2, baseQuiz_1) {
         "use strict";
         Object.defineProperty(exports, "__esModule", { value: true });
         exports.Survey = void 0;
-        class Survey {
+        class Survey extends baseQuiz_1.baseQuiz {
             constructor() {
+                super();
                 this.onQuestionEnd = () => {
-                    (0, uiController_1.setFeedbackVisibile)(false);
+                    (0, uiController_2.setFeedbackVisibile)(false);
                     this.qNum += 1;
                     if (this.hasAnotherQueston()) {
-                        (0, uiController_1.showQuestion)(this.getNextQuestion());
+                        (0, uiController_2.showQuestion)(this.getNextQuestion());
                     }
                     else {
                         console.log("no questions left");
@@ -190,23 +204,18 @@ var Bundle = (() => {
                     }
                 };
                 this.tryAnswer = (ans) => {
-                    (0, analyticsEvents_1.sendAnswered)(this.qList[this.qNum], ans);
-                    (0, uiController_1.setFeedbackVisibile)(true);
+                    (0, analyticsEvents_2.sendAnswered)(this.qList[this.qNum], ans);
+                    (0, uiController_2.setFeedbackVisibile)(true);
                     setTimeout(() => { this.onQuestionEnd(); }, 2000);
                 };
                 console.log("survey initialized");
                 this.qNum = 0;
-                (0, uiController_1.setButtonAction)(this.tryAnswer);
+                (0, uiController_2.setButtonAction)(this.tryAnswer);
             }
             run(applink) {
                 this.aLink = applink;
                 this.qList = this.buildQuestionList();
-                (0, uiController_1.showQuestion)(this.getNextQuestion());
-            }
-            onEnd() {
-                (0, analyticsEvents_1.sendFinished)();
-                (0, uiController_1.showEnd)();
-                this.aLink.unity.sendClose();
+                (0, uiController_2.showQuestion)(this.getNextQuestion());
             }
             buildQuestionList() {
                 //hard-coded test data for right now
@@ -286,7 +295,7 @@ var Bundle = (() => {
         }
         exports.UnityBridge = UnityBridge;
     });
-    define("App", ["require", "exports", "components/urlUtils", "survey/survey", "components/unityBridge", "components/analyticsEvents"], function (require, exports, urlUtils_1, survey_1, unityBridge_1, analyticsEvents_2) {
+    define("App", ["require", "exports", "components/urlUtils", "survey/survey", "components/unityBridge", "components/analyticsEvents"], function (require, exports, urlUtils_1, survey_1, unityBridge_1, analyticsEvents_3) {
         "use strict";
         Object.defineProperty(exports, "__esModule", { value: true });
         exports.App = void 0;
@@ -298,8 +307,8 @@ var Bundle = (() => {
                 this.appType = (0, urlUtils_1.getAppType)();
                 console.log(this.appType);
                 // TODO: make separate UI controllers for survey and assessment
-                (0, analyticsEvents_2.setUuid)((0, urlUtils_1.getUUID)());
-                (0, analyticsEvents_2.sendInit)();
+                (0, analyticsEvents_3.setUuid)((0, urlUtils_1.getUUID)());
+                (0, analyticsEvents_3.sendInit)();
                 const surv = new survey_1.Survey();
                 surv.run(this);
             }
@@ -311,21 +320,22 @@ var Bundle = (() => {
         "use strict";
         Object.defineProperty(exports, "__esModule", { value: true });
     });
-    define("assessment/assessment", ["require", "exports", "components/uiController", "components/analyticsEvents"], function (require, exports, uiController_2, analyticsEvents_3) {
+    define("assessment/assessment", ["require", "exports", "components/uiController", "components/analyticsEvents", "baseQuiz"], function (require, exports, uiController_3, analyticsEvents_4, baseQuiz_2) {
         "use strict";
         Object.defineProperty(exports, "__esModule", { value: true });
         exports.Assessment = void 0;
-        class Assessment {
+        class Assessment extends baseQuiz_2.baseQuiz {
             constructor() {
+                super();
                 this.tryAnswer = (ans) => {
-                    (0, analyticsEvents_3.sendAnswered)(this.curQ, ans);
-                    (0, uiController_2.setFeedbackVisibile)(true);
+                    (0, analyticsEvents_4.sendAnswered)(this.curQ, ans);
+                    (0, uiController_3.setFeedbackVisibile)(true);
                     setTimeout(() => { this.onQuestionEnd(); }, 2000);
                 };
                 this.onQuestionEnd = () => {
-                    (0, uiController_2.setFeedbackVisibile)(false);
+                    (0, uiController_3.setFeedbackVisibile)(false);
                     if (this.hasAnotherQueston()) {
-                        (0, uiController_2.showQuestion)(this.getNextQuestion());
+                        (0, uiController_3.showQuestion)(this.getNextQuestion());
                     }
                     else {
                         console.log("no questions left");
@@ -333,21 +343,16 @@ var Bundle = (() => {
                     }
                 };
                 console.log("app initialized");
-                (0, uiController_2.setButtonAction)(this.tryAnswer);
+                (0, uiController_3.setButtonAction)(this.tryAnswer);
             }
             run(applink) {
                 this.aLink = applink;
                 this.buckets = this.buildBuckets();
-                (0, uiController_2.showQuestion)(this.getFirstQuestion());
+                (0, uiController_3.showQuestion)(this.getFirstQuestion());
             }
             buildBuckets() {
                 var res = null;
                 return res;
-            }
-            onEnd() {
-                (0, analyticsEvents_3.sendFinished)();
-                (0, uiController_2.showEnd)();
-                this.aLink.unity.sendClose();
             }
             getNextQuestion() {
                 var res = null;

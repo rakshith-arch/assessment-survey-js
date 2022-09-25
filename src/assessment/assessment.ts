@@ -6,14 +6,16 @@ import { qData, answerData } from '../components/questionData';
 import { sendAnswered, sendFinished } from '../components/analyticsEvents'
 import { App } from '../App';
 import {bucket, bucketItem} from './bucketData';
+import { baseQuiz } from '../baseQuiz';
 
-export class Assessment{
+export class Assessment extends baseQuiz{
 
 		public curQ: qData;
 		public buckets: bucket[];
 			public aLink: App;
 
 		constructor (){
+			super();
 			console.log("app initialized");
 			setButtonAction(this.tryAnswer);
 
@@ -56,12 +58,6 @@ export class Assessment{
 
 			}
 
-
-				public onEnd(){
-						sendFinished();
-						showEnd();
-						this.aLink.unity.sendClose();
-				}
 
 
 					public getNextQuestion(): qData{
