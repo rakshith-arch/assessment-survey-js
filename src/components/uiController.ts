@@ -36,6 +36,9 @@ b4.addEventListener("click", function() {
 	buttonPress(4);
 });
 
+landingCont.addEventListener("click", function(){
+	showGame();
+})
 
 //function to display a new question
 export function showQuestion(newQ: qData): void{

@@ -25,6 +25,9 @@ b3.addEventListener("click", function () {
 b4.addEventListener("click", function () {
     buttonPress(4);
 });
+landingCont.addEventListener("click", function () {
+    showGame();
+});
 //function to display a new question
 function showQuestion(newQ) {
     qT.innerHTML = newQ.promptText;

@@ -8,6 +8,12 @@ body {
 	background-color: #3d85d1;
 }
 
+.landingPageWrapper{
+	
+	width:100%;
+	height:600px;
+}
+
 .bodyWrapper{
 		margin:0 auto;
 			width:500px;

@@ -4,7 +4,6 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Survey = void 0;
 const uiController_1 = require("../components/uiController");
-var qfcb;
 class Survey {
     constructor() {
         this.onQuestionEnd = () => {
@@ -18,22 +17,21 @@ class Survey {
                 (0, uiController_1.showEnd)();
             }
         };
+        this.tryAnswer = (ans) => {
+            // TODO:  send info to analytics event builder
+            (0, uiController_1.setFeedbackVisibile)(true);
+            setTimeout(() => { this.onQuestionEnd(); }, 2000);
+        };
         console.log("survey initialized");
         this.qNum = 0;
         (0, uiController_1.setButtonAction)(this.tryAnswer);
-        qfcb = this.onQuestionEnd;
     }
     runSurvey() {
         this.qList = this.buildQuestionList();
-        (0, uiController_1.showGame)();
         (0, uiController_1.showQuestion)(this.getNextQuestion());
     }
-    tryAnswer(ans) {
-        // TODO:  send info to analytics event builder
-        (0, uiController_1.setFeedbackVisibile)(true);
-        setTimeout(feedbackOver, 2000);
-    }
     buildQuestionList() {
+        //hard-coded test data for right now
         var q1 = { qName: "q1", promptText: "question 1 text", answers: [
                 { answerName: "a1", answerText: "answer 1" },
                 { answerName: "a2", answerText: "answer 2" },
@@ -42,11 +40,18 @@ class Survey {
             ] };
         var q2 = { qName: "q2", promptText: "question 2 text", answers: [
                 { answerName: "a1", answerText: "answer 1" },
-                { answerName: "a2", answerText: "answer 2" },
-                { answerName: "a3", answerText: "answer 3" },
+                { answerName: "a2", answerText: "slightly different answer 2" },
+                { answerName: "a3", answerText: "completley new answer 3" },
                 { answerName: "a4", answerText: "answer 4" }
             ] };
-        return [q1, q2];
+        var q3 = { qName: "q3", promptText: "the last question", answers: [
+                { answerName: "a1", answerText: "ahhh" },
+                { answerName: "a2", answerText: "almost done" },
+                { answerName: "a3", answerText: "yay" },
+                { answerName: "a4", answerText: "woohoo" }
+            ] };
+        // TODO: import this from a data.json file instead
+        return [q1, q2, q3];
     }
     hasAnotherQueston() {
         if ((this.qList.length - 1) >= this.qNum) {
@@ -63,7 +68,3 @@ class Survey {
     }
 }
 exports.Survey = Survey;
-function feedbackOver() {
-    console.log("fedback over");
-    qfcb();
-}

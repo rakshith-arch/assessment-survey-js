@@ -4,7 +4,7 @@
 import { showQuestion, showGame, showEnd, setButtonAction, setFeedbackVisibile } from '../components/uiController';
 import { qData, answerData } from '../components/questionData';
 
-var qfcb: Function;
+
 
 export class Survey {
 
@@ -16,16 +16,15 @@ export class Survey {
 		console.log("survey initialized");
 		this.qNum = 0;
 		setButtonAction(this.tryAnswer);
-		qfcb = this.onQuestionEnd;
+
 	}
 
 
 	public runSurvey(): void{
 
 		this.qList = this.buildQuestionList();
-		showGame();
-		showQuestion(this.getNextQuestion());
 
+		showQuestion(this.getNextQuestion());
 
 	}
 
@@ -45,12 +44,10 @@ export class Survey {
 	}
 
 
-	public tryAnswer(ans: number) : void {
+	public tryAnswer = (ans: number) => {
 			// TODO:  send info to analytics event builder
 			setFeedbackVisibile(true);
-
-
-			setTimeout(feedbackOver, 2000);
+			setTimeout(() =>{this.onQuestionEnd()}, 2000);
 	}
 
 
@@ -58,6 +55,7 @@ export class Survey {
 
 	public buildQuestionList(): qData[]{
 
+ 		//hard-coded test data for right now
 		var q1: qData = {qName: "q1",promptText: "question 1 text",answers:[
 			{answerName:"a1",answerText:"answer 1"},
 			{answerName:"a2",answerText:"answer 2"},
@@ -66,12 +64,20 @@ export class Survey {
 		]};
 		var q2: qData = {qName: "q2",promptText: "question 2 text",answers:[
 			{answerName:"a1",answerText:"answer 1"},
-			{answerName:"a2",answerText:"answer 2"},
-			{answerName:"a3",answerText:"answer 3"},
+			{answerName:"a2",answerText:"slightly different answer 2"},
+			{answerName:"a3",answerText:"completley new answer 3"},
 			{answerName:"a4",answerText:"answer 4"}
 		]};
+		var q3: qData = {qName: "q3",promptText: "the last question",answers:[
+			{answerName:"a1",answerText:"ahhh"},
+			{answerName:"a2",answerText:"almost done"},
+			{answerName:"a3",answerText:"yay"},
+			{answerName:"a4",answerText:"woohoo"}
+		]};
 
-		return [q1, q2];
+		// TODO: import this from a data.json file instead
+
+		return [q1, q2, q3];
 
 	}
 
@@ -93,9 +99,4 @@ export class Survey {
 		return res;
 	}
 
-}
-
-function feedbackOver(): void{
-	console.log("fedback over");
-	qfcb();
 }
