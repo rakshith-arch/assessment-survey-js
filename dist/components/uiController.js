@@ -24,6 +24,8 @@ b4.addEventListener("click", function () {
 });
 //function to display a new question
 function showQuestion(newQ) {
+    //// TODO: show the question prompt
+    //showing the answers on each button
     for (var aNum in newQ.answers) {
         let curAnswer = newQ.answers[aNum];
         let answerCode = "";

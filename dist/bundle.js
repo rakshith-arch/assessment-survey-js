@@ -60,6 +60,8 @@ var Bundle = (() => {
         });
         //function to display a new question
         function showQuestion(newQ) {
+            //// TODO: show the question prompt
+            //showing the answers on each button
             for (var aNum in newQ.answers) {
                 let curAnswer = newQ.answers[aNum];
                 let answerCode = "";
@@ -113,7 +115,7 @@ var Bundle = (() => {
         }
         exports.Survey = Survey;
     });
-    define("app", ["require", "exports", "components/urlUtils", "survey/survey"], function (require, exports, urlUtils_1, survey_1) {
+    define("App", ["require", "exports", "components/urlUtils", "survey/survey"], function (require, exports, urlUtils_1, survey_1) {
         "use strict";
         Object.defineProperty(exports, "__esModule", { value: true });
         exports.App = void 0;
@@ -203,6 +205,6 @@ var Bundle = (() => {
         return instances[name];
     }
     if (entry[0] !== null) {
-        return resolve(entry[0]);
+        return resolve("App");
     }
 })();

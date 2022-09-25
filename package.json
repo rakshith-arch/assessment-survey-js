@@ -4,7 +4,7 @@
   "description": "typescript implementation of the assessment / survey",
   "main": "bundle.js",
   "scripts": {
-    "build": "tsc && tsc-bundle tsconfig.json --exportAs Bundle && live-server"
+    "build": "tsc && tsc-bundle tsconfig.json --exportAs Bundle --entryPoint App && live-server"
   },
   "repository": {
     "type": "git",
