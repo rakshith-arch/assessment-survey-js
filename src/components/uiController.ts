@@ -46,10 +46,11 @@ export function showQuestion(newQ: qData): void{
 
 	let qCode = "";
 
-	qCode +=  newQ.promptText;
+
 	if ('promptImg' in newQ){
-		qCode += "<img src='" + newQ.promptImg + "'></img>";
+		qCode += "<img src='" + newQ.promptImg + "'></img><BR>";
 	}
+		qCode +=  newQ.promptText;
 
 	qT.innerHTML = qCode;
 		//showing the answers on each button
@@ -59,8 +60,8 @@ export function showQuestion(newQ: qData): void{
 			if ('answerText' in curAnswer){
 				answerCode += curAnswer.answerText;
 			}
-			else if ('answerImg' in curAnswer){
-				answerCode += "<img src='" + curAnswer.answerImg + "'></img>";
+ 			if ('answerImg' in curAnswer){
+				answerCode += "<BR><img src='" + curAnswer.answerImg + "'></img>";
 			}
 			buttons[aNum].innerHTML = answerCode;
 		}

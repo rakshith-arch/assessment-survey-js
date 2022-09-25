@@ -68,10 +68,10 @@ var Bundle = (() => {
         //function to display a new question
         function showQuestion(newQ) {
             let qCode = "";
-            qCode += newQ.promptText;
             if ('promptImg' in newQ) {
-                qCode += "<img src='" + newQ.promptImg + "'></img>";
+                qCode += "<img src='" + newQ.promptImg + "'></img><BR>";
             }
+            qCode += newQ.promptText;
             qT.innerHTML = qCode;
             //showing the answers on each button
             for (var aNum in newQ.answers) {
@@ -80,8 +80,8 @@ var Bundle = (() => {
                 if ('answerText' in curAnswer) {
                     answerCode += curAnswer.answerText;
                 }
-                else if ('answerImg' in curAnswer) {
-                    answerCode += "<img src='" + curAnswer.answerImg + "'></img>";
+                if ('answerImg' in curAnswer) {
+                    answerCode += "<BR><img src='" + curAnswer.answerImg + "'></img>";
                 }
                 buttons[aNum].innerHTML = answerCode;
             }
@@ -196,14 +196,14 @@ var Bundle = (() => {
                         { answerName: "a3", answerText: "answer 3" },
                         { answerName: "a4", answerText: "answer 4" }
                     ] };
-                var q2 = { qName: "q2", promptText: "question 2 text", promptImg: "img/hill_v01.png", answers: [
+                var q2 = { qName: "q2", promptText: "question 2 text, with an image", promptImg: "img/hill_v01.png", answers: [
                         { answerName: "a1", answerText: "answer 1" },
                         { answerName: "a2", answerText: "slightly different answer 2" },
                         { answerName: "a3", answerText: "completley new answer 3" },
                         { answerName: "a4", answerText: "answer 4" }
                     ] };
                 var q3 = { qName: "q3", promptText: "the last question", answers: [
-                        { answerName: "a1", answerText: "ahhh" },
+                        { answerName: "a1", answerText: "ahhh an image", answerImg: "img/hill_v01.png" },
                         { answerName: "a2", answerText: "almost done" },
                         { answerName: "a3", answerText: "yay" },
                         { answerName: "a4", answerText: "woohoo" }
