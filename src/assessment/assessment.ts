@@ -14,8 +14,9 @@ export class Assessment extends baseQuiz{
 		public buckets: bucket[];
 			public aLink: App;
 
-		constructor (){
+		constructor (durl: string){
 			super();
+			this.dataURL = durl;
 			console.log("app initialized");
 			setButtonAction(this.tryAnswer);
 

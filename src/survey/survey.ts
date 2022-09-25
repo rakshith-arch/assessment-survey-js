@@ -15,8 +15,9 @@ export class Survey extends baseQuiz {
 	public aLink: App;
 
 
-	constructor (){
+	constructor (durl: string){
 		super();
+		this.dataURL = durl;
 		console.log("survey initialized");
 		this.qNum = 0;
 		setButtonAction(this.tryAnswer);

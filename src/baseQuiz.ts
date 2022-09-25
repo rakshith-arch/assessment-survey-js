@@ -7,6 +7,7 @@ import { showQuestion, showGame, showEnd, setButtonAction, setFeedbackVisibile }
 
 export abstract class baseQuiz {
 	public aLink: App;
+	public dataURL: string;
 
 	public abstract run(applink: App): void;
 	public abstract tryAnswer(ans: number): void;

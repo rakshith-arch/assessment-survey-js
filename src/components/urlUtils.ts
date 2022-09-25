@@ -11,9 +11,17 @@ export function getAppType(): string {
 
 export function getUUID(): string{
 	const pathParams = getPathName();
-	const appType = pathParams.get('uuid');
-	return appType;
+	const nuuid = pathParams.get('uuid');
+	return nuuid;
 }
+
+export function getDataFile(): string{
+	const pathParams = getPathName();
+	const data = pathParams.get('data');
+	return data;
+}
+
+
 
 function getPathName(){
 	const queryString = window.location.search;
