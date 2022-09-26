@@ -6,13 +6,14 @@ import { qData, answerData } from '../components/questionData';
 import { sendAnswered, sendFinished } from '../components/analyticsEvents'
 import { App } from '../App';
 import { baseQuiz } from '../baseQuiz';
+import {fetchSurveyQuestions} from '../components/jsonUtils';
 
 
 export class Survey extends baseQuiz {
 
 	public qList: qData[];
 	public qNum: number;
-	public aLink: App;
+
 
 
 	constructor (durl: string){
@@ -25,12 +26,15 @@ export class Survey extends baseQuiz {
 	}
 
 
-	public run(applink: App): void{
+	public async run(applink: App){
 
 		this.aLink = applink;
-		this.qList = this.buildQuestionList();
+		this.buildQuestionList().then(result => {
+			this.qList = result;
+			showQuestion(this.getNextQuestion());
+		});
 
-		showQuestion(this.getNextQuestion());
+
 
 	}
 
@@ -61,31 +65,11 @@ export class Survey extends baseQuiz {
 
 
 
-	public buildQuestionList(): qData[]{
+	public buildQuestionList = () => {
 
- 		//hard-coded test data for right now
-		var q1: qData = {qName: "q1",promptText: "question 1 text",answers:[
-			{answerName:"q1a1",answerText:"answer 1"},
-			{answerName:"q1a2",answerText:"answer 2"},
-			{answerName:"q1a3",answerText:"answer 3"},
-			{answerName:"q1a4",answerText:"answer 4"}
-		]};
-		var q2: qData = {qName: "q2",promptText: "question 2 text, with an image", promptImg:"img/hill_v01.png",answers:[
-			{answerName:"q2a1",answerText:"answer 1"},
-			{answerName:"q2a2",answerText:"slightly different answer 2"},
-			{answerName:"q2a3",answerText:"completley new answer 3"},
-			{answerName:"q2a4",answerText:"answer 4"}
-		]};
-		var q3: qData = {qName: "q3",promptText: "the last question",answers:[
-			{answerName:"q3a1",answerText:"ahhh an image", answerImg:"img/hill_v01.png"},
-			{answerName:"q3a2",answerText:"almost done"},
-			{answerName:"q3a3",answerText:"yay"},
-			{answerName:"q3a4",answerText:"woohoo"}
-		]};
+ 		var qs = fetchSurveyQuestions(this.aLink.dataURL);
 
-		// TODO: import this from a data.json file instead
-
-		return [q1, q2, q3];
+		return qs;
 
 	}
 

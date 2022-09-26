@@ -12,7 +12,7 @@ export class Assessment extends baseQuiz{
 
 		public curQ: qData;
 		public buckets: bucket[];
-			public aLink: App;
+
 
 		constructor (durl: string){
 			super();

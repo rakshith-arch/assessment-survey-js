@@ -11,13 +11,21 @@ export function getAppType(): string {
 
 export function getUUID(): string{
 	const pathParams = getPathName();
-	const nuuid = pathParams.get('uuid');
+	var nuuid = pathParams.get('uuid');
+	if (nuuid == undefined){
+		console.log("no uuid provided");
+		nuuid = "WebUserNoID"
+	}
 	return nuuid;
 }
 
 export function getDataFile(): string{
 	const pathParams = getPathName();
-	const data = pathParams.get('data');
+	var data = pathParams.get('data');
+	if (data == undefined){
+		console.log("default data file");
+		data = "default";
+	}
 	return data;
 }
 

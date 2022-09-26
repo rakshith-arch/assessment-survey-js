@@ -9,6 +9,15 @@ var Bundle = (() => {
         Object.defineProperty(exports, "__cjsModule", { value: true });
         Object.defineProperty(exports, "default", { value: (name) => resolve(name) });
     });
+    var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+        function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+        return new (P || (P = Promise))(function (resolve, reject) {
+            function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+            function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+            function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+            step((generator = generator.apply(thisArg, _arguments || [])).next());
+        });
+    };
     /**
      * Contains utils for working with URL strings.
      */
@@ -24,13 +33,21 @@ var Bundle = (() => {
         exports.getAppType = getAppType;
         function getUUID() {
             const pathParams = getPathName();
-            const nuuid = pathParams.get('uuid');
+            var nuuid = pathParams.get('uuid');
+            if (nuuid == undefined) {
+                console.log("no uuid provided");
+                nuuid = "WebUserNoID";
+            }
             return nuuid;
         }
         exports.getUUID = getUUID;
         function getDataFile() {
             const pathParams = getPathName();
-            const data = pathParams.get('data');
+            var data = pathParams.get('data');
+            if (data == undefined) {
+                console.log("default data file");
+                data = "default";
+            }
             return data;
         }
         exports.getDataFile = getDataFile;
@@ -189,9 +206,34 @@ var Bundle = (() => {
         }
         exports.baseQuiz = baseQuiz;
     });
+    define("components/jsonUtils", ["require", "exports"], function (require, exports) {
+        "use strict";
+        Object.defineProperty(exports, "__esModule", { value: true });
+        exports.fetchSurveyQuestions = exports.fetchAppType = void 0;
+        function fetchAppType(url) {
+            return __awaiter(this, void 0, void 0, function* () {
+                return loadData(url).then(data => { return data["appType"]; });
+            });
+        }
+        exports.fetchAppType = fetchAppType;
+        function fetchSurveyQuestions(url) {
+            return __awaiter(this, void 0, void 0, function* () {
+                return loadData(url).then(data => { return data["questions"]; });
+            });
+        }
+        exports.fetchSurveyQuestions = fetchSurveyQuestions;
+        function loadData(url) {
+            return __awaiter(this, void 0, void 0, function* () {
+                var furl = "./data/" + url + ".json";
+                console.log(furl);
+                return fetch(furl)
+                    .then(response => response.json());
+            });
+        }
+    });
     //this is where the code will go for linearly iterating through the
     //questions in a data.json file that identifies itself as a survey
-    define("survey/survey", ["require", "exports", "components/uiController", "components/analyticsEvents", "baseQuiz"], function (require, exports, uiController_2, analyticsEvents_2, baseQuiz_1) {
+    define("survey/survey", ["require", "exports", "components/uiController", "components/analyticsEvents", "baseQuiz", "components/jsonUtils"], function (require, exports, uiController_2, analyticsEvents_2, baseQuiz_1, jsonUtils_1) {
         "use strict";
         Object.defineProperty(exports, "__esModule", { value: true });
         exports.Survey = void 0;
@@ -214,38 +256,23 @@ var Bundle = (() => {
                     (0, uiController_2.setFeedbackVisibile)(true);
                     setTimeout(() => { this.onQuestionEnd(); }, 2000);
                 };
+                this.buildQuestionList = () => {
+                    var qs = (0, jsonUtils_1.fetchSurveyQuestions)(this.aLink.dataURL);
+                    return qs;
+                };
                 this.dataURL = durl;
                 console.log("survey initialized");
                 this.qNum = 0;
                 (0, uiController_2.setButtonAction)(this.tryAnswer);
             }
             run(applink) {
-                this.aLink = applink;
-                this.qList = this.buildQuestionList();
-                (0, uiController_2.showQuestion)(this.getNextQuestion());
-            }
-            buildQuestionList() {
-                //hard-coded test data for right now
-                var q1 = { qName: "q1", promptText: "question 1 text", answers: [
-                        { answerName: "q1a1", answerText: "answer 1" },
-                        { answerName: "q1a2", answerText: "answer 2" },
-                        { answerName: "q1a3", answerText: "answer 3" },
-                        { answerName: "q1a4", answerText: "answer 4" }
-                    ] };
-                var q2 = { qName: "q2", promptText: "question 2 text, with an image", promptImg: "img/hill_v01.png", answers: [
-                        { answerName: "q2a1", answerText: "answer 1" },
-                        { answerName: "q2a2", answerText: "slightly different answer 2" },
-                        { answerName: "q2a3", answerText: "completley new answer 3" },
-                        { answerName: "q2a4", answerText: "answer 4" }
-                    ] };
-                var q3 = { qName: "q3", promptText: "the last question", answers: [
-                        { answerName: "q3a1", answerText: "ahhh an image", answerImg: "img/hill_v01.png" },
-                        { answerName: "q3a2", answerText: "almost done" },
-                        { answerName: "q3a3", answerText: "yay" },
-                        { answerName: "q3a4", answerText: "woohoo" }
-                    ] };
-                // TODO: import this from a data.json file instead
-                return [q1, q2, q3];
+                return __awaiter(this, void 0, void 0, function* () {
+                    this.aLink = applink;
+                    this.buildQuestionList().then(result => {
+                        this.qList = result;
+                        (0, uiController_2.showQuestion)(this.getNextQuestion());
+                    });
+                });
             }
             hasAnotherQueston() {
                 if ((this.qList.length - 1) >= this.qNum) {
@@ -358,7 +385,7 @@ var Bundle = (() => {
         }
         exports.UnityBridge = UnityBridge;
     });
-    define("App", ["require", "exports", "components/urlUtils", "survey/survey", "assessment/assessment", "components/unityBridge", "components/analyticsEvents"], function (require, exports, urlUtils_1, survey_1, assessment_1, unityBridge_1, analyticsEvents_4) {
+    define("App", ["require", "exports", "components/urlUtils", "survey/survey", "assessment/assessment", "components/unityBridge", "components/analyticsEvents", "components/jsonUtils"], function (require, exports, urlUtils_1, survey_1, assessment_1, unityBridge_1, analyticsEvents_4, jsonUtils_2) {
         "use strict";
         Object.defineProperty(exports, "__esModule", { value: true });
         exports.App = void 0;
@@ -368,21 +395,34 @@ var Bundle = (() => {
                 this.unity.sendLoaded();
                 console.log("Initializing app...");
                 this.dataURL = (0, urlUtils_1.getDataFile)();
-                //this.appType = getAppType();
-                // TODO: extract app type from datafile
-                if (true) {
-                    this.game = new survey_1.Survey(this.dataURL);
+                if (this.dataURL == undefined) {
+                    console.log("default data file");
+                    this.dataURL = "default";
                 }
-                else {
-                    this.game = new assessment_1.Assessment(this.dataURL);
-                }
-                (0, analyticsEvents_4.setUuid)((0, urlUtils_1.getUUID)());
-                (0, analyticsEvents_4.sendInit)();
-                this.game.run(this);
+            }
+            spinUp() {
+                return __awaiter(this, void 0, void 0, function* () {
+                    (0, jsonUtils_2.fetchAppType)(this.dataURL).then(result => {
+                        console.log("spinning up");
+                        console.log(result);
+                        if (result == "survey") {
+                            this.game = new survey_1.Survey(this.dataURL);
+                        }
+                        if (result == "assessment") {
+                            this.game = new assessment_1.Assessment(this.dataURL);
+                        }
+                        (0, analyticsEvents_4.setUuid)((0, urlUtils_1.getUUID)());
+                        (0, analyticsEvents_4.sendInit)();
+                        this.game.run(this);
+                    });
+                    //	console.log("apptype" + apptype);
+                    // TODO: extract app type from datafile
+                });
             }
         }
         exports.App = App;
         const app = new App();
+        app.spinUp();
     });
     
     'marker:resolver';
