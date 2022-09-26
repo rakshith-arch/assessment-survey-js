@@ -73,6 +73,7 @@ export function showQuestion(newQ: qData): void{
 //functions to show/hide the different containers
 
 export function showLanding(): void{
+	
 	landingCont.style.display = "block";
 	gameCont.style.display = "none";
 	endCont.style.display = "none";
