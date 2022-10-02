@@ -4,6 +4,7 @@
 	"buckets":[
 		{	"bucketID":1,
 			"bucketName":"eng-let-b1",
+			"usedItems":[],
 			"items":[
 				{"itemName": "L","itemText":"L"},
 				{"itemName": "I","itemText":"I"},
@@ -19,6 +20,7 @@
 		},
 		{	"bucketID":2,
 			"bucketName":"eng-let-b2",
+			"usedItems":[],
 			"items":[
 				{"itemName": "I","itemText":"I"},
 				{"itemName": "E","itemText":"E"},
@@ -34,6 +36,7 @@
 		},
 		{	"bucketID":3,
 			"bucketName":"eng-let-b3",
+			"usedItems":[],
 			"items":[
 				{"itemName": "H","itemText":"H"},
 				{"itemName": "O","itemText":"O"},

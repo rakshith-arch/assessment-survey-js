@@ -71,15 +71,38 @@ export class Assessment extends baseQuiz{
 
 			}
 
-					public getNextQuestion(): qData{
-						var res = null;
-							// // TODO: : build next question from buckets
-						return res;
-					}
+			public getNextQuestion = () => {
+				var targetItem, foil1, foil2, foil3;
+				do {
+					targetItem = randFrom(this.curBucket.items);
+				} while (this.curBucket.usedItems.includes(targetItem));
+				this.curBucket.usedItems.push(targetItem);
+				do {
+					foil1 = randFrom(this.curBucket.items);
+				} while (targetItem == foil1);
+				do {
+					foil2 = randFrom(this.curBucket.items);
+				} while (targetItem == foil2 || foil1 == foil2);
+				do {
+					foil3 = randFrom(this.curBucket.items);
+				} while (targetItem == foil3 || foil1 == foil3 || foil2 == foil3);
 
 
-				public hasAnotherQueston(): boolean{
-					//// TODO: check buckets, check if done
-					return true;
-				}
+
+				var res = null;
+					// // TODO: : build next question from buckets
+					// pick target answer from bucket items, add it to used
+					// pick three foil options from bucket items
+				return res;
+			}
+
+
+		public hasAnotherQueston(): boolean{
+			//// TODO: check buckets, check if done
+			return true;
+		}
+}
+
+function randFrom(array){
+	return array[Math.floor(Math.random() * array.length)]
 }

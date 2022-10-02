@@ -329,6 +329,27 @@ var Bundle = (() => {
                         this.onEnd();
                     }
                 };
+                this.getNextQuestion = () => {
+                    var targetItem, foil1, foil2, foil3;
+                    do {
+                        targetItem = randFrom(this.curBucket.items);
+                    } while (this.curBucket.usedItems.includes(targetItem));
+                    this.curBucket.usedItems.push(targetItem);
+                    do {
+                        foil1 = randFrom(this.curBucket.items);
+                    } while (targetItem == foil1);
+                    do {
+                        foil2 = randFrom(this.curBucket.items);
+                    } while (targetItem == foil2 || foil1 == foil2);
+                    do {
+                        foil3 = randFrom(this.curBucket.items);
+                    } while (targetItem == foil3 || foil1 == foil3 || foil2 == foil3);
+                    var res = null;
+                    // // TODO: : build next question from buckets
+                    // pick target answer from bucket items, add it to used
+                    // pick three foil options from bucket items
+                    return res;
+                };
                 this.dataURL = durl;
                 console.log("app initialized");
                 (0, uiController_3.setButtonAction)(this.tryAnswer);
@@ -340,17 +361,15 @@ var Bundle = (() => {
                     (0, uiController_3.showQuestion)(this.getNextQuestion());
                 });
             }
-            getNextQuestion() {
-                var res = null;
-                // // TODO: : build next question from buckets
-                return res;
-            }
             hasAnotherQueston() {
                 //// TODO: check buckets, check if done
                 return true;
             }
         }
         exports.Assessment = Assessment;
+        function randFrom(array) {
+            return array[Math.floor(Math.random() * array.length)];
+        }
     });
     /**
      * Module that wraps Unity calls for sending messages from the webview to Unity.
