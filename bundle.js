@@ -344,13 +344,30 @@ var Bundle = (() => {
                     do {
                         foil3 = randFrom(this.curBucket.items);
                     } while (targetItem == foil3 || foil1 == foil3 || foil2 == foil3);
-                    var res = null;
+                    var opts = [targetItem, foil1, foil2, foil3];
+                    shuffleArray(opts);
+                    var res = { qName: "question" + this.questionNum + "-" + targetItem.itemName,
+                        promptText: targetItem.itemText,
+                        answers: [
+                            { answerName: opts[0].itemName,
+                                answerText: opts[0].itemText },
+                            { answerName: opts[1].itemName,
+                                answerText: opts[1].itemText },
+                            { answerName: opts[2].itemName,
+                                answerText: opts[2].itemText },
+                            { answerName: opts[3].itemName,
+                                answerText: opts[3].itemText }
+                        ]
+                    };
                     // // TODO: : build next question from buckets
                     // pick target answer from bucket items, add it to used
                     // pick three foil options from bucket items
+                    this.curQ = res;
+                    this.questionNum += 1;
                     return res;
                 };
                 this.dataURL = durl;
+                this.questionNum = 0;
                 console.log("app initialized");
                 (0, uiController_3.setButtonAction)(this.tryAnswer);
             }
@@ -369,6 +386,12 @@ var Bundle = (() => {
         exports.Assessment = Assessment;
         function randFrom(array) {
             return array[Math.floor(Math.random() * array.length)];
+        }
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
         }
     });
     /**
