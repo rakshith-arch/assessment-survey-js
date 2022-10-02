@@ -209,7 +209,7 @@ var Bundle = (() => {
     define("components/jsonUtils", ["require", "exports"], function (require, exports) {
         "use strict";
         Object.defineProperty(exports, "__esModule", { value: true });
-        exports.fetchSurveyQuestions = exports.fetchAppType = void 0;
+        exports.fetchAssessmentBuckets = exports.fetchSurveyQuestions = exports.fetchAppType = void 0;
         function fetchAppType(url) {
             return __awaiter(this, void 0, void 0, function* () {
                 return loadData(url).then(data => { return data["appType"]; });
@@ -222,6 +222,12 @@ var Bundle = (() => {
             });
         }
         exports.fetchSurveyQuestions = fetchSurveyQuestions;
+        function fetchAssessmentBuckets(url) {
+            return __awaiter(this, void 0, void 0, function* () {
+                return loadData(url).then(data => { return data["buckets"]; });
+            });
+        }
+        exports.fetchAssessmentBuckets = fetchAssessmentBuckets;
         function loadData(url) {
             return __awaiter(this, void 0, void 0, function* () {
                 var furl = "./data/" + url + ".json";
@@ -293,13 +299,21 @@ var Bundle = (() => {
         "use strict";
         Object.defineProperty(exports, "__esModule", { value: true });
     });
-    define("assessment/assessment", ["require", "exports", "components/uiController", "components/analyticsEvents", "baseQuiz"], function (require, exports, uiController_3, analyticsEvents_3, baseQuiz_2) {
+    define("assessment/assessment", ["require", "exports", "components/uiController", "components/analyticsEvents", "baseQuiz", "components/jsonUtils"], function (require, exports, uiController_3, analyticsEvents_3, baseQuiz_2, jsonUtils_2) {
         "use strict";
         Object.defineProperty(exports, "__esModule", { value: true });
         exports.Assessment = void 0;
         class Assessment extends baseQuiz_2.baseQuiz {
             constructor(durl) {
                 super();
+                this.buildBuckets = () => {
+                    var res = (0, jsonUtils_2.fetchAssessmentBuckets)(this.aLink.dataURL).then(result => {
+                        this.buckets = result;
+                        var middle = result[Math.floor(result.length / 2)];
+                        this.curBucket = middle;
+                    });
+                    return res;
+                };
                 this.tryAnswer = (ans) => {
                     (0, analyticsEvents_3.sendAnswered)(this.curQ, ans);
                     (0, uiController_3.setFeedbackVisibile)(true);
@@ -321,21 +335,14 @@ var Bundle = (() => {
             }
             run(applink) {
                 this.aLink = applink;
-                this.buckets = this.buildBuckets();
-                (0, uiController_3.showQuestion)(this.getFirstQuestion());
-            }
-            buildBuckets() {
-                var res = null;
-                return res;
+                this.buildBuckets().then(result => {
+                    console.log(this.curBucket);
+                    (0, uiController_3.showQuestion)(this.getNextQuestion());
+                });
             }
             getNextQuestion() {
                 var res = null;
                 // // TODO: : build next question from buckets
-                return res;
-            }
-            getFirstQuestion() {
-                var res = null;
-                // // TODO: : build first question from buckets
                 return res;
             }
             hasAnotherQueston() {
@@ -385,7 +392,7 @@ var Bundle = (() => {
         }
         exports.UnityBridge = UnityBridge;
     });
-    define("App", ["require", "exports", "components/urlUtils", "survey/survey", "assessment/assessment", "components/unityBridge", "components/analyticsEvents", "components/jsonUtils"], function (require, exports, urlUtils_1, survey_1, assessment_1, unityBridge_1, analyticsEvents_4, jsonUtils_2) {
+    define("App", ["require", "exports", "components/urlUtils", "survey/survey", "assessment/assessment", "components/unityBridge", "components/analyticsEvents", "components/jsonUtils"], function (require, exports, urlUtils_1, survey_1, assessment_1, unityBridge_1, analyticsEvents_4, jsonUtils_3) {
         "use strict";
         Object.defineProperty(exports, "__esModule", { value: true });
         exports.App = void 0;
@@ -395,14 +402,10 @@ var Bundle = (() => {
                 this.unity.sendLoaded();
                 console.log("Initializing app...");
                 this.dataURL = (0, urlUtils_1.getDataFile)();
-                if (this.dataURL == undefined) {
-                    console.log("default data file");
-                    this.dataURL = "default";
-                }
             }
             spinUp() {
                 return __awaiter(this, void 0, void 0, function* () {
-                    (0, jsonUtils_2.fetchAppType)(this.dataURL).then(result => {
+                    (0, jsonUtils_3.fetchAppType)(this.dataURL).then(result => {
                         console.log("spinning up");
                         console.log(result);
                         if (result == "survey") {
@@ -415,8 +418,6 @@ var Bundle = (() => {
                         (0, analyticsEvents_4.sendInit)();
                         this.game.run(this);
                     });
-                    //	console.log("apptype" + apptype);
-                    // TODO: extract app type from datafile
                 });
             }
         }

@@ -7,11 +7,13 @@ import { sendAnswered, sendFinished } from '../components/analyticsEvents'
 import { App } from '../App';
 import {bucket, bucketItem} from './bucketData';
 import { baseQuiz } from '../baseQuiz';
+import {fetchAssessmentBuckets} from '../components/jsonUtils';
 
 export class Assessment extends baseQuiz{
 
 		public curQ: qData;
 		public buckets: bucket[];
+		public curBucket: bucket;
 
 
 		constructor (durl: string){
@@ -25,14 +27,24 @@ export class Assessment extends baseQuiz{
 		public run(applink: App): void{
 
 					this.aLink = applink;
-					this.buckets = this.buildBuckets();
-					showQuestion(this.getFirstQuestion());
+					this.buildBuckets().then(result => {
+						console.log(this.curBucket);
+						showQuestion(this.getNextQuestion());
+					});
+
 		}
 
 
-		public buildBuckets(): bucket[]{
-			var res = null;
+		public buildBuckets = () => {
+			var res = fetchAssessmentBuckets(this.aLink.dataURL).then(result=>{
+				this.buckets = result;
+				var middle = result[Math.floor(result.length / 2)];
+				this.curBucket = middle;
+
+			});
 			return res;
+
+
 		}
 
 
@@ -59,19 +71,12 @@ export class Assessment extends baseQuiz{
 
 			}
 
-
-
 					public getNextQuestion(): qData{
 						var res = null;
 							// // TODO: : build next question from buckets
 						return res;
 					}
 
-					public getFirstQuestion(): qData{
-						var res = null;
-							// // TODO: : build first question from buckets
-						return res;
-					}
 
 				public hasAnotherQueston(): boolean{
 					//// TODO: check buckets, check if done

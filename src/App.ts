@@ -24,10 +24,7 @@ export class App {
 				this.unity.sendLoaded();
         console.log("Initializing app...");
 				this.dataURL = getDataFile();
-				if (this.dataURL == undefined){
-					console.log("default data file");
-					this.dataURL = "default";
-				}
+
 
     }
 
@@ -49,10 +46,6 @@ export class App {
 			 this.game.run(this);
 
 			});
-
-		//	console.log("apptype" + apptype);
-
-      // TODO: extract app type from datafile
 
 		}
 }

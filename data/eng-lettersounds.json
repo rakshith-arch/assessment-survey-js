@@ -1,0 +1,51 @@
+{
+	"quizName": "default assessment - english letter sounds",
+	"appType": "assessment",
+	"buckets":[
+		{	"bucketID":1,
+			"bucketName":"eng-let-b1",
+			"items":[
+				{"itemName": "L","itemText":"L"},
+				{"itemName": "I","itemText":"I"},
+				{"itemName": "H","itemText":"H"},
+				{"itemName": "R","itemText":"R"},
+				{"itemName": "S","itemText":"S"},
+				{"itemName": "Y","itemText":"Y"},
+				{"itemName": "E","itemText":"E"},
+				{"itemName": "O","itemText":"O"},
+				{"itemName": "N","itemText":"N"},
+				{"itemName": "T","itemText":"T"}
+			]
+		},
+		{	"bucketID":2,
+			"bucketName":"eng-let-b2",
+			"items":[
+				{"itemName": "I","itemText":"I"},
+				{"itemName": "E","itemText":"E"},
+				{"itemName": "T","itemText":"T"},
+				{"itemName": "D","itemText":"D"},
+				{"itemName": "A","itemText":"A"},
+				{"itemName": "V","itemText":"V"},
+				{"itemName": "G","itemText":"G"},
+				{"itemName": "D","itemText":"D"},
+				{"itemName": "P","itemText":"P"},
+				{"itemName": "W","itemText":"W"}
+			]
+		},
+		{	"bucketID":3,
+			"bucketName":"eng-let-b3",
+			"items":[
+				{"itemName": "H","itemText":"H"},
+				{"itemName": "O","itemText":"O"},
+				{"itemName": "E","itemText":"E"},
+				{"itemName": "M","itemText":"M"},
+				{"itemName": "U","itemText":"U"},
+				{"itemName": "K","itemText":"K"},
+				{"itemName": "L","itemText":"L"},
+				{"itemName": "G","itemText":"G"},
+				{"itemName": "R","itemText":"R"},
+				{"itemName": "A","itemText":"A"}
+			]
+		}
+	]
+}

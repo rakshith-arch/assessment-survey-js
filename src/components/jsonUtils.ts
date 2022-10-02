@@ -11,6 +11,10 @@ export async function fetchSurveyQuestions(url:string){
 	return loadData(url).then(data=>{return data["questions"]})
 }
 
+export async function fetchAssessmentBuckets(url:string){
+	return loadData(url).then(data=>{return data["buckets"]})
+}
+
 
 async function loadData(url: string){
 
