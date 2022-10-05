@@ -2,20 +2,23 @@
   "name": "assessment-survey-js",
   "version": "0.0.1",
   "description": "typescript implementation of the assessment / survey",
-  "main": "app.js",
+  "main": "bundle.js",
   "scripts": {
-    "build": "tsc"
+    "build": "tsc && tsc-bundle tsconfig.json --exportAs Bundle --entryPoint App --outFile bundle.js",
+		"run": "tsc && tsc-bundle tsconfig.json --exportAs Bundle --entryPoint App --outFile bundle.js && live-server"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/curiouslearning/assessment-survey-js.git"
   },
-  "author": "willow",
-  "license": "BSD-2-Clause",
+  "author": "curious learning",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/curiouslearning/assessment-survey-js/issues"
   },
   "devDependencies": {
-    "typescript": "~4.8.3"
+    "live-server": "^1.2.2",
+    "typescript": "~4.8.3",
+    "typescript-bundle": "^1.0.18"
   }
 }

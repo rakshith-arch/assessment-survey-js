@@ -1,0 +1,13 @@
+export type bucket = {
+	bucketID: number;
+	items: bucketItem[];
+	usedItems: bucketItem[];
+	bucketName?: string; //for analytics
+}
+
+export type bucketItem = {
+	itemName: string;
+	itemText: string;
+	itemAudio?: string;
+	itemImg?: string;
+}
