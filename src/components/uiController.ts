@@ -21,84 +21,79 @@ var buttonsActive: boolean = true;
 
 //add button listeners
 
-b1.addEventListener("click", function() {
+b1.addEventListener("click", function () {
 	buttonPress(1);
 });
 
-b2.addEventListener("click", function() {
+b2.addEventListener("click", function () {
 	buttonPress(2);
 });
 
-b3.addEventListener("click", function() {
+b3.addEventListener("click", function () {
 	buttonPress(3);
 });
 
-b4.addEventListener("click", function() {
+b4.addEventListener("click", function () {
 	buttonPress(4);
 });
 
-landingCont.addEventListener("click", function(){
+landingCont.addEventListener("click", function () {
 	showGame();
 })
 
 //function to display a new question
-export function showQuestion(newQ: qData): void{
+export function showQuestion(newQ: qData): void {
 
 	let qCode = "";
 
 
-	if ('promptImg' in newQ){
+	if ('promptImg' in newQ) {
 		qCode += "<img src='" + newQ.promptImg + "'></img><BR>";
 	}
-		qCode +=  newQ.promptText;
+	qCode += newQ.promptText;
 
 	qT.innerHTML = qCode;
-		//showing the answers on each button
-		for (var aNum in newQ.answers){
-			let curAnswer = newQ.answers[aNum];
-			let answerCode = "";
-			if ('answerText' in curAnswer){
-				answerCode += curAnswer.answerText;
-			}
- 			if ('answerImg' in curAnswer){
-				answerCode += "<BR><img src='" + curAnswer.answerImg + "'></img>";
-			}
-			buttons[aNum].innerHTML = answerCode;
+	//showing the answers on each button
+	for (var aNum in newQ.answers) {
+		let curAnswer = newQ.answers[aNum];
+		let answerCode = "";
+		if ('answerText' in curAnswer) {
+			answerCode += curAnswer.answerText;
 		}
+		if ('answerImg' in curAnswer) {
+			answerCode += "<BR><img src='" + curAnswer.answerImg + "'></img>";
+		}
+		buttons[aNum].innerHTML = answerCode;
+	}
 
 }
 
-
-
 //functions to show/hide the different containers
-
-export function showLanding(): void{
-	
+export function showLanding(): void {
 	landingCont.style.display = "block";
 	gameCont.style.display = "none";
 	endCont.style.display = "none";
 }
 
-export function showGame(): void{
+export function showGame(): void {
 	landingCont.style.display = "none";
 	gameCont.style.display = "block";
 	endCont.style.display = "none";
 }
 
-export function showEnd(): void{
+export function showEnd(): void {
 	landingCont.style.display = "none";
 	gameCont.style.display = "none";
 	endCont.style.display = "block";
 }
 
-export function setFeedbackVisibile(b: boolean){
-	if(b){
+export function setFeedbackVisibile(b: boolean) {
+	if (b) {
 		fT.classList.remove("hidden");
 		fT.classList.add("visible");
 
 		buttonsActive = false;
-	}
-	else{
+	} else {
 		fT.classList.remove("visible");
 		fT.classList.add("hidden");
 
@@ -109,12 +104,12 @@ export function setFeedbackVisibile(b: boolean){
 
 //handle button press
 
-export function setButtonAction(callback: Function): void{
+export function setButtonAction(callback: Function): void {
 	bCallback = callback;
 }
 
-function buttonPress(num: number){
-	if (buttonsActive){
+function buttonPress(num: number) {
+	if (buttonsActive) {
 		bCallback(num);
 	}
 

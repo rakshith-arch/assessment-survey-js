@@ -6,38 +6,38 @@ declare const Unity;
 
 export class UnityBridge {
 
-    private unityReference;
+	private unityReference;
 
-    constructor() {
-        if (typeof Unity !== 'undefined') {
-            this.unityReference = Unity;
-        } else {
-            this.unityReference = null;
-        }
-    }
-
-    public SendMessage(message: string) {
-        if (this.unityReference !== null) {
-            this.unityReference.call(message);
-        }
-    }
-
-		public sendLoaded(){
-			if (this.unityReference !== null) {
-					this.unityReference.call("loaded");
-			}
-			else{
-				console.log("would call Unity loaded now");
-			}
+	constructor() {
+		if (typeof Unity !== 'undefined') {
+			this.unityReference = Unity;
+		} else {
+			this.unityReference = null;
 		}
+	}
 
-		public sendClose(){
-			if (this.unityReference !== null) {
-					this.unityReference.call("close");
-			}
-			else{
-				console.log("would close Unity now");
-			}
+	public SendMessage(message: string) {
+		if (this.unityReference !== null) {
+			this.unityReference.call(message);
 		}
+	}
+
+	public sendLoaded() {
+		if (this.unityReference !== null) {
+			this.unityReference.call("loaded");
+		}
+		else {
+			console.log("would call Unity loaded now");
+		}
+	}
+
+	public sendClose() {
+		if (this.unityReference !== null) {
+			this.unityReference.call("close");
+		}
+		else {
+			console.log("would close Unity now");
+		}
+	}
 
 }
