@@ -6,7 +6,8 @@
 		"lib": ["es7", "dom"],
     "moduleResolution": "node",
 		"outDir": "dist",
-    "strict": false
+    "strict": false,
+		"removeComments": true
   },
   "include": ["src"],
   "exclude": ["node_modules"],
