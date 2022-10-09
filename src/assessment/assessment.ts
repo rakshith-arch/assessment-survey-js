@@ -15,6 +15,8 @@ export class Assessment extends baseQuiz {
 	public buckets: bucket[];
 	public curBucket: bucket;
 	public questionNum: number;
+	public numBuckets: number;
+
 
 
 	constructor(durl: string) {
@@ -33,28 +35,39 @@ export class Assessment extends baseQuiz {
 			console.log(this.curBucket);
 			showQuestion(this.getNextQuestion());
 		});
-
 	}
-
-
 	public buildBuckets = () => {
 		var res = fetchAssessmentBuckets(this.aLink.dataURL).then(result => {
 			this.buckets = result;
+			this.numBuckets = result.length;
 			var middle = result[Math.floor(result.length / 2)];
-			this.curBucket = middle;
-
+			this.initBucket(middle);
 		});
 		return res;
+	}
+
+	public initBucket = (b: bucket) => {
+		this.curBucket = b;
+		this.curBucket.numTried = 0;
+		this.curBucket.numCorrect = 0;
+		this.curBucket.numConsecutiveWrong = 0;
 	}
 
 
 	public tryAnswer = (ans: number) => {
 		sendAnswered(this.curQ, ans)
 
-		setFeedbackVisibile(true);
-		setTimeout(() => { this.onQuestionEnd() }, 2000);
+			sendAnswered(this.curQ, ans)
+			this.curBucket.numTried += 1;
+			if (this.curQ.answers[ans-1].answerName == this.curQ.correct){
+				this.curBucket.numCorrect += 1;
+				this.curBucket.numConsecutiveWrong = 0;
+			}else{
+				this.curBucket.numConsecutiveWrong = 0;
+			}
+			setFeedbackVisibile(true);
+			setTimeout(() => { this.onQuestionEnd() }, 2000);
 	}
-
 
 	public onQuestionEnd = () => {
 
@@ -110,21 +123,52 @@ export class Assessment extends baseQuiz {
 					answerName: opts[3].itemName,
 					answerText: opts[3].itemText
 				}
+
+
 			]
 		};
 
-		// // TODO: : build next question from buckets
-		// pick target answer from bucket items, add it to used
-		// pick three foil options from bucket items
+			// // TODO: : build next question from buckets
+			// pick target answer from bucket items, add it to used
+			// pick three foil options from bucket items
 		this.curQ = res;
 		this.questionNum += 1;
 		return res;
 	}
 
 
-	public hasAnotherQueston(): boolean {
+	public hasAnotherQueston = () => {
 		//// TODO: check buckets, check if done
-		return true;
+		var stillMore = true;
+
+		if (this.curBucket.numCorrect >= 4){
+			//passed this bucket
+			if (this.curBucket.bucketID >= this.numBuckets){
+				//passed highest bucket
+				stillMore = false;
+			}
+			else{
+				//moved up to next bucket
+				this.curBucket.tested = true;
+				this.initBucket(this.buckets[this.curBucket.bucketID]);
+			}
+		}
+		if (this.curBucket.numConsecutiveWrong >= 2 || this.curBucket.numTried >= 5){
+			//failed this bucket
+			if (this.curBucket.bucketID <= 1){
+				//failed the lowest bucket
+				stillMore = false;
+			}
+			else{
+				//move down to next bucket
+					this.curBucket.tested = true;
+					this.initBucket(this.buckets[this.curBucket.bucketID - 1]);
+			}
+		}
+
+
+		return stillMore;
+
 	}
 }
 

@@ -206,6 +206,7 @@ var Bundle = (() => {
         }
         exports.baseQuiz = baseQuiz;
     });
+    /** Json Utils */
     define("components/jsonUtils", ["require", "exports"], function (require, exports) {
         "use strict";
         Object.defineProperty(exports, "__esModule", { value: true });
@@ -232,8 +233,7 @@ var Bundle = (() => {
             return __awaiter(this, void 0, void 0, function* () {
                 var furl = "./data/" + url + ".json";
                 console.log(furl);
-                return fetch(furl)
-                    .then(response => response.json());
+                return fetch(furl).then(response => response.json());
             });
         }
     });
@@ -309,13 +309,29 @@ var Bundle = (() => {
                 this.buildBuckets = () => {
                     var res = (0, jsonUtils_2.fetchAssessmentBuckets)(this.aLink.dataURL).then(result => {
                         this.buckets = result;
+                        this.numBuckets = result.length;
                         var middle = result[Math.floor(result.length / 2)];
-                        this.curBucket = middle;
+                        this.initBucket(middle);
                     });
                     return res;
                 };
+                this.initBucket = (b) => {
+                    this.curBucket = b;
+                    this.curBucket.numTried = 0;
+                    this.curBucket.numCorrect = 0;
+                    this.curBucket.numConsecutiveWrong = 0;
+                };
                 this.tryAnswer = (ans) => {
                     (0, analyticsEvents_3.sendAnswered)(this.curQ, ans);
+                    (0, analyticsEvents_3.sendAnswered)(this.curQ, ans);
+                    this.curBucket.numTried += 1;
+                    if (this.curQ.answers[ans - 1].answerName == this.curQ.correct) {
+                        this.curBucket.numCorrect += 1;
+                        this.curBucket.numConsecutiveWrong = 0;
+                    }
+                    else {
+                        this.curBucket.numConsecutiveWrong = 0;
+                    }
                     (0, uiController_3.setFeedbackVisibile)(true);
                     setTimeout(() => { this.onQuestionEnd(); }, 2000);
                 };
@@ -346,17 +362,26 @@ var Bundle = (() => {
                     } while (targetItem == foil3 || foil1 == foil3 || foil2 == foil3);
                     var opts = [targetItem, foil1, foil2, foil3];
                     shuffleArray(opts);
-                    var res = { qName: "question" + this.questionNum + "-" + targetItem.itemName,
+                    var res = {
+                        qName: "question" + this.questionNum + "-" + targetItem.itemName,
                         promptText: targetItem.itemText,
                         answers: [
-                            { answerName: opts[0].itemName,
-                                answerText: opts[0].itemText },
-                            { answerName: opts[1].itemName,
-                                answerText: opts[1].itemText },
-                            { answerName: opts[2].itemName,
-                                answerText: opts[2].itemText },
-                            { answerName: opts[3].itemName,
-                                answerText: opts[3].itemText }
+                            {
+                                answerName: opts[0].itemName,
+                                answerText: opts[0].itemText
+                            },
+                            {
+                                answerName: opts[1].itemName,
+                                answerText: opts[1].itemText
+                            },
+                            {
+                                answerName: opts[2].itemName,
+                                answerText: opts[2].itemText
+                            },
+                            {
+                                answerName: opts[3].itemName,
+                                answerText: opts[3].itemText
+                            }
                         ]
                     };
                     // // TODO: : build next question from buckets
@@ -365,6 +390,35 @@ var Bundle = (() => {
                     this.curQ = res;
                     this.questionNum += 1;
                     return res;
+                };
+                this.hasAnotherQueston = () => {
+                    //// TODO: check buckets, check if done
+                    var stillMore = true;
+                    if (this.curBucket.numCorrect >= 4) {
+                        //passed this bucket
+                        if (this.curBucket.bucketID >= this.numBuckets) {
+                            //passed highest bucket
+                            stillMore = false;
+                        }
+                        else {
+                            //moved up to next bucket
+                            this.curBucket.tested = true;
+                            this.initBucket(this.buckets[this.curBucket.bucketID]);
+                        }
+                    }
+                    if (this.curBucket.numConsecutiveWrong >= 2 || this.curBucket.numTried >= 5) {
+                        //failed this bucket
+                        if (this.curBucket.bucketID <= 1) {
+                            //failed the lowest bucket
+                            stillMore = false;
+                        }
+                        else {
+                            //move down to next bucket
+                            this.curBucket.tested = true;
+                            this.initBucket(this.buckets[this.curBucket.bucketID - 1]);
+                        }
+                    }
+                    return stillMore;
                 };
                 this.dataURL = durl;
                 this.questionNum = 0;
@@ -377,10 +431,6 @@ var Bundle = (() => {
                     console.log(this.curBucket);
                     (0, uiController_3.showQuestion)(this.getNextQuestion());
                 });
-            }
-            hasAnotherQueston() {
-                //// TODO: check buckets, check if done
-                return true;
             }
         }
         exports.Assessment = Assessment;
@@ -434,6 +484,9 @@ var Bundle = (() => {
         }
         exports.UnityBridge = UnityBridge;
     });
+    /**
+     * App class that represents an entry point of the application.
+     */
     define("App", ["require", "exports", "components/urlUtils", "survey/survey", "assessment/assessment", "components/unityBridge", "components/analyticsEvents", "components/jsonUtils"], function (require, exports, urlUtils_1, survey_1, assessment_1, unityBridge_1, analyticsEvents_4, jsonUtils_3) {
         "use strict";
         Object.defineProperty(exports, "__esModule", { value: true });
