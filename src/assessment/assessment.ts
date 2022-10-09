@@ -16,6 +16,8 @@ export class Assessment extends baseQuiz {
 	public curBucket: bucket;
 	public questionNum: number;
 	public numBuckets: number;
+	public basalBucket: number;
+	public ceilingBucket: number;
 
 
 
@@ -40,6 +42,8 @@ export class Assessment extends baseQuiz {
 		var res = fetchAssessmentBuckets(this.aLink.dataURL).then(result => {
 			this.buckets = result;
 			this.numBuckets = result.length;
+			this.basalBucket = this.numBuckets + 1;
+			this.ceilingBucket = -1;
 			var middle = result[Math.floor(result.length / 2)];
 			this.initBucket(middle);
 		});
@@ -155,6 +159,10 @@ export class Assessment extends baseQuiz {
 		}
 		if (this.curBucket.numConsecutiveWrong >= 2 || this.curBucket.numTried >= 5){
 			//failed this bucket
+			if (this.curBucket.bucketID < this.basalBucket ){
+				//update basal bucket number
+				this.basalBucket = this.curBucket.bucketID;
+			}
 			if (this.curBucket.bucketID <= 1){
 				//failed the lowest bucket
 				stillMore = false;

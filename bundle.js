@@ -18,9 +18,6 @@ var Bundle = (() => {
             step((generator = generator.apply(thisArg, _arguments || [])).next());
         });
     };
-    /**
-     * Contains utils for working with URL strings.
-     */
     define("components/urlUtils", ["require", "exports"], function (require, exports) {
         "use strict";
         Object.defineProperty(exports, "__esModule", { value: true });
@@ -57,8 +54,6 @@ var Bundle = (() => {
             return urlParams;
         }
     });
-    // this is where we can define the format of the data for a
-    // question, the correct answer, and the foil answers
     define("components/questionData", ["require", "exports"], function (require, exports) {
         "use strict";
         Object.defineProperty(exports, "__esModule", { value: true });
@@ -79,7 +74,6 @@ var Bundle = (() => {
         const buttons = [b1, b2, b3, b4];
         var bCallback;
         var buttonsActive = true;
-        //add button listeners
         b1.addEventListener("click", function () {
             buttonPress(1);
         });
@@ -95,7 +89,6 @@ var Bundle = (() => {
         landingCont.addEventListener("click", function () {
             showGame();
         });
-        //function to display a new question
         function showQuestion(newQ) {
             let qCode = "";
             if ('promptImg' in newQ) {
@@ -103,7 +96,6 @@ var Bundle = (() => {
             }
             qCode += newQ.promptText;
             qT.innerHTML = qCode;
-            //showing the answers on each button
             for (var aNum in newQ.answers) {
                 let curAnswer = newQ.answers[aNum];
                 let answerCode = "";
@@ -117,7 +109,6 @@ var Bundle = (() => {
             }
         }
         exports.showQuestion = showQuestion;
-        //functions to show/hide the different containers
         function showLanding() {
             landingCont.style.display = "block";
             gameCont.style.display = "none";
@@ -149,7 +140,6 @@ var Bundle = (() => {
             }
         }
         exports.setFeedbackVisibile = setFeedbackVisibile;
-        //handle button press
         function setButtonAction(callback) {
             bCallback = callback;
         }
@@ -160,8 +150,6 @@ var Bundle = (() => {
             }
         }
     });
-    // this is where we can have the classes and functions for building the events
-    // to send to an analytics recorder (firebase? lrs?)
     define("components/analyticsEvents", ["require", "exports"], function (require, exports) {
         "use strict";
         Object.defineProperty(exports, "__esModule", { value: true });
@@ -206,7 +194,6 @@ var Bundle = (() => {
         }
         exports.baseQuiz = baseQuiz;
     });
-    /** Json Utils */
     define("components/jsonUtils", ["require", "exports"], function (require, exports) {
         "use strict";
         Object.defineProperty(exports, "__esModule", { value: true });
@@ -237,8 +224,6 @@ var Bundle = (() => {
             });
         }
     });
-    //this is where the code will go for linearly iterating through the
-    //questions in a data.json file that identifies itself as a survey
     define("survey/survey", ["require", "exports", "components/uiController", "components/analyticsEvents", "baseQuiz", "components/jsonUtils"], function (require, exports, uiController_2, analyticsEvents_2, baseQuiz_1, jsonUtils_1) {
         "use strict";
         Object.defineProperty(exports, "__esModule", { value: true });
@@ -310,6 +295,8 @@ var Bundle = (() => {
                     var res = (0, jsonUtils_2.fetchAssessmentBuckets)(this.aLink.dataURL).then(result => {
                         this.buckets = result;
                         this.numBuckets = result.length;
+                        this.basalBucket = this.numBuckets + 1;
+                        this.ceilingBucket = -1;
                         var middle = result[Math.floor(result.length / 2)];
                         this.initBucket(middle);
                     });
@@ -384,36 +371,29 @@ var Bundle = (() => {
                             }
                         ]
                     };
-                    // // TODO: : build next question from buckets
-                    // pick target answer from bucket items, add it to used
-                    // pick three foil options from bucket items
                     this.curQ = res;
                     this.questionNum += 1;
                     return res;
                 };
                 this.hasAnotherQueston = () => {
-                    //// TODO: check buckets, check if done
                     var stillMore = true;
                     if (this.curBucket.numCorrect >= 4) {
-                        //passed this bucket
                         if (this.curBucket.bucketID >= this.numBuckets) {
-                            //passed highest bucket
                             stillMore = false;
                         }
                         else {
-                            //moved up to next bucket
                             this.curBucket.tested = true;
                             this.initBucket(this.buckets[this.curBucket.bucketID]);
                         }
                     }
                     if (this.curBucket.numConsecutiveWrong >= 2 || this.curBucket.numTried >= 5) {
-                        //failed this bucket
+                        if (this.curBucket.bucketID < this.basalBucket) {
+                            this.basalBucket = this.curBucket.bucketID;
+                        }
                         if (this.curBucket.bucketID <= 1) {
-                            //failed the lowest bucket
                             stillMore = false;
                         }
                         else {
-                            //move down to next bucket
                             this.curBucket.tested = true;
                             this.initBucket(this.buckets[this.curBucket.bucketID - 1]);
                         }
@@ -444,9 +424,6 @@ var Bundle = (() => {
             }
         }
     });
-    /**
-     * Module that wraps Unity calls for sending messages from the webview to Unity.
-     */
     define("components/unityBridge", ["require", "exports"], function (require, exports) {
         "use strict";
         Object.defineProperty(exports, "__esModule", { value: true });
@@ -484,9 +461,6 @@ var Bundle = (() => {
         }
         exports.UnityBridge = UnityBridge;
     });
-    /**
-     * App class that represents an entry point of the application.
-     */
     define("App", ["require", "exports", "components/urlUtils", "survey/survey", "assessment/assessment", "components/unityBridge", "components/analyticsEvents", "components/jsonUtils"], function (require, exports, urlUtils_1, survey_1, assessment_1, unityBridge_1, analyticsEvents_4, jsonUtils_3) {
         "use strict";
         Object.defineProperty(exports, "__esModule", { value: true });
