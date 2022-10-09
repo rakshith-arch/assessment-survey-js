@@ -9,10 +9,18 @@ import { bucket, bucketItem } from './bucketData';
 import { baseQuiz } from '../baseQuiz';
 import { fetchAssessmentBuckets } from '../components/jsonUtils';
 
+enum searchStage{
+	BinarySearch,
+	LinearSearchUp,
+	LinearSearchDown
+}
+
 export class Assessment extends baseQuiz {
 
 	public curQ: qData;
 	public buckets: bucket[];
+	public searchLeft: number;
+	public searchRight: number;
 	public curBucket: bucket;
 	public questionNum: number;
 	public numBuckets: number;
@@ -42,19 +50,25 @@ export class Assessment extends baseQuiz {
 		var res = fetchAssessmentBuckets(this.aLink.dataURL).then(result => {
 			this.buckets = result;
 			this.numBuckets = result.length;
+			this.searchLeft = 1;
+			this.searchRight = this.numBuckets;
 			this.basalBucket = this.numBuckets + 1;
 			this.ceilingBucket = -1;
-			var middle = result[Math.floor(result.length / 2)];
-			this.initBucket(middle);
+			this.tryMoveBucket();
 		});
 		return res;
 	}
 
+
+
+
 	public initBucket = (b: bucket) => {
 		this.curBucket = b;
+		this.curBucket.usedItems = [];
 		this.curBucket.numTried = 0;
 		this.curBucket.numCorrect = 0;
 		this.curBucket.numConsecutiveWrong = 0;
+		this.curBucket.tested = true;
 	}
 
 
@@ -132,18 +146,26 @@ export class Assessment extends baseQuiz {
 			]
 		};
 
-			// // TODO: : build next question from buckets
-			// pick target answer from bucket items, add it to used
-			// pick three foil options from bucket items
+
 		this.curQ = res;
 		this.questionNum += 1;
 		return res;
+	}
+
+	public tryMoveBucket = () => {
+		var middle = this.buckets[Math.floor((this.searchLeft + this.searchRight) / 2)];
+		console.log("new middle bucket is " + middle.bucketID);
+		this.initBucket(middle);
 	}
 
 
 	public hasAnotherQueston = () => {
 		//// TODO: check buckets, check if done
 		var stillMore = true;
+
+		if (this.searchLeft > this.searchRight){
+			//move to next stage of search
+		}
 
 		if (this.curBucket.numCorrect >= 4){
 			//passed this bucket
@@ -153,8 +175,8 @@ export class Assessment extends baseQuiz {
 			}
 			else{
 				//moved up to next bucket
-				this.curBucket.tested = true;
-				this.initBucket(this.buckets[this.curBucket.bucketID]);
+				this.searchLeft = this.curBucket.bucketID + 1;
+				this.tryMoveBucket();
 			}
 		}
 		if (this.curBucket.numConsecutiveWrong >= 2 || this.curBucket.numTried >= 5){
@@ -169,8 +191,7 @@ export class Assessment extends baseQuiz {
 			}
 			else{
 				//move down to next bucket
-					this.curBucket.tested = true;
-					this.initBucket(this.buckets[this.curBucket.bucketID - 1]);
+				this.searchRight = this.curBucket.bucketID - 1;
 			}
 		}
 

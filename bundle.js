@@ -288,6 +288,12 @@ var Bundle = (() => {
         "use strict";
         Object.defineProperty(exports, "__esModule", { value: true });
         exports.Assessment = void 0;
+        var searchStage;
+        (function (searchStage) {
+            searchStage[searchStage["BinarySearch"] = 0] = "BinarySearch";
+            searchStage[searchStage["LinearSearchUp"] = 1] = "LinearSearchUp";
+            searchStage[searchStage["LinearSearchDown"] = 2] = "LinearSearchDown";
+        })(searchStage || (searchStage = {}));
         class Assessment extends baseQuiz_2.baseQuiz {
             constructor(durl) {
                 super();
@@ -295,18 +301,21 @@ var Bundle = (() => {
                     var res = (0, jsonUtils_2.fetchAssessmentBuckets)(this.aLink.dataURL).then(result => {
                         this.buckets = result;
                         this.numBuckets = result.length;
+                        this.searchLeft = 1;
+                        this.searchRight = this.numBuckets;
                         this.basalBucket = this.numBuckets + 1;
                         this.ceilingBucket = -1;
-                        var middle = result[Math.floor(result.length / 2)];
-                        this.initBucket(middle);
+                        this.tryMoveBucket();
                     });
                     return res;
                 };
                 this.initBucket = (b) => {
                     this.curBucket = b;
+                    this.curBucket.usedItems = [];
                     this.curBucket.numTried = 0;
                     this.curBucket.numCorrect = 0;
                     this.curBucket.numConsecutiveWrong = 0;
+                    this.curBucket.tested = true;
                 };
                 this.tryAnswer = (ans) => {
                     (0, analyticsEvents_3.sendAnswered)(this.curQ, ans);
@@ -375,15 +384,22 @@ var Bundle = (() => {
                     this.questionNum += 1;
                     return res;
                 };
+                this.tryMoveBucket = () => {
+                    var middle = this.buckets[Math.floor((this.searchLeft + this.searchRight) / 2)];
+                    console.log("new middle bucket is " + middle.bucketID);
+                    this.initBucket(middle);
+                };
                 this.hasAnotherQueston = () => {
                     var stillMore = true;
+                    if (this.searchLeft > this.searchRight) {
+                    }
                     if (this.curBucket.numCorrect >= 4) {
                         if (this.curBucket.bucketID >= this.numBuckets) {
                             stillMore = false;
                         }
                         else {
-                            this.curBucket.tested = true;
-                            this.initBucket(this.buckets[this.curBucket.bucketID]);
+                            this.searchLeft = this.curBucket.bucketID + 1;
+                            this.tryMoveBucket();
                         }
                     }
                     if (this.curBucket.numConsecutiveWrong >= 2 || this.curBucket.numTried >= 5) {
@@ -394,8 +410,7 @@ var Bundle = (() => {
                             stillMore = false;
                         }
                         else {
-                            this.curBucket.tested = true;
-                            this.initBucket(this.buckets[this.curBucket.bucketID - 1]);
+                            this.searchRight = this.curBucket.bucketID - 1;
                         }
                     }
                     return stillMore;

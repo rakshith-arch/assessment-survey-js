@@ -7,6 +7,7 @@ export type bucket = {
 	numCorrect: number ;
 	numConsecutiveWrong: number;
 	tested: boolean;
+	score: number;
 }
 
 export type bucketItem = {
