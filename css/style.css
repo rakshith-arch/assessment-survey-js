@@ -21,6 +21,13 @@ padding-top:50px;
 	height:100%;
 }
 
+.landingMonster{
+	width:50%;
+	margin:0 auto;
+	display: block;
+	height: auto;
+}
+
 .questionViewWrapper{
 
 	width:100%;
@@ -36,7 +43,7 @@ padding-top:50px;
 	margin:0 auto;
 	width:540px;
 	height:800px;
-	background-image:url("../img/bg_v01.jpg");
+	background-image:url("../img/bg_crayon-1.png");
 	background-size:cover;
 }
 
@@ -90,22 +97,35 @@ padding-top:50px;
 	width:410px;
 }
 
-.answerButton {
+button {
 	border-radius: 10px;
 	border: 2px solid rgb(150, 150, 150);
-	min-height: 28px;
-	padding: 10px;
-	margin: 10px;
-	color: rgb(82, 84, 100);
 	text-align: center;
 	align-items:center;
 	justify-content:center;
 	overflow-x:hidden;
+	min-height: 28px;
+	padding: 10px;
+	margin: 10px;
+}
+
+.answerButton {
+
+	color: rgb(82, 84, 100);
+
 }
 
 .answerButton img{
 	max-width: 200px;
 	max-height:200px;
+}
+
+#startButton {
+	background-color: rgb(80, 143, 0);
+	border:none;
+	color:white;
+	padding: 10px 50px;
+	border-radius: 38px;
 }
 
 #answerButton1 {
