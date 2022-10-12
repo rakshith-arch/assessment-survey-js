@@ -9,12 +9,14 @@
 		<link rel="stylesheet" href="css/style.css">
 	</head>
 
-	<body>
-		<div class="bodyWrapper">
-			<div class="landingPageWrapper" id="landWrap" style="display:block">
-				<div id="peekingMonster"></div>
-				click to begin!
-
+<body>
+	<div class="bodyWrapper">
+		<div class="landingPageWrapper" id="landWrap" style="display:block">
+			<img class="landingMonster" src="img/monster.png" />
+			<BR>
+				<button id="startButton">
+					<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9 18L15 12L9 6V18Z" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+				</button>
 			</div>
 
 			<div class="questionViewWrapper" id="gameWrap" style="display:none">
@@ -37,7 +39,7 @@
 			<div class="endingPageWrapper" id="endWrap" style="display:none">
 				click to exit!
 			</div>
-	</div>
+		</div>
 
 
 		<script src="bundle.js"></script>

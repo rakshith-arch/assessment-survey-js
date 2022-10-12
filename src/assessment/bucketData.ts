@@ -3,6 +3,11 @@ export type bucket = {
 	items: bucketItem[];
 	usedItems: bucketItem[];
 	bucketName?: string; //for analytics
+	numTried: number ;
+	numCorrect: number ;
+	numConsecutiveWrong: number;
+	tested: boolean;
+	score: number;
 }
 
 export type bucketItem = {

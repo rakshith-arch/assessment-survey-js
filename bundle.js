@@ -18,9 +18,6 @@ var Bundle = (() => {
             step((generator = generator.apply(thisArg, _arguments || [])).next());
         });
     };
-    /**
-     * Contains utils for working with URL strings.
-     */
     define("components/urlUtils", ["require", "exports"], function (require, exports) {
         "use strict";
         Object.defineProperty(exports, "__esModule", { value: true });
@@ -57,8 +54,6 @@ var Bundle = (() => {
             return urlParams;
         }
     });
-    // this is where we can define the format of the data for a
-    // question, the correct answer, and the foil answers
     define("components/questionData", ["require", "exports"], function (require, exports) {
         "use strict";
         Object.defineProperty(exports, "__esModule", { value: true });
@@ -79,7 +74,6 @@ var Bundle = (() => {
         const buttons = [b1, b2, b3, b4];
         var bCallback;
         var buttonsActive = true;
-        //add button listeners
         b1.addEventListener("click", function () {
             buttonPress(1);
         });
@@ -95,7 +89,6 @@ var Bundle = (() => {
         landingCont.addEventListener("click", function () {
             showGame();
         });
-        //function to display a new question
         function showQuestion(newQ) {
             let qCode = "";
             if ('promptImg' in newQ) {
@@ -103,7 +96,6 @@ var Bundle = (() => {
             }
             qCode += newQ.promptText;
             qT.innerHTML = qCode;
-            //showing the answers on each button
             for (var aNum in newQ.answers) {
                 let curAnswer = newQ.answers[aNum];
                 let answerCode = "";
@@ -117,7 +109,6 @@ var Bundle = (() => {
             }
         }
         exports.showQuestion = showQuestion;
-        //functions to show/hide the different containers
         function showLanding() {
             landingCont.style.display = "block";
             gameCont.style.display = "none";
@@ -149,7 +140,6 @@ var Bundle = (() => {
             }
         }
         exports.setFeedbackVisibile = setFeedbackVisibile;
-        //handle button press
         function setButtonAction(callback) {
             bCallback = callback;
         }
@@ -160,8 +150,6 @@ var Bundle = (() => {
             }
         }
     });
-    // this is where we can have the classes and functions for building the events
-    // to send to an analytics recorder (firebase? lrs?)
     define("components/analyticsEvents", ["require", "exports"], function (require, exports) {
         "use strict";
         Object.defineProperty(exports, "__esModule", { value: true });
@@ -232,13 +220,10 @@ var Bundle = (() => {
             return __awaiter(this, void 0, void 0, function* () {
                 var furl = "./data/" + url + ".json";
                 console.log(furl);
-                return fetch(furl)
-                    .then(response => response.json());
+                return fetch(furl).then(response => response.json());
             });
         }
     });
-    //this is where the code will go for linearly iterating through the
-    //questions in a data.json file that identifies itself as a survey
     define("survey/survey", ["require", "exports", "components/uiController", "components/analyticsEvents", "baseQuiz", "components/jsonUtils"], function (require, exports, uiController_2, analyticsEvents_2, baseQuiz_1, jsonUtils_1) {
         "use strict";
         Object.defineProperty(exports, "__esModule", { value: true });
@@ -303,19 +288,46 @@ var Bundle = (() => {
         "use strict";
         Object.defineProperty(exports, "__esModule", { value: true });
         exports.Assessment = void 0;
+        var searchStage;
+        (function (searchStage) {
+            searchStage[searchStage["BinarySearch"] = 0] = "BinarySearch";
+            searchStage[searchStage["LinearSearchUp"] = 1] = "LinearSearchUp";
+            searchStage[searchStage["LinearSearchDown"] = 2] = "LinearSearchDown";
+        })(searchStage || (searchStage = {}));
         class Assessment extends baseQuiz_2.baseQuiz {
             constructor(durl) {
                 super();
                 this.buildBuckets = () => {
                     var res = (0, jsonUtils_2.fetchAssessmentBuckets)(this.aLink.dataURL).then(result => {
                         this.buckets = result;
-                        var middle = result[Math.floor(result.length / 2)];
-                        this.curBucket = middle;
+                        this.numBuckets = result.length;
+                        this.searchLeft = 1;
+                        this.searchRight = this.numBuckets;
+                        this.basalBucket = this.numBuckets + 1;
+                        this.ceilingBucket = -1;
+                        this.tryMoveBucket();
                     });
                     return res;
                 };
+                this.initBucket = (b) => {
+                    this.curBucket = b;
+                    this.curBucket.usedItems = [];
+                    this.curBucket.numTried = 0;
+                    this.curBucket.numCorrect = 0;
+                    this.curBucket.numConsecutiveWrong = 0;
+                    this.curBucket.tested = true;
+                };
                 this.tryAnswer = (ans) => {
                     (0, analyticsEvents_3.sendAnswered)(this.curQ, ans);
+                    (0, analyticsEvents_3.sendAnswered)(this.curQ, ans);
+                    this.curBucket.numTried += 1;
+                    if (this.curQ.answers[ans - 1].answerName == this.curQ.correct) {
+                        this.curBucket.numCorrect += 1;
+                        this.curBucket.numConsecutiveWrong = 0;
+                    }
+                    else {
+                        this.curBucket.numConsecutiveWrong = 0;
+                    }
                     (0, uiController_3.setFeedbackVisibile)(true);
                     setTimeout(() => { this.onQuestionEnd(); }, 2000);
                 };
@@ -346,25 +358,62 @@ var Bundle = (() => {
                     } while (targetItem == foil3 || foil1 == foil3 || foil2 == foil3);
                     var opts = [targetItem, foil1, foil2, foil3];
                     shuffleArray(opts);
-                    var res = { qName: "question" + this.questionNum + "-" + targetItem.itemName,
+                    var res = {
+                        qName: "question" + this.questionNum + "-" + targetItem.itemName,
                         promptText: targetItem.itemText,
                         answers: [
-                            { answerName: opts[0].itemName,
-                                answerText: opts[0].itemText },
-                            { answerName: opts[1].itemName,
-                                answerText: opts[1].itemText },
-                            { answerName: opts[2].itemName,
-                                answerText: opts[2].itemText },
-                            { answerName: opts[3].itemName,
-                                answerText: opts[3].itemText }
+                            {
+                                answerName: opts[0].itemName,
+                                answerText: opts[0].itemText
+                            },
+                            {
+                                answerName: opts[1].itemName,
+                                answerText: opts[1].itemText
+                            },
+                            {
+                                answerName: opts[2].itemName,
+                                answerText: opts[2].itemText
+                            },
+                            {
+                                answerName: opts[3].itemName,
+                                answerText: opts[3].itemText
+                            }
                         ]
                     };
-                    // // TODO: : build next question from buckets
-                    // pick target answer from bucket items, add it to used
-                    // pick three foil options from bucket items
                     this.curQ = res;
                     this.questionNum += 1;
                     return res;
+                };
+                this.tryMoveBucket = () => {
+                    var middle = this.buckets[Math.floor((this.searchLeft + this.searchRight) / 2)];
+                    console.log("new middle bucket is " + middle.bucketID);
+                    this.initBucket(middle);
+                };
+                this.hasAnotherQueston = () => {
+                    var stillMore = true;
+                    if (this.searchLeft > this.searchRight) {
+                    }
+                    if (this.curBucket.numCorrect >= 4) {
+                        if (this.curBucket.bucketID >= this.numBuckets) {
+                            stillMore = false;
+                        }
+                        else {
+                            this.searchLeft = this.curBucket.bucketID + 1;
+                            this.tryMoveBucket();
+                        }
+                    }
+                    if (this.curBucket.numConsecutiveWrong >= 2 || this.curBucket.numTried >= 5) {
+                        if (this.curBucket.bucketID < this.basalBucket) {
+                            this.basalBucket = this.curBucket.bucketID;
+                        }
+                        if (this.curBucket.bucketID <= 1) {
+                            stillMore = false;
+                        }
+                        else {
+                            this.searchRight = this.curBucket.bucketID - 1;
+                        }
+                    }
+                    return stillMore;
                 };
                 this.dataURL = durl;
                 this.questionNum = 0;
@@ -378,10 +427,6 @@ var Bundle = (() => {
                     (0, uiController_3.showQuestion)(this.getNextQuestion());
                 });
             }
-            hasAnotherQueston() {
-                //// TODO: check buckets, check if done
-                return true;
-            }
         }
         exports.Assessment = Assessment;
         function randFrom(array) {
@@ -394,9 +439,6 @@ var Bundle = (() => {
             }
         }
     });
-    /**
-     * Module that wraps Unity calls for sending messages from the webview to Unity.
-     */
     define("components/unityBridge", ["require", "exports"], function (require, exports) {
         "use strict";
         Object.defineProperty(exports, "__esModule", { value: true });

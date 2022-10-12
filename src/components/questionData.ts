@@ -7,6 +7,7 @@ export type qData = {
 	promptImg?: string;
 	promptAudio?: string;
 	answers: answerData[];
+	correct?: string;
 }
 
 export type answerData = {
