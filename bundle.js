@@ -71,7 +71,9 @@ var Bundle = (() => {
         const b2 = document.getElementById("answerButton2");
         const b3 = document.getElementById("answerButton3");
         const b4 = document.getElementById("answerButton4");
-        const buttons = [b1, b2, b3, b4];
+        const b5 = document.getElementById("answerButton5");
+        const b6 = document.getElementById("answerButton6");
+        const buttons = [b1, b2, b3, b4, b5, b6];
         var bCallback;
         var buttonsActive = true;
         b1.addEventListener("click", function () {
@@ -86,6 +88,12 @@ var Bundle = (() => {
         b4.addEventListener("click", function () {
             buttonPress(4);
         });
+        b5.addEventListener("click", function () {
+            buttonPress(5);
+        });
+        b6.addEventListener("click", function () {
+            buttonPress(6);
+        });
         landingCont.addEventListener("click", function () {
             showGame();
         });
@@ -96,6 +104,18 @@ var Bundle = (() => {
             }
             qCode += newQ.promptText;
             qT.innerHTML = qCode;
+            if (newQ.answers.length <= 4) {
+                b5.style.display = "none";
+                b6.style.display = "none";
+            }
+            if (newQ.answers.length == 5) {
+                b5.style.display = "block";
+                b6.style.display = "nones";
+            }
+            if (newQ.answers.length == 6) {
+                b5.style.display = "block";
+                b6.style.display = "block";
+            }
             for (var aNum in newQ.answers) {
                 let curAnswer = newQ.answers[aNum];
                 let answerCode = "";
