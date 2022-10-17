@@ -9,7 +9,7 @@ import { UnityBridge } from './components/unityBridge'
 import { setUuid, sendInit } from './components/analyticsEvents'
 import { baseQuiz } from './baseQuiz';
 import { fetchAppType } from './components/jsonUtils';
-
+import { initializeApp } from 'firebase/app';
 
 export class App {
 
