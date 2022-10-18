@@ -17,6 +17,7 @@ jobs:
     # See: https://circleci.com/docs/2.0/configuration-reference/#steps
     steps:
       - checkout
+      - run: echo AWS_REGION_BLUE
       - aws-s3/sync:
           arguments: |
             --acl public-read \
