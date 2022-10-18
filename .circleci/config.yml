@@ -21,6 +21,7 @@ jobs:
           arguments: |
             --acl public-read \
             --cache-control "max-age=86400"
+          role-arn: arn:aws:iam::185230513849:user/CLautomaton
           aws-access-key-id: AWS_ACCESS_KEY_ID_BLUE
           aws-region: AWS_REGION_BLUE
           aws-secret-access-key: AWS_SECRET_ACCESS_KEY_BLUE
