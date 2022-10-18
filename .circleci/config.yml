@@ -3,7 +3,7 @@
 version: 2.1
 
 orbs:
-  aws-s3: circleci/aws-s3@3.0
+  aws-s3: circleci/aws-s3@3.1
 
 # Define a job to be invoked later in a workflow.
 # See: https://circleci.com/docs/2.0/configuration-reference/#jobs
@@ -21,7 +21,6 @@ jobs:
           arguments: |
             --acl public-read \
             --cache-control "max-age=86400"
-          role-arn: arn:aws:iam::185230513849:user/CLautomaton
           aws-access-key-id: AWS_ACCESS_KEY_ID_BLUE
           aws-region: AWS_REGION_BLUE
           aws-secret-access-key: AWS_SECRET_ACCESS_KEY_BLUE
