@@ -24,6 +24,7 @@ jobs:
           aws-access-key-id: AWS_ACCESS_KEY_ID_BLUE
           aws-region: AWS_REGION_BLUE
           aws-secret-access-key: AWS_SECRET_ACCESS_KEY_BLUE
+          role-arn: arn:aws:s3:::cl-circleci-development
           from: ./
           to: 's3://cl-circleci-development'
 
