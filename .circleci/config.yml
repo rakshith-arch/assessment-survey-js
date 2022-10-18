@@ -25,7 +25,7 @@ jobs:
           aws-region: AWS_REGION_BLUE
           aws-secret-access-key: AWS_SECRET_ACCESS_KEY_BLUE
           from: ./
-          to: 's3://cl-circleci-development/'
+          to: 's3://cl-circleci-development'
 
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
