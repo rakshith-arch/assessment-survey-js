@@ -54,9 +54,7 @@ landingCont.addEventListener("click", function () {
 
 //function to display a new question
 export function showQuestion(newQ: qData): void {
-
 	let qCode = "";
-
 
 	if ('promptImg' in newQ) {
 		qCode += "<img src='" + newQ.promptImg + "'></img><BR>";
@@ -78,7 +76,6 @@ export function showQuestion(newQ: qData): void {
 		b6.style.display = "block";
 	}
 
-
 	//showing the answers on each button
 	for (var aNum in newQ.answers) {
 		let curAnswer = newQ.answers[aNum];
@@ -91,7 +88,6 @@ export function showQuestion(newQ: qData): void {
 		}
 		buttons[aNum].innerHTML = answerCode;
 	}
-
 }
 
 //functions to show/hide the different containers
@@ -127,9 +123,7 @@ export function setFeedbackVisibile(b: boolean) {
 	}
 }
 
-
 //handle button press
-
 export function setButtonAction(callback: Function): void {
 	bCallback = callback;
 }
@@ -138,5 +132,4 @@ function buttonPress(num: number) {
 	if (buttonsActive) {
 		bCallback(num);
 	}
-
 }

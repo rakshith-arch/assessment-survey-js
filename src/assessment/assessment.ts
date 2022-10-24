@@ -9,7 +9,7 @@ import { bucket, bucketItem } from './bucketData';
 import { baseQuiz } from '../baseQuiz';
 import { fetchAssessmentBuckets } from '../components/jsonUtils';
 
-enum searchStage{
+enum searchStage {
 	BinarySearch,
 	LinearSearchUp,
 	LinearSearchDown
@@ -27,25 +27,22 @@ export class Assessment extends baseQuiz {
 	public basalBucket: number;
 	public ceilingBucket: number;
 
-
-
 	constructor(durl: string) {
 		super();
 		this.dataURL = durl;
 		this.questionNum = 0;
 		console.log("app initialized");
 		setButtonAction(this.tryAnswer);
-
 	}
 
 	public run(applink: App): void {
-
 		this.aLink = applink;
 		this.buildBuckets().then(result => {
 			console.log(this.curBucket);
 			showQuestion(this.getNextQuestion());
 		});
 	}
+
 	public buildBuckets = () => {
 		var res = fetchAssessmentBuckets(this.aLink.dataURL).then(result => {
 			this.buckets = result;
@@ -59,9 +56,6 @@ export class Assessment extends baseQuiz {
 		return res;
 	}
 
-
-
-
 	public initBucket = (b: bucket) => {
 		this.curBucket = b;
 		this.curBucket.usedItems = [];
@@ -71,20 +65,19 @@ export class Assessment extends baseQuiz {
 		this.curBucket.tested = true;
 	}
 
-
 	public tryAnswer = (ans: number) => {
 		sendAnswered(this.curQ, ans)
 
-			sendAnswered(this.curQ, ans)
-			this.curBucket.numTried += 1;
-			if (this.curQ.answers[ans-1].answerName == this.curQ.correct){
-				this.curBucket.numCorrect += 1;
-				this.curBucket.numConsecutiveWrong = 0;
-			}else{
-				this.curBucket.numConsecutiveWrong = 0;
-			}
-			setFeedbackVisibile(true);
-			setTimeout(() => { this.onQuestionEnd() }, 2000);
+		sendAnswered(this.curQ, ans)
+		this.curBucket.numTried += 1;
+		if (this.curQ.answers[ans - 1].answerName == this.curQ.correct) {
+			this.curBucket.numCorrect += 1;
+			this.curBucket.numConsecutiveWrong = 0;
+		} else {
+			this.curBucket.numConsecutiveWrong = 0;
+		}
+		setFeedbackVisibile(true);
+		setTimeout(() => { this.onQuestionEnd() }, 2000);
 	}
 
 	public onQuestionEnd = () => {
@@ -98,7 +91,6 @@ export class Assessment extends baseQuiz {
 			console.log("no questions left");
 			this.onEnd();
 		}
-
 	}
 
 	public getNextQuestion = () => {
@@ -120,7 +112,6 @@ export class Assessment extends baseQuiz {
 		var opts = [targetItem, foil1, foil2, foil3];
 		shuffleArray(opts);
 
-
 		var res = {
 			qName: "question" + this.questionNum + "-" + targetItem.itemName,
 			promptText: targetItem.itemText,
@@ -141,11 +132,8 @@ export class Assessment extends baseQuiz {
 					answerName: opts[3].itemName,
 					answerText: opts[3].itemText
 				}
-
-
 			]
 		};
-
 
 		this.curQ = res;
 		this.questionNum += 1;
@@ -158,43 +146,41 @@ export class Assessment extends baseQuiz {
 		this.initBucket(middle);
 	}
 
-
 	public hasAnotherQueston = () => {
 		//// TODO: check buckets, check if done
 		var stillMore = true;
 
-		if (this.searchLeft > this.searchRight){
+		if (this.searchLeft > this.searchRight) {
 			//move to next stage of search
 		}
 
-		if (this.curBucket.numCorrect >= 4){
+		if (this.curBucket.numCorrect >= 4) {
 			//passed this bucket
-			if (this.curBucket.bucketID >= this.numBuckets){
+			if (this.curBucket.bucketID >= this.numBuckets) {
 				//passed highest bucket
 				stillMore = false;
 			}
-			else{
+			else {
 				//moved up to next bucket
 				this.searchLeft = this.curBucket.bucketID + 1;
 				this.tryMoveBucket();
 			}
 		}
-		if (this.curBucket.numConsecutiveWrong >= 2 || this.curBucket.numTried >= 5){
+		if (this.curBucket.numConsecutiveWrong >= 2 || this.curBucket.numTried >= 5) {
 			//failed this bucket
-			if (this.curBucket.bucketID < this.basalBucket ){
+			if (this.curBucket.bucketID < this.basalBucket) {
 				//update basal bucket number
 				this.basalBucket = this.curBucket.bucketID;
 			}
-			if (this.curBucket.bucketID <= 1){
+			if (this.curBucket.bucketID <= 1) {
 				//failed the lowest bucket
 				stillMore = false;
 			}
-			else{
+			else {
 				//move down to next bucket
 				this.searchRight = this.curBucket.bucketID - 1;
 			}
 		}
-
 
 		return stillMore;
 

@@ -3,7 +3,6 @@
 
 import { qData, answerData } from './questionData';
 
-
 var uuid: string;
 
 export function setUuid(newUuid: string): void {
@@ -25,8 +24,6 @@ export function sendAnswered(theQ: qData, theA: number): void {
 	}
 	eventString += "]";
 	console.log(eventString);
-
-
 }
 
 export function sendFinished(): void {

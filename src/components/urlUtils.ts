@@ -29,8 +29,6 @@ export function getDataFile(): string {
 	return data;
 }
 
-
-
 function getPathName() {
 	const queryString = window.location.search;
 	const urlParams = new URLSearchParams(queryString);

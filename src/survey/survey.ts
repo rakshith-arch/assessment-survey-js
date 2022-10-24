@@ -30,7 +30,6 @@ export class Survey extends baseQuiz {
 		});
 	}
 
-
 	public onQuestionEnd = () => {
 		setFeedbackVisibile(false);
 
@@ -44,7 +43,6 @@ export class Survey extends baseQuiz {
 		}
 	}
 
-
 	public tryAnswer = (ans: number) => {
 		sendAnswered(this.qList[this.qNum], ans)
 
@@ -54,9 +52,7 @@ export class Survey extends baseQuiz {
 
 	public buildQuestionList = () => {
 		var qs = fetchSurveyQuestions(this.aLink.dataURL);
-
 		return qs;
-
 	}
 
 	public hasAnotherQueston(): boolean {
@@ -69,8 +65,6 @@ export class Survey extends baseQuiz {
 
 	public getNextQuestion(): qData {
 		var res = this.qList[this.qNum];
-
 		return res;
 	}
-
 }
