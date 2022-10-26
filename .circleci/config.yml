@@ -25,7 +25,6 @@ jobs:
       - checkout
       - run: aws s3 sync ./ s3://cl-circleci-development
     
-
 workflows:
   build_test_deploy:
     jobs:
