@@ -71,7 +71,9 @@ var Bundle = (() => {
         const b2 = document.getElementById("answerButton2");
         const b3 = document.getElementById("answerButton3");
         const b4 = document.getElementById("answerButton4");
-        const buttons = [b1, b2, b3, b4];
+        const b5 = document.getElementById("answerButton5");
+        const b6 = document.getElementById("answerButton6");
+        const buttons = [b1, b2, b3, b4, b5, b6];
         var bCallback;
         var buttonsActive = true;
         b1.addEventListener("click", function () {
@@ -86,6 +88,12 @@ var Bundle = (() => {
         b4.addEventListener("click", function () {
             buttonPress(4);
         });
+        b5.addEventListener("click", function () {
+            buttonPress(5);
+        });
+        b6.addEventListener("click", function () {
+            buttonPress(6);
+        });
         landingCont.addEventListener("click", function () {
             showGame();
         });
@@ -96,6 +104,18 @@ var Bundle = (() => {
             }
             qCode += newQ.promptText;
             qT.innerHTML = qCode;
+            if (newQ.answers.length <= 4) {
+                b5.style.display = "none";
+                b6.style.display = "none";
+            }
+            if (newQ.answers.length == 5) {
+                b5.style.display = "block";
+                b6.style.display = "nones";
+            }
+            if (newQ.answers.length == 6) {
+                b5.style.display = "block";
+                b6.style.display = "block";
+            }
             for (var aNum in newQ.answers) {
                 let curAnswer = newQ.answers[aNum];
                 let answerCode = "";
@@ -476,7 +496,7 @@ var Bundle = (() => {
         }
         exports.UnityBridge = UnityBridge;
     });
-    define("App", ["require", "exports", "components/urlUtils", "survey/survey", "assessment/assessment", "components/unityBridge", "components/analyticsEvents", "components/jsonUtils"], function (require, exports, urlUtils_1, survey_1, assessment_1, unityBridge_1, analyticsEvents_4, jsonUtils_3) {
+    define("App", ["require", "exports", "components/urlUtils", "survey/survey", "assessment/assessment", "components/unityBridge", "components/analyticsEvents", "components/jsonUtils", "firebase/app", "firebase/analytics"], function (require, exports, urlUtils_1, survey_1, assessment_1, unityBridge_1, analyticsEvents_4, jsonUtils_3, app_1, analytics_1) {
         "use strict";
         Object.defineProperty(exports, "__esModule", { value: true });
         exports.App = void 0;
@@ -486,6 +506,19 @@ var Bundle = (() => {
                 this.unity.sendLoaded();
                 console.log("Initializing app...");
                 this.dataURL = (0, urlUtils_1.getDataFile)();
+                const firebaseConfig = {
+                    apiKey: "AIzaSyBZod6Ekp6llcLDLykNx3gkMs5lbqzX6kE",
+                    authDomain: "assessmentandsurvey.firebaseapp.com",
+                    projectId: "assessmentandsurvey",
+                    storageBucket: "assessmentandsurvey.appspot.com",
+                    messagingSenderId: "826357355718",
+                    appId: "1:826357355718:web:18c4128782084eec3c33c7",
+                    measurementId: "G-DGTWM534Z4"
+                };
+                const app = (0, app_1.initializeApp)(firebaseConfig);
+                const analytics = (0, analytics_1.getAnalytics)(app);
+                this.analytics = analytics;
+                console.log("firebase initialized");
             }
             spinUp() {
                 return __awaiter(this, void 0, void 0, function* () {
