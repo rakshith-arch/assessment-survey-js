@@ -496,7 +496,7 @@ var Bundle = (() => {
         }
         exports.UnityBridge = UnityBridge;
     });
-    define("App", ["require", "exports", "components/urlUtils", "survey/survey", "assessment/assessment", "components/unityBridge", "components/analyticsEvents", "components/jsonUtils"], function (require, exports, urlUtils_1, survey_1, assessment_1, unityBridge_1, analyticsEvents_4, jsonUtils_3) {
+    define("App", ["require", "exports", "components/urlUtils", "survey/survey", "assessment/assessment", "components/unityBridge", "components/analyticsEvents", "components/jsonUtils", "firebase/app", "firebase/analytics"], function (require, exports, urlUtils_1, survey_1, assessment_1, unityBridge_1, analyticsEvents_4, jsonUtils_3, app_1, analytics_1) {
         "use strict";
         Object.defineProperty(exports, "__esModule", { value: true });
         exports.App = void 0;
@@ -506,6 +506,19 @@ var Bundle = (() => {
                 this.unity.sendLoaded();
                 console.log("Initializing app...");
                 this.dataURL = (0, urlUtils_1.getDataFile)();
+                const firebaseConfig = {
+                    apiKey: "AIzaSyBZod6Ekp6llcLDLykNx3gkMs5lbqzX6kE",
+                    authDomain: "assessmentandsurvey.firebaseapp.com",
+                    projectId: "assessmentandsurvey",
+                    storageBucket: "assessmentandsurvey.appspot.com",
+                    messagingSenderId: "826357355718",
+                    appId: "1:826357355718:web:18c4128782084eec3c33c7",
+                    measurementId: "G-DGTWM534Z4"
+                };
+                const app = (0, app_1.initializeApp)(firebaseConfig);
+                const analytics = (0, analytics_1.getAnalytics)(app);
+                this.analytics = analytics;
+                console.log("firebase initialized");
             }
             spinUp() {
                 return __awaiter(this, void 0, void 0, function* () {
