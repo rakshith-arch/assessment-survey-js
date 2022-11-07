@@ -8,7 +8,6 @@ import { App } from '../App';
 import { baseQuiz } from '../baseQuiz';
 import { fetchSurveyQuestions } from '../components/jsonUtils';
 
-
 export class Survey extends baseQuiz {
 
 	public qList: qData[];

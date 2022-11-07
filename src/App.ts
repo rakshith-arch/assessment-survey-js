@@ -6,7 +6,7 @@ import { getUUID, getDataFile } from './components/urlUtils';
 import { Survey } from './survey/survey';
 import { Assessment } from './assessment/assessment'
 import { UnityBridge } from './components/unityBridge'
-import { setUuid, sendInit } from './components/analyticsEvents'
+import { setUuid, linkAnalytics, sendInit } from './components/analyticsEvents'
 import { baseQuiz } from './baseQuiz';
 import { fetchAppType } from './components/jsonUtils';
 import { initializeApp } from 'firebase/app';
@@ -60,6 +60,7 @@ export class App {
 				this.game = new Assessment(this.dataURL);
 			}
 			setUuid(getUUID());
+			linkAnalytics(this.analytics);
 			sendInit();
 
 			this.game.run(this);
