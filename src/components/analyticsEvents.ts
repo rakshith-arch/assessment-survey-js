@@ -2,9 +2,15 @@
 // to send to an analytics recorder (firebase? lrs?)
 
 import { qData, answerData } from './questionData';
-
+import { logEvent } from 'firebase/analytics';
 
 var uuid: string;
+
+var gana;
+
+export function linkAnalytics(newgana): void{
+	gana = newgana;
+}
 
 export function setUuid(newUuid: string): void {
 	uuid = newUuid;
@@ -13,6 +19,7 @@ export function setUuid(newUuid: string): void {
 export function sendInit(): void {
 	var eventString = "user " + uuid + " opened the assessment"
 	console.log(eventString);
+	logEvent(gana,"opened_event");
 
 }
 
@@ -25,6 +32,7 @@ export function sendAnswered(theQ: qData, theA: number): void {
 	}
 	eventString += "]";
 	console.log(eventString);
+	logEvent(gana,"answered_event");
 
 
 }
@@ -32,4 +40,5 @@ export function sendAnswered(theQ: qData, theA: number): void {
 export function sendFinished(): void {
 	var eventString = "user " + uuid + " finished the assessment"
 	console.log(eventString);
+	logEvent(gana,"finished_event");
 }
