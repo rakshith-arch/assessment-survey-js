@@ -32,13 +32,14 @@ export class App {
 
 
 		const firebaseConfig = {
-		  apiKey: "AIzaSyBZod6Ekp6llcLDLykNx3gkMs5lbqzX6kE",
-		  authDomain: "assessmentandsurvey.firebaseapp.com",
-		  projectId: "assessmentandsurvey",
-		  storageBucket: "assessmentandsurvey.appspot.com",
-		  messagingSenderId: "826357355718",
-		  appId: "1:826357355718:web:18c4128782084eec3c33c7",
-		  measurementId: "G-DGTWM534Z4"
+		  apiKey: "AIzaSyB8c2lBVi26u7YRL9sxOP97Uaq3yN8hTl4",
+		  authDomain: "ftm-b9d99.firebaseapp.com",
+		  databaseURL: "https://ftm-b9d99.firebaseio.com",
+		  projectId: "ftm-b9d99",
+		  storageBucket: "ftm-b9d99.appspot.com",
+		  messagingSenderId: "602402387941",
+		  appId: "1:602402387941:web:7b1b1181864d28b49de10c",
+		  measurementId: "G-FF1159TGCF"
 		};
 		const fapp = initializeApp(firebaseConfig);
 		const fanalytics = getAnalytics(fapp);
