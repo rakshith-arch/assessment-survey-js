@@ -1,4 +1,5 @@
 import { qData, answerData } from './questionData';
+import {playAudio} from './audioLoader';
 
 
 
@@ -19,6 +20,7 @@ const b6 = document.getElementById("answerButton6");
 
 const buttons = [b1, b2, b3, b4, b5, b6];
 var bCallback: Function;
+var sCallback: Function;
 var buttonsActive: boolean = true;
 
 
@@ -63,18 +65,33 @@ export function showQuestion(newQ: qData): void {
 	}
 	qCode += newQ.promptText;
 
+	if ('promptAudio' in newQ){
+		playAudio(newQ.promptAudio);
+	}
+
 	qT.innerHTML = qCode;
 
-	if (newQ.answers.length <= 4){
-	b5.style.display = "none";
-	b6.style.display = "none";
+
+	for (var b in buttons){
+		buttons[b].style.display = "none";
 	}
-	if (newQ.answers.length == 5){
-		b5.style.display = "block";
-		b6.style.display = "nones";
+	if (newQ.answers.length >= 1){
+		b1.style.display = "block"
 	}
-	if (newQ.answers.length == 6){
+	if (newQ.answers.length >= 2){
+		b2.style.display = "block";
+	}
+	if (newQ.answers.length >= 3){
+		b3.style.display = "block";
+	}
+	if (newQ.answers.length >= 4){
+		b4.style.display = "block"
+	}
+	if (newQ.answers.length >= 5){
 		b5.style.display = "block";
+	}
+	if (newQ.answers.length >= 6){
+
 		b6.style.display = "block";
 	}
 
@@ -105,6 +122,7 @@ export function showGame(): void {
 	landingCont.style.display = "none";
 	gameCont.style.display = "block";
 	endCont.style.display = "none";
+	sCallback();
 }
 
 export function showEnd(): void {
@@ -129,6 +147,10 @@ export function setFeedbackVisibile(b: boolean) {
 
 
 //handle button press
+
+export function setStartAction(callback: Function): void{
+	sCallback = callback;
+}
 
 export function setButtonAction(callback: Function): void {
 	bCallback = callback;

@@ -2,7 +2,7 @@
 	"quizName": "default survey",
 	"appType": "survey",
 	"questions":[
-		{"qName": "q1","promptText": "question 1 text",
+		{"qName": "q1","promptText": "question 1 text", "promptAudio": "sur_q1.wav",
 			"answers":[
 			{"answerName":"q1a1","answerText":"answer 1"},
 			{"answerName":"q1a2","answerText":"answer 2"},
@@ -11,20 +11,26 @@
 			{"answerName":"q1a5","answerText":"answer 5"},
 			{"answerName":"q1a6","answerText":"answer 6"}
 		]},
-		{"qName": "q2","promptText": "question 2 text, with an image", "promptImg":"img/hill_v01.png",
+		{"qName": "q2","promptText": "question 2 text, with an image", "promptImg":"img/hill_v01.png", "promptAudio": "sur_q2.wav",
 			"answers":[
 			{"answerName":"q2a1","answerText":"answer 1"},
 			{"answerName":"q2a2","answerText":"slightly different answer 2"},
 			{"answerName":"q2a3","answerText":"completley new answer 3"},
 			{"answerName":"q2a4","answerText":"only 4 answers"}
 		]},
-		{"qName": "q3","promptText": "the last question, with five options",
+		{"qName": "q3","promptText": "the next question, with five options", "promptAudio": "sur_q3.wav",
 			"answers":[
 			{"answerName":"q3a1","answerText":"ahhh an image", "answerImg":"img/hill_v01.png"},
 			{"answerName":"q3a2","answerText":"almost done"},
 			{"answerName":"q3a3","answerText":"yay"},
 			{"answerName":"q3a4","answerText":"woah"},
 			{"answerName":"q3a5","answerText":"woohoo"}
+		]},
+		{"qName": "q4","promptText": "the last question, with two options",
+			"answers":[
+			{"answerName":"q4a1","answerText":"ahhh an image", "answerImg":"img/hill_v01.png"},
+			{"answerName":"q4a2","answerText":"almost done"}
+
 		]}
 	]
 }

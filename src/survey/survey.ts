@@ -1,13 +1,13 @@
 //this is where the code will go for linearly iterating through the
 //questions in a data.json file that identifies itself as a survey
 
-import { showQuestion, showGame, showEnd, setButtonAction, setFeedbackVisibile } from '../components/uiController';
+import { showQuestion, showGame, showEnd, setButtonAction, setStartAction, setFeedbackVisibile } from '../components/uiController';
 import { qData, answerData } from '../components/questionData';
 import { sendAnswered, sendFinished } from '../components/analyticsEvents'
 import { App } from '../App';
 import { baseQuiz } from '../baseQuiz';
 import { fetchSurveyQuestions } from '../components/jsonUtils';
-
+import { prepareAudios, playAudio } from '../components/audioLoader'
 export class Survey extends baseQuiz {
 
 	public qList: qData[];
@@ -19,14 +19,20 @@ export class Survey extends baseQuiz {
 		console.log("survey initialized");
 		this.qNum = 0;
 		setButtonAction(this.tryAnswer);
+		setStartAction(this.startSurvey);
 	}
 
 	public async run(applink: App) {
 		this.aLink = applink;
 		this.buildQuestionList().then(result => {
 			this.qList = result;
-			showQuestion(this.getNextQuestion());
+			prepareAudios(this.qList);
+
 		});
+	}
+
+	public startSurvey = () =>{
+		showQuestion(this.getNextQuestion());
 	}
 
 
@@ -53,7 +59,6 @@ export class Survey extends baseQuiz {
 
 	public buildQuestionList = () => {
 		var qs = fetchSurveyQuestions(this.aLink.dataURL);
-
 		return qs;
 
 	}
