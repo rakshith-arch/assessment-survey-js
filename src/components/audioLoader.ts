@@ -4,7 +4,7 @@ import { qData } from './questionData';
 
 var allaudios = {};
 
-export async function prepareAudios(qsdata)  {
+export async function prepareAudios(qsdata, durl)  {
 	var qd;
 	for (var qn in qsdata){
 		qd = qsdata[qn];
@@ -12,7 +12,7 @@ export async function prepareAudios(qsdata)  {
 			console.log("looking for " + qd.promptAudio);
 			var audiosource = qd.promptAudio;
 			var newaudio = new Audio();
-			newaudio.src = "data/audio/" + audiosource;
+			newaudio.src = "audio/" + durl + "/" + audiosource;
 			allaudios[audiosource] = newaudio;
 
 		}
@@ -24,5 +24,6 @@ export async function prepareAudios(qsdata)  {
 
 export function playAudio(name){
 	console.log("trying to play " + name);
+	console.log(allaudios[name].src);
 	allaudios[name].play();
 }

@@ -2,7 +2,7 @@
  * App class that represents an entry point of the application.
  */
 
-import { getUUID, getDataFile } from './components/urlUtils';
+import { getUUID, getUserSource, getDataFile } from './components/urlUtils';
 import { Survey } from './survey/survey';
 import { Assessment } from './assessment/assessment'
 import { UnityBridge } from './components/unityBridge'
@@ -60,8 +60,8 @@ export class App {
 			if (result == "assessment") {
 				this.game = new Assessment(this.dataURL);
 			}
-			setUuid(getUUID());
-			linkAnalytics(this.analytics);
+			setUuid(getUUID(), getUserSource());
+			linkAnalytics(this.analytics, this.dataURL);
 			sendInit();
 
 			this.game.run(this);

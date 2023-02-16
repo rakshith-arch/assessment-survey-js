@@ -34,7 +34,41 @@
 				{"itemName": "W","itemText":"W"}
 			]
 		},
+
 		{	"bucketID":3,
+			"bucketName":"eng-let-b2",
+			"usedItems":[],
+			"items":[
+				{"itemName": "I","itemText":"I"},
+				{"itemName": "E","itemText":"E"},
+				{"itemName": "T","itemText":"T"},
+				{"itemName": "D","itemText":"D"},
+				{"itemName": "A","itemText":"A"},
+				{"itemName": "V","itemText":"V"},
+				{"itemName": "G","itemText":"G"},
+				{"itemName": "D","itemText":"D"},
+				{"itemName": "P","itemText":"P"},
+				{"itemName": "W","itemText":"W"}
+			]
+		},
+
+		{	"bucketID":4,
+			"bucketName":"eng-let-b2",
+			"usedItems":[],
+			"items":[
+				{"itemName": "I","itemText":"I"},
+				{"itemName": "E","itemText":"E"},
+				{"itemName": "T","itemText":"T"},
+				{"itemName": "D","itemText":"D"},
+				{"itemName": "A","itemText":"A"},
+				{"itemName": "V","itemText":"V"},
+				{"itemName": "G","itemText":"G"},
+				{"itemName": "D","itemText":"D"},
+				{"itemName": "P","itemText":"P"},
+				{"itemName": "W","itemText":"W"}
+			]
+		},
+		{	"bucketID":5,
 			"bucketName":"eng-let-b3",
 			"usedItems":[],
 			"items":[

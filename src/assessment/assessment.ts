@@ -8,6 +8,7 @@ import { App } from '../App';
 import { bucket, bucketItem } from './bucketData';
 import { baseQuiz } from '../baseQuiz';
 import { fetchAssessmentBuckets } from '../components/jsonUtils';
+import { TNode, sortedArrayToBST } from '../components/tNode';
 
 enum searchStage{
 	BinarySearch,
@@ -19,8 +20,7 @@ export class Assessment extends baseQuiz {
 
 	public curQ: qData;
 	public buckets: bucket[];
-	public searchLeft: number;
-	public searchRight: number;
+	public bucketArray: number[];
 	public curBucket: bucket;
 	public questionNum: number;
 	public numBuckets: number;
@@ -46,15 +46,19 @@ export class Assessment extends baseQuiz {
 			showQuestion(this.getNextQuestion());
 		});
 	}
+
+
 	public buildBuckets = () => {
 		var res = fetchAssessmentBuckets(this.aLink.dataURL).then(result => {
 			this.buckets = result;
 			this.numBuckets = result.length;
-			this.searchLeft = 1;
-			this.searchRight = this.numBuckets;
+
+			this.bucketArray = Array.from(Array(this.numBuckets), (_, i) => i+1)
+			var root = sortedArrayToBST(this.bucketArray, 1, this.numBuckets);
+			console.log(root);
 			this.basalBucket = this.numBuckets + 1;
 			this.ceilingBucket = -1;
-			this.tryMoveBucket();
+			this.tryMoveBucket(root.data);
 		});
 		return res;
 	}
@@ -72,10 +76,9 @@ export class Assessment extends baseQuiz {
 	}
 
 
-	public tryAnswer = (ans: number) => {
-		sendAnswered(this.curQ, ans)
+	public tryAnswer = (ans: number, elapsed: number) => {
 
-			sendAnswered(this.curQ, ans)
+			sendAnswered(this.curQ, ans, elapsed)
 			this.curBucket.numTried += 1;
 			if (this.curQ.answers[ans-1].answerName == this.curQ.correct){
 				this.curBucket.numCorrect += 1;
@@ -152,10 +155,10 @@ export class Assessment extends baseQuiz {
 		return res;
 	}
 
-	public tryMoveBucket = () => {
-		var middle = this.buckets[Math.floor((this.searchLeft + this.searchRight) / 2)];
-		console.log("new middle bucket is " + middle.bucketID);
-		this.initBucket(middle);
+	public tryMoveBucket = (nbucket) => {
+
+		console.log("new  bucket is " + nbucket);
+		this.initBucket(nbucket);
 	}
 
 
@@ -163,9 +166,7 @@ export class Assessment extends baseQuiz {
 		//// TODO: check buckets, check if done
 		var stillMore = true;
 
-		if (this.searchLeft > this.searchRight){
-			//move to next stage of search
-		}
+
 
 		if (this.curBucket.numCorrect >= 4){
 			//passed this bucket
@@ -175,8 +176,8 @@ export class Assessment extends baseQuiz {
 			}
 			else{
 				//moved up to next bucket
-				this.searchLeft = this.curBucket.bucketID + 1;
-				this.tryMoveBucket();
+				//this.searchLeft = this.curBucket.bucketID + 1;
+			//	this.tryMoveBucket();
 			}
 		}
 		if (this.curBucket.numConsecutiveWrong >= 2 || this.curBucket.numTried >= 5){
@@ -191,7 +192,7 @@ export class Assessment extends baseQuiz {
 			}
 			else{
 				//move down to next bucket
-				this.searchRight = this.curBucket.bucketID - 1;
+				//this.searchRight = this.curBucket.bucketID - 1;
 			}
 		}
 
@@ -200,6 +201,12 @@ export class Assessment extends baseQuiz {
 
 	}
 }
+
+
+
+
+
+
 
 function randFrom(array) {
 	return array[Math.floor(Math.random() * array.length)]

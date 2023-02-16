@@ -1,7 +1,7 @@
 //this is where the code will go for linearly iterating through the
 //questions in a data.json file that identifies itself as a survey
 
-import { showQuestion, showGame, showEnd, setButtonAction, setStartAction, setFeedbackVisibile } from '../components/uiController';
+import { showQuestion, readyForNext, showGame, showEnd, setButtonAction, setStartAction, setFeedbackVisibile } from '../components/uiController';
 import { qData, answerData } from '../components/questionData';
 import { sendAnswered, sendFinished } from '../components/analyticsEvents'
 import { App } from '../App';
@@ -26,7 +26,7 @@ export class Survey extends baseQuiz {
 		this.aLink = applink;
 		this.buildQuestionList().then(result => {
 			this.qList = result;
-			prepareAudios(this.qList);
+			prepareAudios(this.qList, this.aLink.dataURL);
 
 		});
 	}
@@ -41,7 +41,7 @@ export class Survey extends baseQuiz {
 
 		this.qNum += 1;
 		if (this.hasAnotherQueston()) {
-			showQuestion(this.getNextQuestion());
+			readyForNext(this.getNextQuestion());
 		}
 		else {
 			console.log("no questions left");
@@ -50,8 +50,8 @@ export class Survey extends baseQuiz {
 	}
 
 
-	public tryAnswer = (ans: number) => {
-		sendAnswered(this.qList[this.qNum], ans)
+	public tryAnswer = (ans: number, elapsed: number) => {
+		sendAnswered(this.qList[this.qNum], ans, elapsed)
 
 		setFeedbackVisibile(true);
 		setTimeout(() => { this.onQuestionEnd() }, 2000);

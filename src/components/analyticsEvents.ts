@@ -5,10 +5,13 @@ import { qData, answerData } from './questionData';
 import { logEvent } from 'firebase/analytics';
 
 var uuid: string;
-
+var userSource: string;
+var clat, clon;
 var gana;
 var latlong;
 var croppedlat, croppedlong;
+var city, region, country;
+var apptype;
 
 export function getLocation(){
 	console.log("starting to get location");
@@ -20,7 +23,11 @@ export function getLocation(){
 				}
 			return response.json()
 		}).then((jsonResponse)  => {
+			console.log(jsonResponse);
 			latlong = jsonResponse.loc;
+			city = jsonResponse.city;
+			region = jsonResponse.region;
+			country = jsonResponse.country;
 			sendLocation();
 
 				return {};
@@ -31,12 +38,14 @@ export function getLocation(){
 }
 
 
-export function linkAnalytics(newgana): void{
+export function linkAnalytics(newgana, dataurl): void{
 	gana = newgana;
+	apptype = dataurl;
 }
 
-export function setUuid(newUuid: string): void {
+export function setUuid(newUuid: string, newUserSource: string): void {
 	uuid = newUuid;
+	userSource = newUserSource;
 }
 
 
@@ -46,7 +55,9 @@ export function sendInit(): void {
 
 	console.log(eventString);
 
-	logEvent(gana,"opened_event");
+	logEvent(gana,"opened", {
+
+	});
 
 }
 
@@ -54,6 +65,8 @@ export function sendLocation(): void{
 	var lpieces = latlong.split(",");
 	var lat = parseFloat(lpieces[0]).toFixed(2);
 	var lon = parseFloat(lpieces[1]).toFixed(1);
+	clat = lat;
+	clon = lon;
 	latlong = "";
 	lpieces = [];
 
@@ -63,14 +76,26 @@ export function sendLocation(): void{
 
 	logEvent(gana,"user_location", {
 		user: uuid,
+		app: apptype,
 		lat: lat,
 		lon: lon
+	});
+
+	logEvent(gana,"initialized", {
+		type: "initialized",
+		clUserId: uuid,
+		userSource: userSource,
+		lat: clat,
+		lon: clon,
+		city: city,
+		region: region,
+		country: country
 	});
 
 }
 
 
-export function sendAnswered(theQ: qData, theA: number): void {
+export function sendAnswered(theQ: qData, theA: number, elapsed: number): void {
 	var ans = theQ.answers[theA - 1];
 	var eventString = "user " + uuid + " ansered " + theQ.qName + " with " + ans.answerName;
 	eventString += ", all answers were [";
@@ -82,11 +107,22 @@ export function sendAnswered(theQ: qData, theA: number): void {
 	}
 	eventString += "]";
 	console.log(eventString);
-	logEvent(gana,"answered_event", {
-		user: uuid,
+	logEvent(gana,"answered", {
+		type: "answered",
+		clUserId: uuid,
+		userSource: userSource,
+		lat: clat,
+		lon: clon,
+		city: city,
+		region: region,
+		country: country,
+		app: apptype,
+		dt: elapsed,
 		question_name: theQ.qName,
+		question: theQ.promptText,
 		selected_answer: ans.answerName,
 		options: opts
+
 	});
 
 
@@ -96,5 +132,14 @@ export function sendAnswered(theQ: qData, theA: number): void {
 export function sendFinished(): void {
 	var eventString = "user " + uuid + " finished the assessment"
 	console.log(eventString);
-	logEvent(gana,"finished_event");
+	logEvent(gana,"completed", {
+		type: "completed",
+		clUserId: uuid,
+		userSource: userSource,
+		lat: clat,
+		lon: clon,
+		city: city,
+		region: region,
+		country: country
+	});
 }
