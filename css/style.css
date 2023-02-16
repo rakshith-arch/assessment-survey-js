@@ -42,9 +42,9 @@ padding-top:50px;
 .bodyWrapper{
 	margin:0 auto;
 	width:540px;
-	height:800px;
+	min-height:800px;
 	background-image:url("../img/bg_crayon-1.png");
-	background-size:100% 100%;
+	background-size: 100% 100%;
 }
 
 .questionContainer img{
@@ -114,12 +114,15 @@ button {
 
 	color: rgb(82, 84, 100);
 	min-height:32px;
+	max-height:200px;
+	max-width:200px;
 
 }
 
 .answerButton img{
-	max-width: 200px;
-	max-height:200px;
+	margin: 2px;
+	max-width: 196px;
+	max-height:196px;
 }
 
 #startButton {
