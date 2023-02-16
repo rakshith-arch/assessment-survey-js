@@ -40,6 +40,10 @@ padding-top:50px;
 width:80%;
 }
 
+
+.chestdiv{
+	width:50%;
+}
 #pbutton{
 	padding-top:30px;
 	width:50%;
@@ -47,7 +51,7 @@ width:80%;
 }
 
 .chestWrapper img{
-	width: 40%;
+	width: 90%;
 
 	float:left;
 }
