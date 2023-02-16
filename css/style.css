@@ -43,6 +43,8 @@ width:80%;
 
 .chestdiv{
 	width:50%;
+
+		float:left;
 }
 #pbutton{
 	padding-top:30px;
