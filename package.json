@@ -4,8 +4,11 @@
   "description": "typescript implementation of the assessment / survey",
   "main": "bundle.js",
   "scripts": {
-    "build": "tsc && tsc-bundle tsconfig.json --exportAs Bundle --entryPoint App --outFile bundle.js",
-		"run": "tsc && tsc-bundle tsconfig.json --exportAs Bundle --entryPoint App --outFile bundle.js && live-server"
+		"webpack": "webpack && live-server",
+		"build": "webpack",
+		"run": "webpack && live-server",
+    "tsc-build": "tsc && tsc-bundle tsconfig.json --exportAs Bundle --entryPoint App --outFile bundle.js",
+    "tsc-run": "tsc && tsc-bundle tsconfig.json --exportAs Bundle --entryPoint App --outFile bundle.js && live-server"
   },
   "repository": {
     "type": "git",
@@ -18,7 +21,13 @@
   },
   "devDependencies": {
     "live-server": "^1.2.2",
+    "ts-loader": "^9.4.1",
     "typescript": "~4.8.3",
-    "typescript-bundle": "^1.0.18"
+    "typescript-bundle": "^1.0.18",
+    "webpack": "^5.74.0",
+    "webpack-cli": "^4.10.0"
+  },
+  "dependencies": {
+    "firebase": "^9.12.1"
   }
 }

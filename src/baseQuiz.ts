@@ -8,9 +8,9 @@ export abstract class baseQuiz {
 	public dataURL: string;
 
 	public abstract run(applink: App): void;
-	public abstract tryAnswer(ans: number): void;
+	public abstract tryAnswer(ans: number, elapsed: number): void;
 	public abstract hasAnotherQueston(): boolean;
-	
+
 	public onEnd(): void {
 		sendFinished();
 		showEnd();

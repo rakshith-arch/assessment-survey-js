@@ -2,14 +2,15 @@
  * App class that represents an entry point of the application.
  */
 
-import { getUUID, getDataFile } from './components/urlUtils';
+import { getUUID, getUserSource, getDataFile } from './components/urlUtils';
 import { Survey } from './survey/survey';
 import { Assessment } from './assessment/assessment'
 import { UnityBridge } from './components/unityBridge'
-import { setUuid, sendInit } from './components/analyticsEvents'
+import { setUuid, linkAnalytics, sendInit } from './components/analyticsEvents'
 import { baseQuiz } from './baseQuiz';
 import { fetchAppType } from './components/jsonUtils';
-
+import { initializeApp } from 'firebase/app';
+import { getAnalytics, logEvent } from 'firebase/analytics';
 
 export class App {
 
@@ -18,6 +19,7 @@ export class App {
 	public dataURL: string;
 
 	public unity;
+	public analytics;
 	public game: baseQuiz;
 
 	constructor() {
@@ -25,6 +27,27 @@ export class App {
 		this.unity.sendLoaded();
 		console.log("Initializing app...");
 		this.dataURL = getDataFile();
+
+
+
+
+		const firebaseConfig = {
+		  apiKey: "AIzaSyB8c2lBVi26u7YRL9sxOP97Uaq3yN8hTl4",
+		  authDomain: "ftm-b9d99.firebaseapp.com",
+		  databaseURL: "https://ftm-b9d99.firebaseio.com",
+		  projectId: "ftm-b9d99",
+		  storageBucket: "ftm-b9d99.appspot.com",
+		  messagingSenderId: "602402387941",
+		  appId: "1:602402387941:web:7b1b1181864d28b49de10c",
+		  measurementId: "G-FF1159TGCF"
+		};
+		const fapp = initializeApp(firebaseConfig);
+		const fanalytics = getAnalytics(fapp);
+		this.analytics = fanalytics;
+		logEvent(fanalytics, 'notification_received');
+		logEvent(fanalytics,"test initialization event",{});
+		console.log("firebase initialized");
+
 	}
 
 	public async spinUp() {
@@ -37,7 +60,8 @@ export class App {
 			if (result == "assessment") {
 				this.game = new Assessment(this.dataURL);
 			}
-			setUuid(getUUID());
+			setUuid(getUUID(), getUserSource());
+			linkAnalytics(this.analytics, this.dataURL);
 			sendInit();
 
 			this.game.run(this);

@@ -20,11 +20,12 @@
 			</div>
 
 			<div class="questionViewWrapper" id="gameWrap" style="display:none">
-
+				<div class="starWrapper"></div>
+				<div class="chestWrapper"><div class="chestdiv"><img src='img/chest.png' /></div> <div id="pbutton"></div></div>
 				<div class="questionContainer" id="qWrap">question here</div>
 
 
-				<div class="answerContainer">
+				<div class="answerContainer" id="aWrap">
 					<div class="answerButton" id="answerButton1">1</div>
 					<div class="answerButton" id="answerButton2">2</div>
 					<div class="answerButton" id="answerButton3">3</div>
@@ -42,10 +43,17 @@
 				click to exit!
 			</div>
 		</div>
+		<script async src="https://www.googletagmanager.com/gtag/js?id=G-DGTWM534Z4"></script>
+		<script>
+		  window.dataLayer = window.dataLayer || [];
+		  function gtag(){dataLayer.push(arguments);}
+		  gtag('js', new Date());
 
+		  gtag('config', 'G-DGTWM534Z4');
+		</script>
 
-		<script src="bundle.js"></script>
-		<script src="img/peekingMonster.js"></script>
+		<script src="dist/bundle.js"></script>
+
 
 	</body>
 </html>

@@ -1,14 +1,13 @@
 //this is where the code will go for linearly iterating through the
 //questions in a data.json file that identifies itself as a survey
 
-import { showQuestion, showGame, showEnd, setButtonAction, setFeedbackVisibile } from '../components/uiController';
+import { showQuestion, readyForNext, showGame, showEnd, setButtonAction, setStartAction, setFeedbackVisibile } from '../components/uiController';
 import { qData, answerData } from '../components/questionData';
 import { sendAnswered, sendFinished } from '../components/analyticsEvents'
 import { App } from '../App';
 import { baseQuiz } from '../baseQuiz';
 import { fetchSurveyQuestions } from '../components/jsonUtils';
-
-
+import { prepareAudios, playAudio } from '../components/audioLoader'
 export class Survey extends baseQuiz {
 
 	public qList: qData[];
@@ -20,22 +19,30 @@ export class Survey extends baseQuiz {
 		console.log("survey initialized");
 		this.qNum = 0;
 		setButtonAction(this.tryAnswer);
+		setStartAction(this.startSurvey);
 	}
 
 	public async run(applink: App) {
 		this.aLink = applink;
 		this.buildQuestionList().then(result => {
 			this.qList = result;
-			showQuestion(this.getNextQuestion());
+			prepareAudios(this.qList, this.aLink.dataURL);
+
 		});
 	}
+
+	public startSurvey = () =>{
+		showQuestion(this.getNextQuestion());
+	}
+
+
 
 	public onQuestionEnd = () => {
 		setFeedbackVisibile(false);
 
 		this.qNum += 1;
 		if (this.hasAnotherQueston()) {
-			showQuestion(this.getNextQuestion());
+			readyForNext(this.getNextQuestion());
 		}
 		else {
 			console.log("no questions left");
@@ -43,9 +50,9 @@ export class Survey extends baseQuiz {
 		}
 	}
 
-	public tryAnswer = (ans: number) => {
-		sendAnswered(this.qList[this.qNum], ans)
 
+	public tryAnswer = (ans: number, elapsed: number) => {
+		sendAnswered(this.qList[this.qNum], ans, elapsed)
 		setFeedbackVisibile(true);
 		setTimeout(() => { this.onQuestionEnd() }, 2000);
 	}
