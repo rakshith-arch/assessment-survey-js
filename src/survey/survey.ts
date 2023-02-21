@@ -32,7 +32,7 @@ export class Survey extends baseQuiz {
 	}
 
 	public startSurvey = () =>{
-		showQuestion(this.getNextQuestion());
+		readyForNext(this.getNextQuestion());
 	}
 
 
