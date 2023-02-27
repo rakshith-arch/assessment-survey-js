@@ -17,7 +17,7 @@ jobs:
           aws-region: AWS_DEFAULT_REGION
           aws-secret-access-key: AWS_SECRET_ACCESS_KEY
           from: ./
-          to: 's3://curious-reader-books-development'
+          to: 's3://assessment-and-survey-development'
   
   s3-deploy-prod:
     docker:
@@ -32,7 +32,7 @@ jobs:
           aws-region: AWS_PROD_REGION
           aws-secret-access-key: AWS_SECRET_ACCESS_KEY
           from: ./
-          to: 's3://curious-reader-books-production'
+          to: 's3://assessment-and-survey-production'
 
 workflows:
   s3-deploy-workflow:
