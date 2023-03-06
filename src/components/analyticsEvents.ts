@@ -4,6 +4,7 @@
 import { qData, answerData } from './questionData';
 import { logEvent } from 'firebase/analytics';
 
+
 var uuid: string;
 var userSource: string;
 var clat, clon;
@@ -124,8 +125,6 @@ export function sendAnswered(theQ: qData, theA: number, elapsed: number): void {
 		options: opts
 
 	});
-
-
 
 }
 

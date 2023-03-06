@@ -6,7 +6,7 @@ import {playAudio} from './audioLoader';
 const landingCont = document.getElementById("landWrap");
 const gameCont = document.getElementById("gameWrap");
 const endCont = document.getElementById("endWrap");
-
+const sD = document.getElementById("starWrapper");
 const qT = document.getElementById("qWrap");
 const pB = document.getElementById("pbutton");
 const fT = document.getElementById("feedbackWrap");
@@ -74,14 +74,15 @@ export function readyForNext(newQ: qData): void {
 
 
 //function to display a new question
+
 export function showQuestion(newQ?: qData): void {
 
 	aC.style.display = "grid";
+
 	let qCode = "";
 	if (typeof(newQ)=='undefined'){
 		newQ = nextquest;
 	}
-
 
 	if ('promptImg' in newQ) {
 		qCode += "<img src='" + newQ.promptImg + "'></img><BR>";
@@ -118,7 +119,6 @@ export function showQuestion(newQ?: qData): void {
 		b6.style.display = "block";
 	}
 
-
 	//showing the answers on each button
 	for (var aNum in newQ.answers) {
 		let curAnswer = newQ.answers[aNum];
@@ -133,7 +133,6 @@ export function showQuestion(newQ?: qData): void {
 	}
 
 	qstart = Date.now();
-
 }
 
 //functions to show/hide the different containers
@@ -171,12 +170,18 @@ export function setFeedbackVisibile(b: boolean) {
 	}
 }
 
+// add a star on question answer
+
+export function addStar(): void {
+
+}
 
 //handle button press
 
 export function setStartAction(callback: Function): void{
 	sCallback = callback;
 }
+
 
 export function setButtonAction(callback: Function): void {
 	bCallback = callback;
@@ -189,5 +194,4 @@ function buttonPress(num: number) {
 		console.log("answered in " + dtime)
 		bCallback(num, dtime);
 	}
-
 }

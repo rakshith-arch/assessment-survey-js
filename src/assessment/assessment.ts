@@ -1,7 +1,7 @@
 //this is where the logic for handling the buckets will go
 //
 //once we start adding in the assessment functionality
-import { showQuestion, showGame, showEnd, setButtonAction, setFeedbackVisibile } from '../components/uiController';
+import { showQuestion, readyForNext, showGame, showEnd, setButtonAction, setFeedbackVisibile } from '../components/uiController';
 import { qData, answerData } from '../components/questionData';
 import { sendAnswered, sendFinished } from '../components/analyticsEvents'
 import { App } from '../App';
@@ -10,7 +10,7 @@ import { baseQuiz } from '../baseQuiz';
 import { fetchAssessmentBuckets } from '../components/jsonUtils';
 import { TNode, sortedArrayToBST } from '../components/tNode';
 
-enum searchStage{
+enum searchStage {
 	BinarySearch,
 	LinearSearchUp,
 	LinearSearchDown
@@ -18,6 +18,7 @@ enum searchStage{
 
 export class Assessment extends baseQuiz {
 
+	public curNode: TNode;
 	public curQ: qData;
 	public buckets: bucket[];
 	public bucketArray: number[];
@@ -27,26 +28,21 @@ export class Assessment extends baseQuiz {
 	public basalBucket: number;
 	public ceilingBucket: number;
 
-
-
 	constructor(durl: string) {
 		super();
 		this.dataURL = durl;
 		this.questionNum = 0;
 		console.log("app initialized");
 		setButtonAction(this.tryAnswer);
-
 	}
 
 	public run(applink: App): void {
-
 		this.aLink = applink;
 		this.buildBuckets().then(result => {
 			console.log(this.curBucket);
-			showQuestion(this.getNextQuestion());
+			readyForNext(this.getNextQuestion());
 		});
 	}
-
 
 	public buildBuckets = () => {
 		var res = fetchAssessmentBuckets(this.aLink.dataURL).then(result => {
@@ -58,13 +54,11 @@ export class Assessment extends baseQuiz {
 			console.log(root);
 			this.basalBucket = this.numBuckets + 1;
 			this.ceilingBucket = -1;
+			this.curNode = root;
 			this.tryMoveBucket(root.data);
 		});
 		return res;
 	}
-
-
-
 
 	public initBucket = (b: bucket) => {
 		this.curBucket = b;
@@ -74,7 +68,6 @@ export class Assessment extends baseQuiz {
 		this.curBucket.numConsecutiveWrong = 0;
 		this.curBucket.tested = true;
 	}
-
 
 	public tryAnswer = (ans: number, elapsed: number) => {
 
@@ -95,13 +88,12 @@ export class Assessment extends baseQuiz {
 		setFeedbackVisibile(false);
 
 		if (this.hasAnotherQueston()) {
-			showQuestion(this.getNextQuestion());
+			readyForNext(this.getNextQuestion());
 		}
 		else {
 			console.log("no questions left");
 			this.onEnd();
 		}
-
 	}
 
 	public getNextQuestion = () => {
@@ -123,7 +115,6 @@ export class Assessment extends baseQuiz {
 		var opts = [targetItem, foil1, foil2, foil3];
 		shuffleArray(opts);
 
-
 		var res = {
 			qName: "question" + this.questionNum + "-" + targetItem.itemName,
 			promptText: targetItem.itemText,
@@ -144,11 +135,8 @@ export class Assessment extends baseQuiz {
 					answerName: opts[3].itemName,
 					answerText: opts[3].itemText
 				}
-
-
 			]
 		};
-
 
 		this.curQ = res;
 		this.questionNum += 1;
@@ -161,41 +149,52 @@ export class Assessment extends baseQuiz {
 		this.initBucket(nbucket);
 	}
 
-
 	public hasAnotherQueston = () => {
 		//// TODO: check buckets, check if done
 		var stillMore = true;
 
 
-
-		if (this.curBucket.numCorrect >= 4){
+		if (this.curBucket.numCorrect >= 4) {
 			//passed this bucket
-			if (this.curBucket.bucketID >= this.numBuckets){
+			if (this.curBucket.bucketID >= this.numBuckets) {
 				//passed highest bucket
 				stillMore = false;
 			}
-			else{
+			else {
 				//moved up to next bucket
-				//this.searchLeft = this.curBucket.bucketID + 1;
-			//	this.tryMoveBucket();
+
+				if (this.curNode.right != null){
+					//move down to right
+					this.curNode = this.curNode.right;
+					this.tryMoveBucket(this.curNode.data);
+				}else{
+					// reached root node!!!!
+					// do something here
+				}
+
 			}
 		}
-		if (this.curBucket.numConsecutiveWrong >= 2 || this.curBucket.numTried >= 5){
+		if (this.curBucket.numConsecutiveWrong >= 2 || this.curBucket.numTried >= 5) {
 			//failed this bucket
-			if (this.curBucket.bucketID < this.basalBucket ){
+			if (this.curBucket.bucketID < this.basalBucket) {
 				//update basal bucket number
 				this.basalBucket = this.curBucket.bucketID;
 			}
-			if (this.curBucket.bucketID <= 1){
+			if (this.curBucket.bucketID <= 1) {
 				//failed the lowest bucket
 				stillMore = false;
 			}
-			else{
-				//move down to next bucket
-				//this.searchRight = this.curBucket.bucketID - 1;
+			else {
+				if (this.curNode.left != null){
+					//move down to left
+					this.curNode = this.curNode.left;
+					this.tryMoveBucket(this.curNode.data);
+				}else{
+					// reached root node!!!!
+					// do something here
+				}
 			}
 		}
-
 
 		return stillMore;
 
