@@ -1,7 +1,7 @@
 //this is where the logic for handling the buckets will go
 //
 //once we start adding in the assessment functionality
-import { showQuestion, showGame, showEnd, setButtonAction, setFeedbackVisibile } from '../components/uiController';
+import { showQuestion, readyForNext, showGame, showEnd, setButtonAction, setFeedbackVisibile } from '../components/uiController';
 import { qData, answerData } from '../components/questionData';
 import { sendAnswered, sendFinished } from '../components/analyticsEvents'
 import { App } from '../App';
@@ -18,6 +18,7 @@ enum searchStage {
 
 export class Assessment extends baseQuiz {
 
+	public curNode: TNode;
 	public curQ: qData;
 	public buckets: bucket[];
 	public bucketArray: number[];
@@ -39,7 +40,7 @@ export class Assessment extends baseQuiz {
 		this.aLink = applink;
 		this.buildBuckets().then(result => {
 			console.log(this.curBucket);
-			showQuestion(this.getNextQuestion());
+			readyForNext(this.getNextQuestion());
 		});
 	}
 
@@ -53,6 +54,7 @@ export class Assessment extends baseQuiz {
 			console.log(root);
 			this.basalBucket = this.numBuckets + 1;
 			this.ceilingBucket = -1;
+			this.curNode = root;
 			this.tryMoveBucket(root.data);
 		});
 		return res;
@@ -86,7 +88,7 @@ export class Assessment extends baseQuiz {
 		setFeedbackVisibile(false);
 
 		if (this.hasAnotherQueston()) {
-			showQuestion(this.getNextQuestion());
+			readyForNext(this.getNextQuestion());
 		}
 		else {
 			console.log("no questions left");
@@ -160,8 +162,16 @@ export class Assessment extends baseQuiz {
 			}
 			else {
 				//moved up to next bucket
-				//this.searchLeft = this.curBucket.bucketID + 1;
-			//	this.tryMoveBucket();
+
+				if (this.curNode.right != null){
+					//move down to right
+					this.curNode = this.curNode.right;
+					this.tryMoveBucket(this.curNode.data);
+				}else{
+					// reached root node!!!!
+					// do something here
+				}
+
 			}
 		}
 		if (this.curBucket.numConsecutiveWrong >= 2 || this.curBucket.numTried >= 5) {
@@ -175,8 +185,14 @@ export class Assessment extends baseQuiz {
 				stillMore = false;
 			}
 			else {
-				//move down to next bucket
-				//this.searchRight = this.curBucket.bucketID - 1;
+				if (this.curNode.left != null){
+					//move down to left
+					this.curNode = this.curNode.left;
+					this.tryMoveBucket(this.curNode.data);
+				}else{
+					// reached root node!!!!
+					// do something here
+				}
 			}
 		}
 

@@ -6,7 +6,7 @@ import {playAudio} from './audioLoader';
 const landingCont = document.getElementById("landWrap");
 const gameCont = document.getElementById("gameWrap");
 const endCont = document.getElementById("endWrap");
-
+const sD = document.getElementById("starWrapper");
 const qT = document.getElementById("qWrap");
 const pB = document.getElementById("pbutton");
 const fT = document.getElementById("feedbackWrap");
@@ -168,6 +168,12 @@ export function setFeedbackVisibile(b: boolean) {
 
 		buttonsActive = true;
 	}
+}
+
+// add a star on question answer
+
+export function addStar(): void {
+
 }
 
 //handle button press
