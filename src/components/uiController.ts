@@ -1,5 +1,5 @@
 import { qData, answerData } from './questionData';
-import {playAudio} from './audioLoader';
+import {playAudio, getImg} from './audioLoader';
 
 
 
@@ -23,10 +23,17 @@ var nextquest = null;
 var qstart;
 var allstart;
 
+var allstars = [];
+for (var xi = 0; xi < 20; xi += 1){
+
+}
+
+
 const buttons = [b1, b2, b3, b4, b5, b6];
 var bCallback: Function;
 var sCallback: Function;
 var buttonsActive: boolean = true;
+
 
 
 //add button listeners
@@ -80,12 +87,15 @@ export function showQuestion(newQ?: qData): void {
 	aC.style.display = "grid";
 
 	let qCode = "";
+	qT.innerHTML = "";
 	if (typeof(newQ)=='undefined'){
 		newQ = nextquest;
 	}
 
 	if ('promptImg' in newQ) {
-		qCode += "<img src='" + newQ.promptImg + "'></img><BR>";
+
+		var tmpimg = getImg(newQ.promptImg);
+		qT.appendChild(tmpimg);
 	}
 	qCode += newQ.promptText;
 
@@ -93,7 +103,9 @@ export function showQuestion(newQ?: qData): void {
 		playAudio(newQ.promptAudio);
 	}
 	pB.innerHTML = "";
-	qT.innerHTML = qCode;
+	qT.innerHTML += qCode;
+
+
 
 
 	for (var b in buttons){
@@ -126,10 +138,12 @@ export function showQuestion(newQ?: qData): void {
 		if ('answerText' in curAnswer) {
 			answerCode += curAnswer.answerText;
 		}
-		if ('answerImg' in curAnswer) {
-			answerCode += "<img src='" + curAnswer.answerImg + "'></img>";
-		}
 		buttons[aNum].innerHTML = answerCode;
+		if ('answerImg' in curAnswer) {
+			var tmpimg = getImg(curAnswer.answerImg);
+			buttons[aNum].appendChild(tmpimg);
+		}
+
 	}
 
 	qstart = Date.now();
