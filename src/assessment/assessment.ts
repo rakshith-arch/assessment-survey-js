@@ -9,7 +9,7 @@ import { bucket, bucketItem } from './bucketData';
 import { baseQuiz } from '../baseQuiz';
 import { fetchAssessmentBuckets } from '../components/jsonUtils';
 import { TNode, sortedArrayToBST } from '../components/tNode';
-
+import {randFrom, shuffleArray } from '../components/mathUtils';
 enum searchStage {
 	BinarySearch,
 	LinearSearchUp,
@@ -198,22 +198,5 @@ export class Assessment extends baseQuiz {
 
 		return stillMore;
 
-	}
-}
-
-
-
-
-
-
-
-function randFrom(array) {
-	return array[Math.floor(Math.random() * array.length)]
-}
-
-function shuffleArray(array) {
-	for (let i = array.length - 1; i > 0; i--) {
-		const j = Math.floor(Math.random() * (i + 1));
-		[array[i], array[j]] = [array[j], array[i]];
 	}
 }

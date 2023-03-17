@@ -1,6 +1,6 @@
 import { qData, answerData } from './questionData';
-import {playAudio, getImg} from './audioLoader';
-
+import { playAudio, getImg} from './audioLoader';
+import { randFrom, shuffleArray } from '../components/mathUtils';
 
 
 const landingCont = document.getElementById("landWrap");
@@ -24,9 +24,24 @@ var qstart;
 var allstart;
 
 var allstars = [];
-for (var xi = 0; xi < 20; xi += 1){
+var qansnum = 0;
 
+for (var xi = 0; xi < 20; xi += 1){
+	const newstar = document.createElement("img");
+	newstar.src = "img/star.png";
+	newstar.id = "star" + xi;
+	newstar.classList.add("topstarh");
+
+
+	sD.appendChild(newstar);
+	sD.innerHTML += "";
+	if (xi == 9){
+		sD.innerHTML += "<br>";
+	}
+allstars.push(xi)
 }
+
+shuffleArray(allstars);
 
 
 const buttons = [b1, b2, b3, b4, b5, b6];
@@ -188,6 +203,10 @@ export function setFeedbackVisibile(b: boolean) {
 
 export function addStar(): void {
 
+	var startoshow = document.getElementById("star" + allstars[qansnum]);
+	startoshow.classList.add("topstarv");
+	startoshow.classList.remove("topstarh");
+	qansnum += 1;
 }
 
 //handle button press
