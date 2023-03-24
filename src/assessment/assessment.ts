@@ -1,7 +1,7 @@
 //this is where the logic for handling the buckets will go
 //
 //once we start adding in the assessment functionality
-import { showQuestion, readyForNext, showGame, showEnd, setButtonAction, setFeedbackVisibile } from '../components/uiController';
+import { showQuestion, readyForNext, showGame, showEnd, setButtonAction, setStartAction, setFeedbackVisibile } from '../components/uiController';
 import { qData, answerData } from '../components/questionData';
 import { sendAnswered, sendFinished } from '../components/analyticsEvents'
 import { App } from '../App';
@@ -34,23 +34,29 @@ export class Assessment extends baseQuiz {
 		this.questionNum = 0;
 		console.log("app initialized");
 		setButtonAction(this.tryAnswer);
+		setStartAction(this.startAssessment);
 	}
 
 	public run(applink: App): void {
 		this.aLink = applink;
 		this.buildBuckets().then(result => {
 			console.log(this.curBucket);
-			readyForNext(this.getNextQuestion());
+
 		});
+	}
+
+	public startAssessment = () => {
+		readyForNext(this.getNextQuestion());
 	}
 
 	public buildBuckets = () => {
 		var res = fetchAssessmentBuckets(this.aLink.dataURL).then(result => {
 			this.buckets = result;
 			this.numBuckets = result.length;
-
-			this.bucketArray = Array.from(Array(this.numBuckets), (_, i) => i+1)
-			var root = sortedArrayToBST(this.bucketArray, 1, this.numBuckets);
+			console.log("buckets: " + this.buckets);
+			this.bucketArray = Array.from(Array(this.numBuckets), (_, i) => i+1);
+			console.log("empty array " +  this.bucketArray)
+			var root = sortedArrayToBST(this.buckets, 0, this.numBuckets);
 			console.log(root);
 			this.basalBucket = this.numBuckets + 1;
 			this.ceilingBucket = -1;
@@ -118,6 +124,7 @@ export class Assessment extends baseQuiz {
 		var res = {
 			qName: "question" + this.questionNum + "-" + targetItem.itemName,
 			promptText: targetItem.itemText,
+			correct: targetItem.itemText,
 			answers: [
 				{
 					answerName: opts[0].itemName,
@@ -137,7 +144,7 @@ export class Assessment extends baseQuiz {
 				}
 			]
 		};
-
+	
 		this.curQ = res;
 		this.questionNum += 1;
 		return res;

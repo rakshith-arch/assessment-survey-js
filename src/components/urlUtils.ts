@@ -35,7 +35,7 @@ export function getDataFile(): string {
 	var data = pathParams.get('data');
 	if (data == undefined) {
 		console.log("default data file");
-		data = "survey-zulu";
+		data = "eng-lettersounds";
 	}
 	return data;
 }

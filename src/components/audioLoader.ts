@@ -41,6 +41,10 @@ export async function prepareAudios(qsdata, durl)  {
 
 }
 
+export async function preloadBucket(){
+	
+}
+
 export function getImg(name){
 	return allimages[name];
 }
