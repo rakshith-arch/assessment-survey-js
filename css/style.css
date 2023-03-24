@@ -57,6 +57,27 @@ width:80%;
 
 	float:left;
 }
+
+
+.starWrapper{
+	width:100%;
+	padding-top:34px;
+}
+
+.topstarh{
+	width:6%;
+	padding-left: 1%;
+	padding-right: 1%;
+	visibility: hidden;
+}
+
+.topstarv{
+	width:6%;
+	padding-left: 1%;
+	padding-right: 1%;
+	visibility: visible;
+}
+
 .endingPageWrapper{
 padding-top:50px;
 		width:100%;
