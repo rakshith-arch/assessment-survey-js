@@ -4,35 +4,25 @@ import { qData } from './questionData';
 
 var allaudios = {};
 var allimages = {};
+var durl = "";
 
-export async function prepareAudios(qsdata, durl)  {
+export async function prepareAudios(qsdata, ndurl)  {
 	var qd;
 	var ad;
+	durl = ndurl;
 	for (var qn in qsdata){
 		qd = qsdata[qn];
 		if (qd.promptAudio != null){
-			console.log("looking for " + qd.promptAudio);
-			var audiosource = qd.promptAudio;
-			var newaudio = new Audio();
-			newaudio.src = "audio/" + durl + "/" + audiosource;
-			allaudios[audiosource] = newaudio;
+			preaudio (qd.promptAudio);
 
 		}
 		if (qd.promptImg != null ){
-			console.log("looking for " + qd.promptImg);
-			var imgsrc = qd.promptImg;
-			var newimg = new Image();
-			newimg.src = imgsrc;
-			allimages[imgsrc] = newimg;
+			preimg (qd.promptImg);
 		}
 		for (var an in qd.answers){
 			ad = qd.answers[an];
 			if (ad.answerImg != null){
-				console.log("looking for " + ad.answerImg);
-				var imgsrc = ad.answerImg;
-				var newimg = new Image();
-				newimg.src = imgsrc;
-				allimages[imgsrc] = newimg;
+				preimg(ad.answerImg);
 			}
 		}
 	}
@@ -41,8 +31,24 @@ export async function prepareAudios(qsdata, durl)  {
 
 }
 
+export async function preimg( newimgurl ){
+	console.log("looking for " + newimgurl);
+	var imgsrc = newimgurl;
+	var newimg = new Image();
+	newimg.src = imgsrc;
+	allimages[imgsrc] = newimg;
+}
+
+export async function preaudio( newaudiourl ){
+	console.log("looking for " + newaudiourl);
+	var audiosource = newaudiourl;
+	var newaudio = new Audio();
+	newaudio.src = "audio/" + durl + "/" + audiosource;
+	allaudios[audiosource] = newaudio;
+}
+
 export async function preloadBucket(){
-	
+
 }
 
 export function getImg(name){

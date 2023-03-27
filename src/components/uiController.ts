@@ -95,6 +95,8 @@ export function readyForNext(newQ: qData): void {
 
 
 
+
+
 //function to display a new question
 
 export function showQuestion(newQ?: qData): void {
@@ -120,49 +122,60 @@ export function showQuestion(newQ?: qData): void {
 	pB.innerHTML = "";
 	qT.innerHTML += qCode;
 
-
-
-
 	for (var b in buttons){
 		buttons[b].style.display = "none";
 	}
-	if (newQ.answers.length >= 1){
-		b1.style.display = "block"
-	}
-	if (newQ.answers.length >= 2){
-		b2.style.display = "block";
-	}
-	if (newQ.answers.length >= 3){
-		b3.style.display = "block";
-	}
-	if (newQ.answers.length >= 4){
-		b4.style.display = "block"
-	}
-	if (newQ.answers.length >= 5){
-		b5.style.display = "block";
-	}
-	if (newQ.answers.length >= 6){
 
-		b6.style.display = "block";
-	}
+	setTimeout(showOptions,500);
 
-	//showing the answers on each button
-	for (var aNum in newQ.answers) {
-		let curAnswer = newQ.answers[aNum];
-		let answerCode = "";
-		if ('answerText' in curAnswer) {
-			answerCode += curAnswer.answerText;
-		}
-		buttons[aNum].innerHTML = answerCode;
-		if ('answerImg' in curAnswer) {
-			var tmpimg = getImg(curAnswer.answerImg);
-			buttons[aNum].appendChild(tmpimg);
-		}
 
-	}
-
-	qstart = Date.now();
 }
+
+
+export function showOptions(): void{
+var newQ = nextquest;
+
+
+		if (newQ.answers.length >= 1){
+			b1.style.display = "block"
+		}
+		if (newQ.answers.length >= 2){
+			b2.style.display = "block";
+		}
+		if (newQ.answers.length >= 3){
+			b3.style.display = "block";
+		}
+		if (newQ.answers.length >= 4){
+			b4.style.display = "block"
+		}
+		if (newQ.answers.length >= 5){
+			b5.style.display = "block";
+		}
+		if (newQ.answers.length >= 6){
+
+			b6.style.display = "block";
+		}
+
+
+			//showing the answers on each button
+			for (var aNum in newQ.answers) {
+				let curAnswer = newQ.answers[aNum];
+				let answerCode = "";
+				if ('answerText' in curAnswer) {
+					answerCode += curAnswer.answerText;
+				}
+				buttons[aNum].innerHTML = answerCode;
+				if ('answerImg' in curAnswer) {
+					var tmpimg = getImg(curAnswer.answerImg);
+					buttons[aNum].appendChild(tmpimg);
+				}
+
+			}
+
+		qstart = Date.now();
+}
+
+
 
 //functions to show/hide the different containers
 export function showLanding(): void {
