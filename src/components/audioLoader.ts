@@ -6,6 +6,10 @@ var allaudios = {};
 var allimages = {};
 var durl = "";
 
+var fdbksnd = new Audio();
+fdbksnd.src = "audio/Correct.wav";
+
+
 export async function prepareAudios(qsdata, ndurl)  {
 	var qd;
 	var ad;
@@ -51,13 +55,32 @@ export async function preloadBucket(){
 
 }
 
+
+
+
 export function getImg(name){
 	return allimages[name];
 }
 
 
-export function playAudio(name){
+export function playAudio(name: string, apcb?: Function){
 	console.log("trying to play " + name);
-	console.log(allaudios[name].src);
-	allaudios[name].play();
+	//console.log(allaudios[name].src);
+
+
+	if (typeof(apcb)!='undefined'){
+		allaudios[name].addEventListener("ended", () => {
+			apcb();
+
+		})
+
+	}
+	if (name in allaudios){
+		allaudios[name].play();
+	}
+
+}
+
+export function playDing(){
+	fdbksnd.play();
 }
