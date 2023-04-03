@@ -1,5 +1,5 @@
 import { qData, answerData } from './questionData';
-import { playAudio, getImg} from './audioLoader';
+import { playAudio, playDing, getImg} from './audioLoader';
 import { randFrom, shuffleArray } from '../components/mathUtils';
 
 
@@ -22,7 +22,7 @@ var nextquest = null;
 
 var qstart;
 var allstart;
-
+var shown = false;
 var allstars = [];
 var qansnum = 0;
 
@@ -85,19 +85,36 @@ landingCont.addEventListener("click", function () {
 export function readyForNext(newQ: qData): void {
 	console.log("ready for next!");
 	aC.style.display = "none";
+	shown = false;
 	nextquest = newQ;
+	qT.innerHTML = "";
 	pB.innerHTML = "<button id='nextqButton'><svg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'><path d='M9 18L15 12L9 6V18Z' fill='currentColor' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'></path></svg></button>";
 	var nqb = document.getElementById("nextqButton");
 	nqb.addEventListener("click", function (){
-		showQuestion(newQ);
+
+	showQuestion();
+			playAudio(newQ.promptAudio, showOptions);
+
+
+		//playquestionaudio
 	})
 }
+
+
 
 
 
 //function to display a new question
 
 export function showQuestion(newQ?: qData): void {
+
+	pB.innerHTML = "<button id='nextqButton'><svg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'><path d='M9 18L15 12L9 6V18Z' fill='currentColor' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'></path></svg></button>";
+	var nqb = document.getElementById("nextqButton");
+	nqb.addEventListener("click", function (){
+		if ('promptAudio' in newQ){
+			playAudio(newQ.promptAudio);
+		}
+	})
 
 	aC.style.display = "grid";
 
@@ -114,55 +131,67 @@ export function showQuestion(newQ?: qData): void {
 	}
 	qCode += newQ.promptText;
 
-	if ('promptAudio' in newQ){
-		playAudio(newQ.promptAudio);
-	}
-	pB.innerHTML = "";
+qCode += "<BR>";
+
 	qT.innerHTML += qCode;
-
-
 
 
 	for (var b in buttons){
 		buttons[b].style.display = "none";
 	}
-	if (newQ.answers.length >= 1){
-		b1.style.display = "block"
-	}
-	if (newQ.answers.length >= 2){
-		b2.style.display = "block";
-	}
-	if (newQ.answers.length >= 3){
-		b3.style.display = "block";
-	}
-	if (newQ.answers.length >= 4){
-		b4.style.display = "block"
-	}
-	if (newQ.answers.length >= 5){
-		b5.style.display = "block";
-	}
-	if (newQ.answers.length >= 6){
 
-		b6.style.display = "block";
-	}
 
-	//showing the answers on each button
-	for (var aNum in newQ.answers) {
-		let curAnswer = newQ.answers[aNum];
-		let answerCode = "";
-		if ('answerText' in curAnswer) {
-			answerCode += curAnswer.answerText;
-		}
-		buttons[aNum].innerHTML = answerCode;
-		if ('answerImg' in curAnswer) {
-			var tmpimg = getImg(curAnswer.answerImg);
-			buttons[aNum].appendChild(tmpimg);
-		}
 
-	}
-
-	qstart = Date.now();
 }
+
+
+export function showOptions(): void{
+if (!shown){
+	var newQ = nextquest;
+
+
+			if (newQ.answers.length >= 1){
+				b1.style.display = "block"
+			}
+			if (newQ.answers.length >= 2){
+				b2.style.display = "block";
+			}
+			if (newQ.answers.length >= 3){
+				b3.style.display = "block";
+			}
+			if (newQ.answers.length >= 4){
+				b4.style.display = "block"
+			}
+			if (newQ.answers.length >= 5){
+				b5.style.display = "block";
+			}
+			if (newQ.answers.length >= 6){
+
+				b6.style.display = "block";
+			}
+
+
+				//showing the answers on each button
+				for (var aNum in newQ.answers) {
+					let curAnswer = newQ.answers[aNum];
+					let answerCode = "";
+					if ('answerText' in curAnswer) {
+						answerCode += curAnswer.answerText;
+					}
+					buttons[aNum].innerHTML = answerCode;
+					if ('answerImg' in curAnswer) {
+						var tmpimg = getImg(curAnswer.answerImg);
+						buttons[aNum].appendChild(tmpimg);
+					}
+
+				}
+
+			qstart = Date.now();
+}
+
+}
+
+
 
 //functions to show/hide the different containers
 export function showLanding(): void {
@@ -222,6 +251,7 @@ export function setButtonAction(callback: Function): void {
 
 function buttonPress(num: number) {
 	if (buttonsActive) {
+		playDing();
 		var npressed = Date.now();
 		var dtime = npressed - qstart;
 		console.log("answered in " + dtime)

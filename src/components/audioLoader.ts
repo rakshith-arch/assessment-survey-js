@@ -1,38 +1,33 @@
 //code for loading audios
 
 import { qData } from './questionData';
+import { bucket, bucketItem } from '../assessment/bucketData';
 
 var allaudios = {};
 var allimages = {};
+var durl = "";
 
-export async function prepareAudios(qsdata, durl)  {
+var fdbksnd = new Audio();
+fdbksnd.src = "audio/Correct.wav";
+
+
+export async function prepareAudios(qsdata, ndurl)  {
 	var qd;
 	var ad;
+	durl = ndurl;
 	for (var qn in qsdata){
 		qd = qsdata[qn];
 		if (qd.promptAudio != null){
-			console.log("looking for " + qd.promptAudio);
-			var audiosource = qd.promptAudio;
-			var newaudio = new Audio();
-			newaudio.src = "audio/" + durl + "/" + audiosource;
-			allaudios[audiosource] = newaudio;
+			preaudio (qd.promptAudio);
 
 		}
 		if (qd.promptImg != null ){
-			console.log("looking for " + qd.promptImg);
-			var imgsrc = qd.promptImg;
-			var newimg = new Image();
-			newimg.src = imgsrc;
-			allimages[imgsrc] = newimg;
+			preimg (qd.promptImg);
 		}
 		for (var an in qd.answers){
 			ad = qd.answers[an];
 			if (ad.answerImg != null){
-				console.log("looking for " + ad.answerImg);
-				var imgsrc = ad.answerImg;
-				var newimg = new Image();
-				newimg.src = imgsrc;
-				allimages[imgsrc] = newimg;
+				preimg(ad.answerImg);
 			}
 		}
 	}
@@ -41,13 +36,60 @@ export async function prepareAudios(qsdata, durl)  {
 
 }
 
+export async function preimg( newimgurl ){
+	console.log("looking for " + newimgurl);
+	var imgsrc = newimgurl;
+	var newimg = new Image();
+	newimg.src = imgsrc;
+	allimages[imgsrc] = newimg;
+}
+
+export async function preaudio( newaudiourl ){
+	console.log("looking for " + newaudiourl);
+	var audiosource = newaudiourl;
+	var newaudio = new Audio();
+	newaudio.src = "audio/" + durl + "/" + audiosource;
+	console.log(newaudio.src);
+	allaudios[audiosource] = newaudio;
+}
+
+export async function preloadBucket(newb: bucket, ndurl){
+	durl = ndurl;
+	for (var aa in newb.items){
+		var naa = newb.items[aa];
+		preaudio(naa.itemName + ".wav");
+	}
+}
+
+
+
+
 export function getImg(name){
 	return allimages[name];
 }
 
 
-export function playAudio(name){
+export function playAudio(name: string, apcb?: Function){
 	console.log("trying to play " + name);
-	console.log(allaudios[name].src);
-	allaudios[name].play();
+	//console.log(allaudios[name].src);
+	if (name.slice(-4)!=".wav"){
+		name = name + ".wav";
+	}
+
+
+	if (typeof(apcb)!='undefined'){
+		allaudios[name].addEventListener("ended", () => {
+			apcb();
+
+		})
+
+	}
+	if (name in allaudios){
+		allaudios[name].play();
+	}
+
+}
+
+export function playDing(){
+	fdbksnd.play();
 }

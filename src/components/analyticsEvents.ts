@@ -98,6 +98,22 @@ export function sendLocation(): void{
 
 export function sendAnswered(theQ: qData, theA: number, elapsed: number): void {
 	var ans = theQ.answers[theA - 1];
+
+	var iscorrect = null;
+	var bucket = null;
+	if ("correct" in theQ){
+		if (theQ.correct != null){
+			if (theQ.correct == ans.answerName){
+				iscorrect = true;
+			}
+			else{
+				iscorrect = false;
+			}
+		}
+	}
+	if ("bucket" in theQ){
+		bucket = theQ.bucket;
+	}
 	var eventString = "user " + uuid + " ansered " + theQ.qName + " with " + ans.answerName;
 	eventString += ", all answers were [";
 	var opts = "";
@@ -106,7 +122,9 @@ export function sendAnswered(theQ: qData, theA: number, elapsed: number): void {
 		opts += theQ.answers[aNum].answerName + ",";
 
 	}
-	eventString += "]";
+	eventString += "] ";
+	eventString += iscorrect;
+	eventString += bucket;
 	console.log(eventString);
 	logEvent(gana,"answered", {
 		type: "answered",
@@ -122,7 +140,10 @@ export function sendAnswered(theQ: qData, theA: number, elapsed: number): void {
 		question_name: theQ.qName,
 		question: theQ.promptText,
 		selected_answer: ans.answerName,
-		options: opts
+		iscorrect: iscorrect,
+		options: opts,
+		bucket: bucket
+
 
 	});
 
