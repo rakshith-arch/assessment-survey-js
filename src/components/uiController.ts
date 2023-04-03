@@ -131,15 +131,16 @@ export function showQuestion(newQ?: qData): void {
 	}
 	qCode += newQ.promptText;
 
-
+qCode += "<BR>";
 
 	qT.innerHTML += qCode;
+
 
 	for (var b in buttons){
 		buttons[b].style.display = "none";
 	}
 
-	
+
 
 }
 

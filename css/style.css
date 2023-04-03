@@ -13,6 +13,7 @@ body, html {
 body {
 	background-color: #3d85d1;
 	text-align:center;
+	height:100%;
 }
 
 .landingPageWrapper{
@@ -36,8 +37,10 @@ padding-top:50px;
 
 .chestWrapper{
 	margin: 0 auto;
-padding-top:50px;
+
 width:80%;
+padding-left:10%;
+padding-right:10%;
 }
 
 
@@ -88,19 +91,23 @@ padding-top:50px;
 	width:100%;
 	max-width:540px;
 	min-height:800px;
+	height:100%;
 	background-image:url("../img/bg_crayon-1.png");
 	background-size: 100% 100%;
+	bottom:0;
 }
 
 .questionContainer img{
-	max-width: 400px;
+	max-width: 200px;
 	max-height:200px;
 }
 
 .questionContainer{
-	padding-top:10px;
 	width:100%;
-	height:220px;
+	margin:0 auto;
+padding:5px;
+	float:left;
+
 	text-align:center;
 }
 
@@ -140,6 +147,7 @@ padding-top:50px;
 	grid-column-gap: 2%;
 	grid-row-gap: 2%;
 	width:80%;
+	height:80%;
 	padding-top:10px;
 }
 
