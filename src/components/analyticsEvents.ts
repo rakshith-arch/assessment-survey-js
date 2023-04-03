@@ -100,6 +100,7 @@ export function sendAnswered(theQ: qData, theA: number, elapsed: number): void {
 	var ans = theQ.answers[theA - 1];
 
 	var iscorrect = null;
+	var bucket = null;
 	if ("correct" in theQ){
 		if (theQ.correct != null){
 			if (theQ.correct == ans.answerName){
@@ -109,6 +110,9 @@ export function sendAnswered(theQ: qData, theA: number, elapsed: number): void {
 				iscorrect = false;
 			}
 		}
+	}
+	if ("bucket" in theQ){
+		bucket = theQ.bucket;
 	}
 	var eventString = "user " + uuid + " ansered " + theQ.qName + " with " + ans.answerName;
 	eventString += ", all answers were [";
@@ -120,6 +124,7 @@ export function sendAnswered(theQ: qData, theA: number, elapsed: number): void {
 	}
 	eventString += "] ";
 	eventString += iscorrect;
+	eventString += bucket;
 	console.log(eventString);
 	logEvent(gana,"answered", {
 		type: "answered",
@@ -136,7 +141,8 @@ export function sendAnswered(theQ: qData, theA: number, elapsed: number): void {
 		question: theQ.promptText,
 		selected_answer: ans.answerName,
 		iscorrect: iscorrect,
-		options: opts
+		options: opts,
+		bucket: bucket
 
 
 	});

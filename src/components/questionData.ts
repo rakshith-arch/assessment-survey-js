@@ -1,4 +1,4 @@
-// Contains types that describe Question and Answer data 
+// Contains types that describe Question and Answer data
 
 export type qData = {
 	qName: string; //for analytics event
@@ -7,6 +7,7 @@ export type qData = {
 	promptAudio?: string;
 	answers: answerData[];
 	correct?: string;
+	bucket?: number;
 }
 
 export type answerData = {

@@ -1,6 +1,7 @@
 //code for loading audios
 
 import { qData } from './questionData';
+import { bucket, bucketItem } from '../assessment/bucketData';
 
 var allaudios = {};
 var allimages = {};
@@ -48,11 +49,16 @@ export async function preaudio( newaudiourl ){
 	var audiosource = newaudiourl;
 	var newaudio = new Audio();
 	newaudio.src = "audio/" + durl + "/" + audiosource;
+	console.log(newaudio.src);
 	allaudios[audiosource] = newaudio;
 }
 
-export async function preloadBucket(){
-
+export async function preloadBucket(newb: bucket, ndurl){
+	durl = ndurl;
+	for (var aa in newb.items){
+		var naa = newb.items[aa];
+		preaudio(naa.itemName + ".wav");
+	}
 }
 
 
@@ -66,6 +72,9 @@ export function getImg(name){
 export function playAudio(name: string, apcb?: Function){
 	console.log("trying to play " + name);
 	//console.log(allaudios[name].src);
+	if (name.slice(-4)!=".wav"){
+		name = name + ".wav";
+	}
 
 
 	if (typeof(apcb)!='undefined'){

@@ -1,7 +1,7 @@
 //this is where the logic for handling the buckets will go
 //
 //once we start adding in the assessment functionality
-import { showQuestion, readyForNext, showGame, showEnd, setButtonAction, setStartAction, setFeedbackVisibile } from '../components/uiController';
+import { addStar, showQuestion, readyForNext, showGame, showEnd, setButtonAction, setStartAction, setFeedbackVisibile } from '../components/uiController';
 import { qData, answerData } from '../components/questionData';
 import { sendAnswered, sendFinished } from '../components/analyticsEvents'
 import { App } from '../App';
@@ -10,6 +10,7 @@ import { baseQuiz } from '../baseQuiz';
 import { fetchAssessmentBuckets } from '../components/jsonUtils';
 import { TNode, sortedArrayToBST } from '../components/tNode';
 import {randFrom, shuffleArray } from '../components/mathUtils';
+import {preloadBucket} from '../components/audioLoader';
 enum searchStage {
 	BinarySearch,
 	LinearSearchUp,
@@ -82,9 +83,12 @@ export class Assessment extends baseQuiz {
 			if (this.curQ.answers[ans-1].answerName == this.curQ.correct){
 				this.curBucket.numCorrect += 1;
 				this.curBucket.numConsecutiveWrong = 0;
+				console.log("answered correctly");
 			}else{
-				this.curBucket.numConsecutiveWrong = 0;
+				this.curBucket.numConsecutiveWrong += 1;
+				console.log("answered incorrectly, " + this.curBucket.numConsecutiveWrong);
 			}
+			addStar();
 			setFeedbackVisibile(true);
 			setTimeout(() => { this.onQuestionEnd() }, 2000);
 	}
@@ -123,7 +127,9 @@ export class Assessment extends baseQuiz {
 
 		var res = {
 			qName: "question" + this.questionNum + "-" + targetItem.itemName,
-			promptText: targetItem.itemText,
+			promptText: "",
+			bucket: this.curBucket.bucketID,
+			promptAudio: targetItem.itemName,
 			correct: targetItem.itemText,
 			answers: [
 				{
@@ -144,7 +150,7 @@ export class Assessment extends baseQuiz {
 				}
 			]
 		};
-	
+
 		this.curQ = res;
 		this.questionNum += 1;
 		return res;
@@ -152,7 +158,8 @@ export class Assessment extends baseQuiz {
 
 	public tryMoveBucket = (nbucket) => {
 
-		console.log("new  bucket is " + nbucket);
+		console.log("new  bucket is " + nbucket.bucketID);
+		preloadBucket(nbucket, this.aLink.dataURL);
 		this.initBucket(nbucket);
 	}
 
@@ -163,19 +170,23 @@ export class Assessment extends baseQuiz {
 
 		if (this.curBucket.numCorrect >= 4) {
 			//passed this bucket
+			console.log("passed this bucket " + this.curBucket.bucketID);
 			if (this.curBucket.bucketID >= this.numBuckets) {
 				//passed highest bucket
+				console.log("passed highest bucket");
 				stillMore = false;
 			}
 			else {
 				//moved up to next bucket
-
+				console.log("moving up bucket");
 				if (this.curNode.right != null){
 					//move down to right
+					console.log("moving to right node");
 					this.curNode = this.curNode.right;
 					this.tryMoveBucket(this.curNode.data);
 				}else{
 					// reached root node!!!!
+						console.log("reached root node");
 					// do something here
 				}
 
@@ -183,21 +194,26 @@ export class Assessment extends baseQuiz {
 		}
 		if (this.curBucket.numConsecutiveWrong >= 2 || this.curBucket.numTried >= 5) {
 			//failed this bucket
+			console.log("failed this bucket " + this.curBucket.bucketID);
 			if (this.curBucket.bucketID < this.basalBucket) {
 				//update basal bucket number
 				this.basalBucket = this.curBucket.bucketID;
 			}
 			if (this.curBucket.bucketID <= 1) {
 				//failed the lowest bucket
+				console.log("failed lowest bucket");
 				stillMore = false;
 			}
 			else {
+				console.log("moving down bucket");
 				if (this.curNode.left != null){
 					//move down to left
+					console.log("moving to left node");
 					this.curNode = this.curNode.left;
 					this.tryMoveBucket(this.curNode.data);
 				}else{
 					// reached root node!!!!
+							console.log("reached root node");
 					// do something here
 				}
 			}
