@@ -8,6 +8,7 @@ import { App } from '../App';
 import { baseQuiz } from '../baseQuiz';
 import { fetchSurveyQuestions } from '../components/jsonUtils';
 import { prepareAudios, playAudio } from '../components/audioLoader';
+
 export class Survey extends baseQuiz {
 
 	public qList: qData[];
@@ -41,6 +42,7 @@ export class Survey extends baseQuiz {
 		setFeedbackVisibile(false);
 
 		this.qNum += 1;
+				setTimeout(() => {
 		if (this.hasAnotherQueston()) {
 			readyForNext(this.getNextQuestion());
 		}
@@ -48,6 +50,7 @@ export class Survey extends baseQuiz {
 			console.log("no questions left");
 			this.onEnd();
 		}
+	}, 500);
 	}
 
 

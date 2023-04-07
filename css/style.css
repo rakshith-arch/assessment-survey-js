@@ -146,9 +146,9 @@ padding:5px;
 	grid-row: auto auto;
 	grid-column-gap: 2%;
 	grid-row-gap: 2%;
-	width:80%;
+	width:85%;
 	height:80%;
-	padding-top:10px;
+
 }
 
 button {
@@ -164,11 +164,12 @@ button {
 }
 
 .answerButton {
-
+	margin-top:16px;
+	margin-right:10px;
+	padding: 15px 0;
 	color: rgb(82, 84, 100);
 	min-height:32px;
-	width:100%;
-	height:100%;
+
 	max-height:200px;
 	max-width:200px;
 
@@ -190,6 +191,7 @@ button {
 }
 
 #answerButton1 {
+
 	background-color: rgb(255, 234, 205);
 	border-color: rgb(254, 217, 167);
 }
@@ -200,11 +202,13 @@ button {
 }
 
 #answerButton3 {
+
 	background-color: rgb(233, 255, 204);
 	border-color: rgb(211, 250, 161);
 }
 
 #answerButton4 {
+
 	background-color: rgb(255, 217, 211);
 	border-color: rgb(255, 189, 180);
 }

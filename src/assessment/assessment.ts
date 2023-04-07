@@ -96,14 +96,18 @@ export class Assessment extends baseQuiz {
 	public onQuestionEnd = () => {
 
 		setFeedbackVisibile(false);
+		setTimeout(() => {
 
-		if (this.hasAnotherQueston()) {
-			readyForNext(this.getNextQuestion());
-		}
-		else {
-			console.log("no questions left");
-			this.onEnd();
-		}
+			if (this.hasAnotherQueston()) {
+				readyForNext(this.getNextQuestion());
+			}
+			else {
+				console.log("no questions left");
+				this.onEnd();
+			}
+
+		}, 500);
+
 	}
 
 	public getNextQuestion = () => {

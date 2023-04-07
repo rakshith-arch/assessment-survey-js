@@ -1,5 +1,5 @@
 import { qData, answerData } from './questionData';
-import { playAudio, playDing, getImg} from './audioLoader';
+import { playAudio, playDing, playCorrect, getImg} from './audioLoader';
 import { randFrom, shuffleArray } from '../components/mathUtils';
 
 
@@ -218,6 +218,7 @@ export function setFeedbackVisibile(b: boolean) {
 	if (b) {
 		fT.classList.remove("hidden");
 		fT.classList.add("visible");
+		playCorrect();
 
 		buttonsActive = false;
 	} else {
