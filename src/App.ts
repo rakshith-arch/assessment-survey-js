@@ -12,6 +12,7 @@ import { fetchAppType } from './components/jsonUtils';
 import { initializeApp } from 'firebase/app';
 import { getAnalytics, logEvent } from 'firebase/analytics';
 
+
 export class App {
 
 	/** Could be 'assessment' or 'survey' based on the data file */

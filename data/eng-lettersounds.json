@@ -1,6 +1,7 @@
 {
 	"quizName": "default assessment - english letter sounds",
 	"appType": "assessment",
+	"feedbackText": "fantastic!",
 	"buckets":[
 		{	"bucketID":1,
 			"bucketName":"eng-let-b1",

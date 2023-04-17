@@ -191,7 +191,10 @@ if (!shown){
 
 }
 
-
+export function setFeedbackText(nt: string): void{
+	console.log("feedback text set to " + nt);
+	fT.innerHTML = nt;
+}
 
 //functions to show/hide the different containers
 export function showLanding(): void {

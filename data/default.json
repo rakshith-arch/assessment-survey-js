@@ -1,6 +1,7 @@
 {
 	"quizName": "default survey",
 	"appType": "survey",
+	"feedbackText": "fantastic!",
 	"questions":[
 		{"qName": "q1","promptText": "question 1 text", "promptAudio": "sur_q1.wav",
 			"answers":[
