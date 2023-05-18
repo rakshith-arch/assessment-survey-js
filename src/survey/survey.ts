@@ -8,14 +8,17 @@ import { App } from '../App';
 import { baseQuiz } from '../baseQuiz';
 import { fetchSurveyQuestions } from '../components/jsonUtils';
 import { prepareAudios, playAudio } from '../components/audioLoader';
+
 export class Survey extends baseQuiz {
 
 	public qList: qData[];
+	public unity;
 	public qNum: number;
 
-	constructor(durl: string) {
+	constructor(durl: string, nunity) {
 		super();
 		this.dataURL = durl;
+		this.unity = nunity;
 		console.log("survey initialized");
 		this.qNum = 0;
 		setButtonAction(this.tryAnswer);
@@ -41,6 +44,7 @@ export class Survey extends baseQuiz {
 		setFeedbackVisibile(false);
 
 		this.qNum += 1;
+				setTimeout(() => {
 		if (this.hasAnotherQueston()) {
 			readyForNext(this.getNextQuestion());
 		}
@@ -48,6 +52,7 @@ export class Survey extends baseQuiz {
 			console.log("no questions left");
 			this.onEnd();
 		}
+	}, 500);
 	}
 
 

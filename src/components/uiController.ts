@@ -1,5 +1,5 @@
 import { qData, answerData } from './questionData';
-import { playAudio, playDing, getImg} from './audioLoader';
+import { playAudio, playDing, playCorrect, getImg} from './audioLoader';
 import { randFrom, shuffleArray } from '../components/mathUtils';
 
 
@@ -191,7 +191,10 @@ if (!shown){
 
 }
 
-
+export function setFeedbackText(nt: string): void{
+	console.log("feedback text set to " + nt);
+	fT.innerHTML = nt;
+}
 
 //functions to show/hide the different containers
 export function showLanding(): void {
@@ -209,6 +212,7 @@ export function showGame(): void {
 }
 
 export function showEnd(): void {
+	
 	landingCont.style.display = "none";
 	gameCont.style.display = "none";
 	endCont.style.display = "block";
@@ -218,6 +222,7 @@ export function setFeedbackVisibile(b: boolean) {
 	if (b) {
 		fT.classList.remove("hidden");
 		fT.classList.add("visible");
+		playCorrect();
 
 		buttonsActive = false;
 	} else {

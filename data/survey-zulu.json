@@ -1,6 +1,7 @@
 {
 	"quizName": "zulu survey",
 	"appType": "survey",
+	"feedbackText": "kuyancomeka!",
 	"questions":[
 		{"qName": "q1food","promptText": "", "promptAudio": "Where is your food stored.wav",
 			"answers":[

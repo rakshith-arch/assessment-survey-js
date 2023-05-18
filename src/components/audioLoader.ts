@@ -3,18 +3,29 @@
 import { qData } from './questionData';
 import { bucket, bucketItem } from '../assessment/bucketData';
 
+
+var imgtocache = [];
+var wavtocache = [];
+
+
 var allaudios = {};
 var allimages = {};
 var durl = "";
 
 var fdbksnd = new Audio();
 fdbksnd.src = "audio/Correct.wav";
+var correctsnd = new Audio();
 
 
 export async function prepareAudios(qsdata, ndurl)  {
 	var qd;
 	var ad;
 	durl = ndurl;
+	var fdsnd =  "audio/" + durl + "/answer_feedback.wav";
+	wavtocache.push(fdsnd);
+	correctsnd.src = fdsnd;
+
+
 	for (var qn in qsdata){
 		qd = qsdata[qn];
 		if (qd.promptAudio != null){
@@ -55,6 +66,7 @@ export async function preaudio( newaudiourl ){
 
 export async function preloadBucket(newb: bucket, ndurl){
 	durl = ndurl;
+	correctsnd.src = "audio/" + durl + "/answer_feedback.wav";
 	for (var aa in newb.items){
 		var naa = newb.items[aa];
 		preaudio(naa.itemName + ".wav");
@@ -92,4 +104,8 @@ export function playAudio(name: string, apcb?: Function){
 
 export function playDing(){
 	fdbksnd.play();
+}
+
+export function playCorrect(){
+	correctsnd.play();
 }

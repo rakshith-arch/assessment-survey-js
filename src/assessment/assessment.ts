@@ -19,6 +19,7 @@ enum searchStage {
 
 export class Assessment extends baseQuiz {
 
+	public unity;
 	public curNode: TNode;
 	public curQ: qData;
 	public buckets: bucket[];
@@ -29,9 +30,10 @@ export class Assessment extends baseQuiz {
 	public basalBucket: number;
 	public ceilingBucket: number;
 
-	constructor(durl: string) {
+	constructor(durl: string, nunity) {
 		super();
 		this.dataURL = durl;
+		this.unity = nunity;
 		this.questionNum = 0;
 		console.log("app initialized");
 		setButtonAction(this.tryAnswer);
@@ -96,14 +98,18 @@ export class Assessment extends baseQuiz {
 	public onQuestionEnd = () => {
 
 		setFeedbackVisibile(false);
+		setTimeout(() => {
 
-		if (this.hasAnotherQueston()) {
-			readyForNext(this.getNextQuestion());
-		}
-		else {
-			console.log("no questions left");
-			this.onEnd();
-		}
+			if (this.hasAnotherQueston()) {
+				readyForNext(this.getNextQuestion());
+			}
+			else {
+				console.log("no questions left");
+				this.onEnd();
+			}
+
+		}, 500);
+
 	}
 
 	public getNextQuestion = () => {

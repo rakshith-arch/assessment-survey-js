@@ -1,6 +1,7 @@
 {
 	"quizName": "zulu letter sounds",
 	"appType": "assessment",
+	"feedbackText": "kuyancomeka!",
 	"buckets":[
 		{	"bucketID":1,
 			"bucketName":"zulu-let-b1",
