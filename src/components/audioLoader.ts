@@ -3,6 +3,11 @@
 import { qData } from './questionData';
 import { bucket, bucketItem } from '../assessment/bucketData';
 
+
+var imgtocache = [];
+var wavtocache = [];
+
+
 var allaudios = {};
 var allimages = {};
 var durl = "";
@@ -16,7 +21,11 @@ export async function prepareAudios(qsdata, ndurl)  {
 	var qd;
 	var ad;
 	durl = ndurl;
-	correctsnd.src = "audio/" + durl + "/answer_feedback.wav";
+	var fdsnd =  "audio/" + durl + "/answer_feedback.wav";
+	wavtocache.push(fdsnd);
+	correctsnd.src = fdsnd;
+
+
 	for (var qn in qsdata){
 		qd = qsdata[qn];
 		if (qd.promptAudio != null){

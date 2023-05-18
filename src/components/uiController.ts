@@ -212,6 +212,7 @@ export function showGame(): void {
 }
 
 export function showEnd(): void {
+	
 	landingCont.style.display = "none";
 	gameCont.style.display = "none";
 	endCont.style.display = "block";

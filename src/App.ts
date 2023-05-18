@@ -56,11 +56,12 @@ export class App {
 			console.log("spinning up");
 			console.log(result);
 			if (result == "survey") {
-				this.game = new Survey(this.dataURL);
+				this.game = new Survey(this.dataURL, this.unity);
 			}
 			if (result == "assessment") {
-				this.game = new Assessment(this.dataURL);
+				this.game = new Assessment(this.dataURL, this.unity);
 			}
+			this.game.unity = this.unity;
 			setUuid(getUUID(), getUserSource());
 			linkAnalytics(this.analytics, this.dataURL);
 			sendInit();

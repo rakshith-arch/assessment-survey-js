@@ -19,6 +19,7 @@ enum searchStage {
 
 export class Assessment extends baseQuiz {
 
+	public unity;
 	public curNode: TNode;
 	public curQ: qData;
 	public buckets: bucket[];
@@ -29,9 +30,10 @@ export class Assessment extends baseQuiz {
 	public basalBucket: number;
 	public ceilingBucket: number;
 
-	constructor(durl: string) {
+	constructor(durl: string, nunity) {
 		super();
 		this.dataURL = durl;
+		this.unity = nunity;
 		this.questionNum = 0;
 		console.log("app initialized");
 		setButtonAction(this.tryAnswer);
