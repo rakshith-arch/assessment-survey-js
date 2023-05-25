@@ -25,7 +25,7 @@ export class App {
 
 	constructor() {
 		this.unity = new UnityBridge();
-		this.unity.sendLoaded();
+
 		console.log("Initializing app...");
 		this.dataURL = getDataFile();
 
@@ -62,6 +62,7 @@ export class App {
 				this.game = new Assessment(this.dataURL, this.unity);
 			}
 			this.game.unity = this.unity;
+			this.unity.sendLoaded();
 			setUuid(getUUID(), getUserSource());
 			linkAnalytics(this.analytics, this.dataURL);
 			sendInit();

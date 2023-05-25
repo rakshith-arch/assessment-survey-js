@@ -30,6 +30,7 @@ export class Survey extends baseQuiz {
 		this.buildQuestionList().then(result => {
 			this.qList = result;
 			prepareAudios(this.qList, this.aLink.dataURL);
+			this.unity.sendLoaded();
 
 		});
 	}
