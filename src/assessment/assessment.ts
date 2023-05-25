@@ -44,7 +44,7 @@ export class Assessment extends baseQuiz {
 		this.aLink = applink;
 		this.buildBuckets().then(result => {
 			console.log(this.curBucket);
-
+			this.unity.sendLoaded();
 		});
 	}
 
