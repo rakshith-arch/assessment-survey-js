@@ -3,7 +3,7 @@
 
 import { qData, answerData } from './questionData';
 import { logEvent } from 'firebase/analytics';
-
+import { bucket } from '../assessment/bucketData'
 
 var uuid: string;
 var userSource: string;
@@ -147,6 +147,29 @@ export function sendAnswered(theQ: qData, theA: number, elapsed: number): void {
 
 	});
 
+}
+
+export function sendBucket(tb: bucket): void {
+	var bn = tb.bucketID;
+	var btried = tb.numTried;
+	var bcorrect = tb.numCorrect;
+	var eventString = "user " + uuid + " finished the bucket " + bn;
+	console.log(eventString);
+	logEvent(gana,"bucketCompleted", {
+		type: "bucketCompleted",
+		clUserId: uuid,
+		userSource: userSource,
+		lat: clat,
+		lon: clon,
+		city: city,
+		region: region,
+		country: country,
+		app: apptype,
+		bucketNumber: bn,
+		numberTriedInBucket:btried,
+		numberCorrectInBucket:bcorrect
+
+	})
 }
 
 export function sendFinished(): void {

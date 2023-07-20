@@ -3,7 +3,7 @@
 //once we start adding in the assessment functionality
 import { addStar, showQuestion, readyForNext, showGame, showEnd, setButtonAction, setStartAction, setFeedbackVisibile } from '../components/uiController';
 import { qData, answerData } from '../components/questionData';
-import { sendAnswered, sendFinished } from '../components/analyticsEvents'
+import { sendAnswered, sendFinished, sendBucket } from '../components/analyticsEvents'
 import { App } from '../App';
 import { bucket, bucketItem } from './bucketData';
 import { baseQuiz } from '../baseQuiz';
@@ -163,7 +163,8 @@ export class Assessment extends baseQuiz {
 	}
 
 	public tryMoveBucket = (nbucket) => {
-
+		if (this.curBucket != null)
+			sendBucket(this.curBucket);
 		console.log("new  bucket is " + nbucket.bucketID);
 		preloadBucket(nbucket, this.aLink.dataURL);
 		this.initBucket(nbucket);
@@ -180,6 +181,7 @@ export class Assessment extends baseQuiz {
 			if (this.curBucket.bucketID >= this.numBuckets) {
 				//passed highest bucket
 				console.log("passed highest bucket");
+				sendBucket(this.curBucket);
 				stillMore = false;
 			}
 			else {
@@ -193,6 +195,8 @@ export class Assessment extends baseQuiz {
 				}else{
 					// reached root node!!!!
 						console.log("reached root node");
+						sendBucket(this.curBucket);
+						stillMore = false;
 					// do something here
 				}
 
@@ -209,6 +213,7 @@ export class Assessment extends baseQuiz {
 				//failed the lowest bucket
 				console.log("failed lowest bucket");
 				stillMore = false;
+				sendBucket(this.curBucket);
 			}
 			else {
 				console.log("moving down bucket");
@@ -220,6 +225,8 @@ export class Assessment extends baseQuiz {
 				}else{
 					// reached root node!!!!
 							console.log("reached root node");
+							stillMore = false;
+							sendBucket(this.curBucket);
 					// do something here
 				}
 			}
