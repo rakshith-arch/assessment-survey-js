@@ -149,7 +149,7 @@ export function sendAnswered(theQ: qData, theA: number, elapsed: number): void {
 
 }
 
-export function sendBucket(tb: bucket): void {
+export function sendBucket(tb: bucket, passed: boolean): void {
 	var bn = tb.bucketID;
 	var btried = tb.numTried;
 	var bcorrect = tb.numCorrect;
@@ -167,7 +167,8 @@ export function sendBucket(tb: bucket): void {
 		app: apptype,
 		bucketNumber: bn,
 		numberTriedInBucket:btried,
-		numberCorrectInBucket:bcorrect
+		numberCorrectInBucket:bcorrect,
+		passedBucket: passed;
 
 	})
 }
