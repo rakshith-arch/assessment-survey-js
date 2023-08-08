@@ -64,7 +64,7 @@ export class Assessment extends baseQuiz {
 			this.basalBucket = this.numBuckets + 1;
 			this.ceilingBucket = -1;
 			this.curNode = root;
-			this.tryMoveBucket(root.data);
+			this.tryMoveBucket(root.data, false);
 		});
 		return res;
 	}
@@ -162,9 +162,9 @@ export class Assessment extends baseQuiz {
 		return res;
 	}
 
-	public tryMoveBucket = (nbucket) => {
+	public tryMoveBucket = (nbucket, passed: boolean) => {
 		if (this.curBucket != null)
-			sendBucket(this.curBucket);
+			sendBucket(this.curBucket, passed);
 		console.log("new  bucket is " + nbucket.bucketID);
 		preloadBucket(nbucket, this.aLink.dataURL);
 		this.initBucket(nbucket);
@@ -181,7 +181,7 @@ export class Assessment extends baseQuiz {
 			if (this.curBucket.bucketID >= this.numBuckets) {
 				//passed highest bucket
 				console.log("passed highest bucket");
-				sendBucket(this.curBucket);
+				sendBucket(this.curBucket, true);
 				stillMore = false;
 			}
 			else {
@@ -191,11 +191,11 @@ export class Assessment extends baseQuiz {
 					//move down to right
 					console.log("moving to right node");
 					this.curNode = this.curNode.right;
-					this.tryMoveBucket(this.curNode.data);
+					this.tryMoveBucket(this.curNode.data, true);
 				}else{
 					// reached root node!!!!
 						console.log("reached root node");
-						sendBucket(this.curBucket);
+						sendBucket(this.curBucket, true);
 						stillMore = false;
 					// do something here
 				}
@@ -213,7 +213,7 @@ export class Assessment extends baseQuiz {
 				//failed the lowest bucket
 				console.log("failed lowest bucket");
 				stillMore = false;
-				sendBucket(this.curBucket);
+				sendBucket(this.curBucket, false);
 			}
 			else {
 				console.log("moving down bucket");
@@ -221,12 +221,12 @@ export class Assessment extends baseQuiz {
 					//move down to left
 					console.log("moving to left node");
 					this.curNode = this.curNode.left;
-					this.tryMoveBucket(this.curNode.data);
+					this.tryMoveBucket(this.curNode.data, false);
 				}else{
 					// reached root node!!!!
 							console.log("reached root node");
 							stillMore = false;
-							sendBucket(this.curBucket);
+							sendBucket(this.curBucket, false);
 					// do something here
 				}
 			}
