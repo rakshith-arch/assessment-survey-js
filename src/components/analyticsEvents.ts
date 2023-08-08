@@ -168,7 +168,7 @@ export function sendBucket(tb: bucket, passed: boolean): void {
 		bucketNumber: bn,
 		numberTriedInBucket:btried,
 		numberCorrectInBucket:bcorrect,
-		passedBucket: passed;
+		passedBucket: passed
 
 	})
 }
