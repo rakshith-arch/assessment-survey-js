@@ -11,6 +11,9 @@ import { baseQuiz } from './baseQuiz';
 import { fetchAppType } from './components/jsonUtils';
 import { initializeApp } from 'firebase/app';
 import { getAnalytics, logEvent } from 'firebase/analytics';
+import { Workbox } from 'workbox-window';
+
+const appVersion = "v0.0.1";
 
 
 export class App {
@@ -23,14 +26,15 @@ export class App {
 	public analytics;
 	public game: baseQuiz;
 
+	broadcastChannel: BroadcastChannel;
+
+	lang: string = "english";
+
 	constructor() {
 		this.unity = new UnityBridge();
 
 		console.log("Initializing app...");
 		this.dataURL = getDataFile();
-
-
-
 
 		const firebaseConfig = {
 		  apiKey: "AIzaSyB8c2lBVi26u7YRL9sxOP97Uaq3yN8hTl4",
@@ -42,17 +46,28 @@ export class App {
 		  appId: "1:602402387941:web:7b1b1181864d28b49de10c",
 		  measurementId: "G-FF1159TGCF"
 		};
+
 		const fapp = initializeApp(firebaseConfig);
 		const fanalytics = getAnalytics(fapp);
+
 		this.analytics = fanalytics;
 		logEvent(fanalytics, 'notification_received');
 		logEvent(fanalytics,"test initialization event",{});
-		console.log("firebase initialized");
 
+		this.broadcastChannel = new BroadcastChannel('as-message-channel');
+
+		console.log("firebase initialized");
 	}
 
 	public async spinUp() {
+		window.addEventListener('load', () => {
+			console.log("Window Loaded!");
+			(async () => {
+				await this.registerServiceWorker(this.game);
+			})();
+		});
 		fetchAppType(this.dataURL).then(result => {
+			console.log("Assessment/Survey " + appVersion + " initializing!");
 			console.log("spinning up");
 			console.log(result);
 			if (result == "survey") {
@@ -66,10 +81,56 @@ export class App {
 			setUuid(getUUID(), getUserSource());
 			linkAnalytics(this.analytics, this.dataURL);
 			sendInit();
-
+			
 			this.game.run(this);
 		});
 	}
+
+	async registerServiceWorker(game: baseQuiz) {
+		console.log("Registering service worker...");
+
+		if ("serviceWorker" in navigator) {
+			let wb = new Workbox('./sw.js', {});
+
+			wb.register().then((registration) => {
+				console.log("Service worker registered!");
+				this.handleServiceWorkerRegistation(registration);
+			}).catch((err) => {
+				console.log("Service worker registration failed: " + err);
+			});
+
+			await navigator.serviceWorker.ready;
+			
+			console.log("Game is ");
+			console.log(game);
+
+			// if (localStorage.getItem(book.bookName) == null) {
+            //     this.broadcastChannel.postMessage({
+            //         command: "Cache",
+            //         data: {
+            //             lang: this.lang,
+            //             bookData: book,
+            //             contentFile: this.contentFilePath,
+            //         }
+            //     });
+            // }
+
+		} else {
+			console.warn("Service workers are not supported in this browser.");
+		}
+	}
+
+	handleServiceWorkerRegistation(registration: ServiceWorkerRegistration | undefined): void {
+		try {
+			registration?.installing?.postMessage({
+				type: 'Registartion',
+				value: this.lang
+			})
+		} catch (err) {
+			console.log("Service worker registration failed: " + err);
+		}
+	}
+
 }
 
 
