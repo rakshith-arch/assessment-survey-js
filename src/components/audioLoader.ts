@@ -21,7 +21,7 @@ export async function prepareAudios(qsdata, ndurl)  {
 	var qd;
 	var ad;
 	durl = ndurl;
-	var fdsnd =  "audio/" + durl + "/answer_feedback.wav";
+	var fdsnd =  "audio/" + durl + "/answer_feedback.mp3";
 	wavtocache.push(fdsnd);
 	correctsnd.src = fdsnd;
 
@@ -57,61 +57,16 @@ export async function preimg( newimgurl ){
 
 export async function preaudio( newAudioURL ){
 	console.log("looking for " + newAudioURL);
-	let mp3File = newAudioURL + ".mp3";
-	let wavFile = newAudioURL + ".wav";
+	let audioFile = newAudioURL + ".mp3";
 	let newAudio = new Audio();
-	// try {
-	// 	const response: Response = await fetch("/audio/" + durl + "/" + mp3File);
-	// 	if (response?.ok) {
-	// 		newAudio.src = "audio/" + durl + "/" + mp3File;
-	// 		allaudios[mp3File] = newAudio;
-	// 	} else {
-	// 		throw new Error("The .mp3 file doesn't exist, let's try to fetch the .wav file");
-	// 	}
-	// } catch (error) {
-	// 	try {
-	// 		const response: Response = await fetch("/audio/" + durl + "/" + wavFile);
-	// 		if (response?.ok) {
-	// 			newAudio.src = "audio/" + durl + "/" + wavFile;
-	// 			allaudios[wavFile] = newAudio;
-	// 		}
-	// 	} catch (error) {
-	// 		console.log('Neither .mp3 nor .wav file exists for ' + newAudioURL);
-	// 	}
-	// }
-	await fetch("/audio/" + durl + "/" + mp3File, { method: 'HEAD'}).then(response => {
-		if (response.ok) {
-			newAudio.src = "audio/" + durl + "/" + mp3File;
-			allaudios[newAudioURL] = newAudio;
-			return response.ok;
-		} else {
-			throw new Error("The .mp3 file doesn't exist, let's try to fetch the .wav file");
-
-			// The .mp3 file doesn't exist, let's try to fetch the .wav file
-		}
-	})
-	.catch(error => {
-		console.log('Error checking .mp3 file:', error);
-
-		fetch("/audio/" + durl + "/" + wavFile, { method: 'HEAD'}).then(response => {
-			if (response.ok) {
-				newAudio.src = "audio/" + durl + "/" + wavFile;
-				allaudios[newAudioURL] = newAudio;
-				return response.ok;
-			} else {
-				throw new Error("Neither .mp3 nor .wav file exists for " + newAudioURL);
-			}
-		})
-		.catch(error => {
-			console.log('Error checking .wav file:', error);
-		});
-	});
+	newAudio.src = "audio/" + durl + "/" + audioFile;
+	allaudios[newAudioURL] = newAudio;
 	console.log(newAudio.src);
 }
 
 export async function preloadBucket(newb: bucket, ndurl){
 	durl = ndurl;
-	correctsnd.src = "audio/" + durl + "/answer_feedback.wav";
+	correctsnd.src = "audio/" + durl + "/answer_feedback.mp3";
 	for (var aa in newb.items){
 		var naa = newb.items[aa];
 		preaudio(naa.itemName);
@@ -124,10 +79,6 @@ export function playAudio(name: string, apcb?: Function){
 	if (name.includes(".mp3")){
 		if (name.slice(-4) != ".mp3"){
 			name = name + ".mp3";
-		}
-	} else if (name.includes(".wav")){
-		if (name.slice(-4) != ".wav"){
-			name = name + ".wav";
 		}
 	}
 
