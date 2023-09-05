@@ -1,5 +1,5 @@
 import { qData, answerData } from './questionData';
-import { playAudio, playDing, playCorrect, getImg} from './audioLoader';
+import { playAudio, playDing, playCorrect, getImg } from './audioLoader';
 import { randFrom, shuffleArray } from '../components/mathUtils';
 
 
@@ -26,7 +26,7 @@ var shown = false;
 var allstars = [];
 var qansnum = 0;
 
-for (var xi = 0; xi < 20; xi += 1){
+for (var xi = 0; xi < 20; xi += 1) {
 	const newstar = document.createElement("img");
 	newstar.src = "img/star.png";
 	newstar.id = "star" + xi;
@@ -35,10 +35,10 @@ for (var xi = 0; xi < 20; xi += 1){
 
 	sD.appendChild(newstar);
 	sD.innerHTML += "";
-	if (xi == 9){
+	if (xi == 9) {
 		sD.innerHTML += "<br>";
 	}
-allstars.push(xi)
+	allstars.push(xi)
 }
 
 shuffleArray(allstars);
@@ -52,7 +52,6 @@ var buttonsActive: boolean = true;
 
 
 //add button listeners
-
 b1.addEventListener("click", function () {
 	buttonPress(1);
 });
@@ -98,10 +97,6 @@ export function readyForNext(newQ: qData): void {
 	})
 }
 
-
-
-
-
 //function to display a new question
 
 export function showQuestion(newQ?: qData): void {
@@ -128,7 +123,7 @@ export function showQuestion(newQ?: qData): void {
 	}
 	qCode += newQ.promptText;
 
-qCode += "<BR>";
+	qCode += "<BR>";
 
 	qT.innerHTML += qCode;
 
@@ -233,7 +228,6 @@ export function setFeedbackVisibile(b: boolean) {
 // add a star on question answer
 
 export function addStar(): void {
-
 	var startoshow = document.getElementById("star" + allstars[qansnum]);
 	startoshow.classList.add("topstarv");
 	startoshow.classList.remove("topstarh");
@@ -242,7 +236,7 @@ export function addStar(): void {
 
 //handle button press
 
-export function setStartAction(callback: Function): void{
+export function setStartAction(callback: Function): void {
 	sCallback = callback;
 }
 
