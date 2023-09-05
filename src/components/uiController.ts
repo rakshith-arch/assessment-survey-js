@@ -190,24 +190,23 @@ export function setFeedbackText(nt: string): void{
 
 //functions to show/hide the different containers
 export function showLanding(): void {
-	landingCont.style.display = "block";
+	landingCont.style.display = "flex";
 	gameCont.style.display = "none";
 	endCont.style.display = "none";
 }
 
 export function showGame(): void {
 	landingCont.style.display = "none";
-	gameCont.style.display = "block";
+	gameCont.style.display = "grid";
 	endCont.style.display = "none";
 	allstart = Date.now();
 	sCallback();
 }
 
 export function showEnd(): void {
-	
 	landingCont.style.display = "none";
 	gameCont.style.display = "none";
-	endCont.style.display = "block";
+	endCont.style.display = "flex";
 }
 
 export function setFeedbackVisibile(b: boolean) {
