@@ -45,18 +45,17 @@ body {
 
 .chestWrapper{
 	margin: 0 auto;
-
-width:80%;
-padding-left:10%;
-padding-right:10%;
+	width:80%;
+	padding-left:10%;
+	padding-right:10%;
 }
-
 
 .chestdiv{
 	width:50%;
 
 		float:left;
 }
+
 #pbutton{
 	padding-top:30px;
 	width:50%;
@@ -65,10 +64,8 @@ padding-right:10%;
 
 .chestWrapper img{
 	width: 90%;
-
 	float:left;
 }
-
 
 .starWrapper{
 	width:100%;
@@ -113,9 +110,8 @@ padding-top:50px;
 .questionContainer{
 	width:100%;
 	margin:0 auto;
-padding:5px;
+	padding:5px;
 	float:left;
-
 	text-align:center;
 }
 
@@ -142,6 +138,7 @@ padding:5px;
   opacity: 1;
   transition: opacity .5s linear;
 }
+
 .hidden {
   visibility: hidden;
   opacity: 0;
@@ -200,7 +197,6 @@ button {
 }
 
 #answerButton1 {
-
 	background-color: rgb(255, 234, 205);
 	border-color: rgb(254, 217, 167);
 }
@@ -211,13 +207,11 @@ button {
 }
 
 #answerButton3 {
-
 	background-color: rgb(233, 255, 204);
 	border-color: rgb(211, 250, 161);
 }
 
 #answerButton4 {
-
 	background-color: rgb(255, 217, 211);
 	border-color: rgb(255, 189, 180);
 }
