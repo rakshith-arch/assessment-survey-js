@@ -109,11 +109,11 @@ export function showQuestion(newQ?: qData): void {
 		}
 	})
 
-	aC.style.display = "grid";
+	aC.style.visibility = "visible";
 
 	let qCode = "";
 	qT.innerHTML = "";
-	if (typeof(newQ)=='undefined'){
+	if (typeof (newQ) == 'undefined') {
 		newQ = nextquest;
 	}
 
