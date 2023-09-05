@@ -131,62 +131,38 @@ export function showQuestion(newQ?: qData): void {
 	qT.innerHTML += qCode;
 
 
-	for (var b in buttons){
-		buttons[b].style.display = "none";
+	for (var b in buttons) {
+		buttons[b].style.visibility = "hidden";
+	}
+}
+
+
+export function showOptions(): void {
+	if (!shown) {
+		var newQ = nextquest;
+
+		//showing the answers on each button
+		let btnIndex = 0;
+		for (var aNum in newQ.answers) {
+			buttons[btnIndex++].style.visibility = "visible";
+			let curAnswer = newQ.answers[aNum];
+			let answerCode = "";
+			if ('answerText' in curAnswer) {
+				answerCode += curAnswer.answerText;
+			}
+			buttons[aNum].innerHTML = answerCode;
+			if ('answerImg' in curAnswer) {
+				var tmpimg = getImg(curAnswer.answerImg);
+				buttons[aNum].appendChild(tmpimg);
+			}
+		}
+
+		qstart = Date.now();
 	}
 
-
-
 }
 
-
-export function showOptions(): void{
-if (!shown){
-	var newQ = nextquest;
-
-
-			if (newQ.answers.length >= 1){
-				b1.style.display = "block"
-			}
-			if (newQ.answers.length >= 2){
-				b2.style.display = "block";
-			}
-			if (newQ.answers.length >= 3){
-				b3.style.display = "block";
-			}
-			if (newQ.answers.length >= 4){
-				b4.style.display = "block"
-			}
-			if (newQ.answers.length >= 5){
-				b5.style.display = "block";
-			}
-			if (newQ.answers.length >= 6){
-
-				b6.style.display = "block";
-			}
-
-
-				//showing the answers on each button
-				for (var aNum in newQ.answers) {
-					let curAnswer = newQ.answers[aNum];
-					let answerCode = "";
-					if ('answerText' in curAnswer) {
-						answerCode += curAnswer.answerText;
-					}
-					buttons[aNum].innerHTML = answerCode;
-					if ('answerImg' in curAnswer) {
-						var tmpimg = getImg(curAnswer.answerImg);
-						buttons[aNum].appendChild(tmpimg);
-					}
-
-				}
-
-			qstart = Date.now();
-}
-
-}
-
-export function setFeedbackText(nt: string): void{
+export function setFeedbackText(nt: string): void {
 	console.log("feedback text set to " + nt);
 	fT.innerHTML = nt;
 }
