@@ -97,7 +97,7 @@ padding-top:50px;
 	max-width:540px;
 	min-height:800px;
 	height:100%;
-	background-image:url("../img/bg_crayon-1.png");
+	background: linear-gradient(180deg, rgba(223,247,161,1) 0%, rgba(96,171,222,1) 100%);
 	background-size: 100% 100%;
 	bottom:0;
 }
