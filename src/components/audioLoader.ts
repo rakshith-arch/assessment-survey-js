@@ -57,9 +57,16 @@ export async function preimg( newimgurl ){
 
 export async function preaudio( newAudioURL ){
 	console.log("looking for " + newAudioURL);
-	let audioFile = newAudioURL + ".mp3";
+	if (newAudioURL.includes(".wav")){
+		newAudioURL = newAudioURL.replace(".wav", ".mp3");
+	} else if (newAudioURL.includes(".mp3")) {
+		// Already contains .mp3 not doing anything
+	} else {
+		newAudioURL = newAudioURL + ".mp3";
+	}
+	console.log("Filtered: " + newAudioURL);
 	let newAudio = new Audio();
-	newAudio.src = "audio/" + durl + "/" + audioFile;
+	newAudio.src = "audio/" + durl + "/" + newAudioURL;
 	allaudios[newAudioURL] = newAudio;
 	console.log(newAudio.src);
 }
@@ -80,6 +87,8 @@ export function playAudio(name: string, apcb?: Function){
 		if (name.slice(-4) != ".mp3"){
 			name = name + ".mp3";
 		}
+	} else {
+		name = name + ".mp3";
 	}
 
 	console.log(allaudios);
