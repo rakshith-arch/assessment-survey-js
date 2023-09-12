@@ -13,7 +13,7 @@ import { initializeApp } from 'firebase/app';
 import { getAnalytics, logEvent } from 'firebase/analytics';
 import { Workbox } from 'workbox-window';
 
-const appVersion = "v0.0.2";
+const appVersion = "v0.0.3";
 
 
 export class App {
