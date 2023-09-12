@@ -1,59 +1,67 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<title>Assessment / Survey</title>
 
-		<meta name="description" content="Assessment/Survey from Curious Learning">
-		<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<head>
+	<title>Assessment / Survey</title>
 
-		<link rel="stylesheet" href="css/style.css">
-	</head>
+	<meta name="description" content="Assessment/Survey from Curious Learning">
+	<meta name="viewport" content="width=device-width,initial-scale=1.0">
+
+	<link rel="stylesheet" href="css/style.css">
+</head>
 
 <body>
 	<div class="bodyWrapper">
 		<div class="landingPageWrapper" id="landWrap">
 			<img class="landingMonster" src="img/monster.png" />
 			<BR>
-				<button id="startButton">
-					<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9 18L15 12L9 6V18Z" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
-				</button>
+			<button id="startButton">
+				<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+					<path d="M9 18L15 12L9 6V18Z" fill="currentColor" stroke="currentColor" stroke-width="2"
+						stroke-linecap="round" stroke-linejoin="round"></path>
+				</svg>
+			</button>
+		</div>
+
+		<div class="questionViewWrapper" id="gameWrap" style="display:none">
+			<div class="starWrapper" id="starWrapper"></div>
+			<div class="chestWrapper">
+				<div class="chestdiv"><img src='img/chest.png' /></div>
+				<div id="pbutton"></div>
+			</div>
+			<div class="questionContainer" id="qWrap"></div>
+
+
+			<div class="answerContainer" id="aWrap">
+				<div class="answerButton" id="answerButton1">1</div>
+				<div class="answerButton" id="answerButton2">2</div>
+				<div class="answerButton" id="answerButton3">3</div>
+				<div class="answerButton" id="answerButton4">4</div>
+				<div class="answerButton" id="answerButton5" style="display: none;">5</div>
+				<div class="answerButton" id="answerButton6" style="display: none;">6</div>
 			</div>
 
-			<div class="questionViewWrapper" id="gameWrap" style="display:none">
-				<div class="starWrapper" id="starWrapper"></div>
-				<div class="chestWrapper"><div class="chestdiv"><img src='img/chest.png' /></div> <div id="pbutton"></div></div>
-				<div class="questionContainer" id="qWrap"></div>
-
-
-				<div class="answerContainer" id="aWrap">
-					<div class="answerButton" id="answerButton1">1</div>
-					<div class="answerButton" id="answerButton2">2</div>
-					<div class="answerButton" id="answerButton3">3</div>
-					<div class="answerButton" id="answerButton4">4</div>
-					<div class="answerButton" id="answerButton5">5</div>
-					<div class="answerButton" id="answerButton6">6</div>
-				</div>
-
-				<div class="feedbackContainer hidden" id="feedbackWrap" >
-					kuyancomeka!
-				</div>
-			</div>
-
-			<div class="endingPageWrapper" id="endWrap" style="display:none">
-				click to exit!
+			<div class="feedbackContainer hidden" id="feedbackWrap">
+				kuyancomeka!
 			</div>
 		</div>
-		<script async src="https://www.googletagmanager.com/gtag/js?id=G-DGTWM534Z4"></script>
-		<script>
-		  window.dataLayer = window.dataLayer || [];
-		  function gtag(){dataLayer.push(arguments);}
-		  gtag('js', new Date());
 
-		  gtag('config', 'G-DGTWM534Z4');
-		</script>
+		<div class="endingPageWrapper" id="endWrap" style="display:none">
+			click to exit!
+		</div>
+	</div>
+	<script async src="https://www.googletagmanager.com/gtag/js?id=G-DGTWM534Z4"></script>
+	<script>
+		window.dataLayer = window.dataLayer || [];
+		function gtag() { dataLayer.push(arguments); }
+		gtag('js', new Date());
 
-		<script src="dist/bundle.js"></script>
+		gtag('config', 'G-DGTWM534Z4');
+	</script>
+
+	<script src="dist/bundle.js"></script>
 
 
-	</body>
+</body>
+
 </html>
