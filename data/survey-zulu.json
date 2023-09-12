@@ -3,21 +3,21 @@
 	"appType": "survey",
 	"feedbackText": "kuyancomeka!",
 	"questions":[
-		{"qName": "q1food","promptText": "", "promptAudio": "Where is your food stored.wav",
+		{"qName": "q1food","promptText": "", "promptAudio": "Where is your food stored.mp3",
 			"answers":[
 			{"answerName":"q1a1basket","answerImg":"img/survey/basket.jpeg"},
 			{"answerName":"q1a2fridge","answerImg":"img/survey/revised_open_fridge.jpeg"},
 			{"answerName":"q1a3stainlesssteel","answerImg":"img/survey/revised_stainless_steel_containers.jpeg"}
 
 		]},
-		{"qName": "q2transport","promptText": "",  "promptAudio": "How does your family get places.wav",
+		{"qName": "q2transport","promptText": "",  "promptAudio": "How does your family get places.mp3",
 			"answers":[
 			{"answerName":"q2arickshaw","answerImg":"img/survey/auto_rickshaw.jpeg"},
 			{"answerName":"q2acar","answerImg":"img/survey/car.jpeg"},
 			{"answerName":"q2aminivan","answerImg":"img/survey/revised_minivan_with_people.jpeg"},
 			{"answerName":"q2abus","answerImg":"img/survey/public bus.jpeg"}
 		]},
-		{"qName": "q3","promptText": "", "promptAudio": "Where do you get your water.wav",
+		{"qName": "q3","promptText": "", "promptAudio": "Where do you get your water.mp3",
 			"answers":[
 			{"answerName":"q3a1", "answerImg":"img/survey/getting water from river.jpeg"},
 			{"answerName":"q3a2","answerImg":"img/survey/water from a truck.jpeg"},
@@ -25,7 +25,7 @@
 			{"answerName":"q3a4","answerImg":"img/survey/water tap.jpeg"},
 			{"answerName":"q3a5","answerImg":"img/survey/Well and buckets.jpeg"}
 		]},
-		{"qName": "q4","promptText": "", "promptAudio": "What does your house look like.wav",
+		{"qName": "q4","promptText": "", "promptAudio": "What does your house look like.mp3",
 			"answers":[
 			{"answerName":"q4a1","answerImg":"img/survey/apartment building.jpeg"},
 			{"answerName":"q4a2","answerImg":"img/survey/small house.jpeg"},
@@ -34,7 +34,7 @@
 			{"answerName":"q4a5","answerImg":"img/survey/wooden hut.jpeg"}
 
 		]},
-		{"qName": "q5","promptText": "", "promptAudio": "Which of these does your family have at home.wav",
+		{"qName": "q5","promptText": "", "promptAudio": "Which of these does your family have at home.mp3",
 			"answers":[
 			{"answerName":"q5a1","answerImg":"img/survey/smartphone.jpeg"},
 			{"answerName":"q5a2","answerImg":"img/survey/laptop.jpeg"},
@@ -42,13 +42,13 @@
 			{"answerName":"q5a4","answerImg":"img/survey/none.jpg"}
 
 		]},
-		{"qName": "q6","promptText": "", "promptAudio": "Where does your family eat.wav",
+		{"qName": "q6","promptText": "", "promptAudio": "Where does your family eat.mp3",
 			"answers":[
 			{"answerName":"q6a1", "answerImg":"img/survey/Dining table.jpeg"},
 			{"answerName":"q6a2","answerImg":"img/survey/revised_eating_on_the_floor.jpeg"}
 
 		]},
-		{"qName": "q7","promptText": "", "promptAudio": "What keeps you cool.wav",
+		{"qName": "q7","promptText": "", "promptAudio": "What keeps you cool.mp3",
 			"answers":[
 			{"answerName":"q7a1", "answerImg":"img/survey/ceiling fan.jpeg"},
 			{"answerName":"q7a2", "answerImg":"img/survey/Hand fan Nigeria.jpeg"},
@@ -59,7 +59,7 @@
 
 
 		]},
-		{"qName": "q8","promptText": "", "promptAudio": "How does your family cook.wav",
+		{"qName": "q8","promptText": "", "promptAudio": "How does your family cook.mp3",
 			"answers":[
 			{"answerName":"q8a1","answerImg":"img/survey/charcoal cooker.jpeg"},
 			{"answerName":"q8a2","answerImg":"img/survey/gas burners.jpeg"},
