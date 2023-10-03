@@ -17,6 +17,19 @@ class CacheModel implements ICacheModel {
         this.contentFilePath = contentFilePath;
         this.audioVisualResources = audioVisualResources;
     }
+
+    public setAppName(appName: string) {
+        this.appName = appName;
+    }
+
+    public setContentFilePath(contentFilePath: string) {
+        this.contentFilePath = contentFilePath;
+    }
+
+    public setAudioVisualResources(audioVisualResources: string[]) {
+        this.audioVisualResources = audioVisualResources;
+    }
 }
 
 export default CacheModel;
+
