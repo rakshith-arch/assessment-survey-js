@@ -27,6 +27,8 @@ export class App {
 	public analytics;
 	public game: baseQuiz;
 
+	cacheModel: CacheModel;
+
 	broadcastChannel: BroadcastChannel;
 
 	lang: string = "english";
@@ -36,6 +38,10 @@ export class App {
 
 		console.log("Initializing app...");
 		this.dataURL = getDataFile();
+
+		this.cacheModel = new CacheModel(this.dataURL, this.dataURL, []);
+
+		console.log("Data file: " + this.dataURL);
 
 		const firebaseConfig = {
 		  apiKey: "AIzaSyB8c2lBVi26u7YRL9sxOP97Uaq3yN8hTl4",
