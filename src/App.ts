@@ -130,8 +130,8 @@ export class App {
 
 			await navigator.serviceWorker.ready;
 			
-			console.log("Game is ");
-			console.log(game);
+			console.log("Cache Model: ");
+			console.log(this.cacheModel);
 
 			// if (localStorage.getItem(book.bookName) == null) {
             //     this.broadcastChannel.postMessage({
