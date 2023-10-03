@@ -38,6 +38,7 @@ export class App {
 		this.unity = new UnityBridge();
 
 		console.log("Initializing app...");
+
 		this.dataURL = getDataFile();
 
 		this.cacheModel = new CacheModel(this.dataURL, this.dataURL, []);
