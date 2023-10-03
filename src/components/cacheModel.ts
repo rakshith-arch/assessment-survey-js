@@ -10,9 +10,9 @@ interface ICacheModel {
 class CacheModel implements ICacheModel {
     appName: string;
     contentFilePath: string;
-    audioVisualResources: string[];
+    audioVisualResources: Set<string>;
 
-    constructor(appName: string, contentFilePath: string, audioVisualResources: string[]) {
+    constructor(appName: string, contentFilePath: string, audioVisualResources: Set<string>) {
         this.appName = appName;
         this.contentFilePath = contentFilePath;
         this.audioVisualResources = audioVisualResources;
@@ -26,9 +26,16 @@ class CacheModel implements ICacheModel {
         this.contentFilePath = contentFilePath;
     }
 
-    public setAudioVisualResources(audioVisualResources: string[]) {
+    public setAudioVisualResources(audioVisualResources: Set<string>) {
         this.audioVisualResources = audioVisualResources;
     }
+
+    public addItemToAudioVisualResources(item: string) {
+        if (!this.audioVisualResources.has(item)) {
+            this.audioVisualResources.add(item);
+        }
+    }
+
 }
 
 export default CacheModel;
