@@ -92,7 +92,7 @@ export function readyForNext(newQ: qData): void {
 	qT.innerHTML = "";
 	qT.style.display = "none";
 	// pB.innerHTML = "<button id='nextqButton'><svg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'><path d='M9 18L15 12L9 6V18Z' fill='currentColor' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'></path></svg></button>";
-	pB.innerHTML = "<button id='nextqButton'><img width='70px' height='70px' src='/img/sound-play-button.svg' type='image/svg+xml'> </img></button>";
+	pB.innerHTML = "<button id='nextqButton'><img width='85px' height='85px' src='/img/sound-play-button.svg' type='image/svg+xml'> </img></button>";
 	var nqb = document.getElementById("nextqButton");
 	nqb.addEventListener("click", function () {
 		showQuestion();
@@ -105,7 +105,7 @@ export function readyForNext(newQ: qData): void {
 export function showQuestion(newQ?: qData): void {
 
 	// pB.innerHTML = "<button id='nextqButton'><svg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'><path d='M9 18L15 12L9 6V18Z' fill='currentColor' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'></path></svg></button>";
-	pB.innerHTML = "<button id='nextqButton'><img width='70px' height='70px' src='/img/sound-play-button.svg' type='image/svg+xml'> </img></button>";
+	pB.innerHTML = "<button id='nextqButton'><img width='85px' height='85px' src='/img/sound-play-button.svg' type='image/svg+xml'> </img></button>";
 	var nqb = document.getElementById("nextqButton");
 	nqb.addEventListener("click", function () {
 		console.log("next question button pressed");
