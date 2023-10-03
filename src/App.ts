@@ -8,7 +8,7 @@ import { Assessment } from './assessment/assessment'
 import { UnityBridge } from './components/unityBridge'
 import { setUuid, linkAnalytics, sendInit } from './components/analyticsEvents'
 import { baseQuiz } from './baseQuiz';
-import { fetchAppData } from './components/jsonUtils';
+import { fetchAppData, getDataURL } from './components/jsonUtils';
 import { initializeApp } from 'firebase/app';
 import { getAnalytics, logEvent } from 'firebase/analytics';
 import { Workbox } from 'workbox-window';
