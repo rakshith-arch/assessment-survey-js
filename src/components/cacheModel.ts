@@ -4,7 +4,7 @@
 interface ICacheModel {
     appName: string;
     contentFilePath: string;
-    audioVisualResources: string[];
+    audioVisualResources: Set<string>;
 }
 
 class CacheModel implements ICacheModel {
