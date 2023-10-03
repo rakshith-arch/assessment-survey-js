@@ -75,22 +75,29 @@ export class App {
 				await this.registerServiceWorker(this.game);
 			})();
 		});
-		fetchAppType(this.dataURL).then(result => {
+
+		await fetchAppData(this.dataURL).then(data => {
 			console.log("Assessment/Survey " + appVersion + " initializing!");
-			console.log("spinning up");
-			console.log(result);
-			if (result == "survey") {
+			console.log("App data loaded!");
+			console.log(data);
+
+			// TODO: Why do we need to set the feedback text here?
+			setFeedbackText(data["feedbackText"]);
+
+			let appType = data["appType"];
+
+			if (appType == "survey") {
 				this.game = new Survey(this.dataURL, this.unity);
-			}
-			if (result == "assessment") {
+			} else if (appType == "assessment") {
 				this.game = new Assessment(this.dataURL, this.unity);
 			}
+
 			this.game.unity = this.unity;
-			
+
 			setUuid(getUUID(), getUserSource());
 			linkAnalytics(this.analytics, this.dataURL);
 			sendInit();
-			
+
 			this.game.run(this);
 		});
 	}
