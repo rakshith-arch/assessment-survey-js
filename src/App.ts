@@ -13,6 +13,7 @@ import { initializeApp } from 'firebase/app';
 import { getAnalytics, logEvent } from 'firebase/analytics';
 import { Workbox } from 'workbox-window';
 import CacheModel from './components/cacheModel';
+import { setFeedbackText } from './components/uiController';
 
 const appVersion = "v0.0.4";
 
