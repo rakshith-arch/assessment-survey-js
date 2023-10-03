@@ -91,6 +91,17 @@ export class App {
 			if (appType == "survey") {
 				this.game = new Survey(this.dataURL, this.unity);
 			} else if (appType == "assessment") {
+				// Get and add all the audio assets to the cache model
+
+				let buckets = data["buckets"];
+
+				for (let i = 0; i < buckets.length; i++) {
+					for (let j = 0; j < buckets[i].items.length; j++) {
+						let audioItemURL = "/audio/" + buckets[i].items[j].itemName + ".mp3";
+						this.cacheModel.addItemToAudioVisualResources(audioItemURL);
+					}
+				}
+
 				this.game = new Assessment(this.dataURL, this.unity);
 			}
 
