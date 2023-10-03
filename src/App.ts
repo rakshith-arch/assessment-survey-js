@@ -81,6 +81,8 @@ export class App {
 			console.log("App data loaded!");
 			console.log(data);
 
+			this.cacheModel.setContentFilePath(getDataURL(this.dataURL));
+
 			// TODO: Why do we need to set the feedback text here?
 			setFeedbackText(data["feedbackText"]);
 
