@@ -58,14 +58,19 @@ body {
 
 .chestdiv {
 	width: 50%;
+	margin: auto;
+}
 
-	float: left;
+.nextQuestionInput {
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
 
 #pbutton {
-	padding-top: 30px;
-	width: 50%;
-	float: left;
+	/* padding-top: 30px; */
+	width: 5vw;
+	/* float: left; */
 }
 
 .chestWrapper img {
@@ -220,6 +225,8 @@ button {
 	background-color: rgba(0, 0, 0, 0);
 	border: none;
 	cursor: pointer;
+	margin: 0;
+	padding: 0;
 }
 
 /* #answerButton1 {
