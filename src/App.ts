@@ -41,9 +41,9 @@ export class App {
 
 		this.dataURL = getDataFile();
 
-		this.cacheModel = new CacheModel(this.dataURL, this.dataURL, []);
+		this.cacheModel = new CacheModel(this.dataURL, this.dataURL, new Set<string>());
 
-		console.log("Data file: " + this.dataURL);
+		// console.log("Data file: " + this.dataURL);
 
 		const firebaseConfig = {
 		  apiKey: "AIzaSyB8c2lBVi26u7YRL9sxOP97Uaq3yN8hTl4",
