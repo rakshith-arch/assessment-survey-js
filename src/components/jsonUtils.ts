@@ -23,7 +23,7 @@ export async function fetchAssessmentBuckets(url: string) {
 }
 
 async function loadData(url: string) {
-	var furl = "./data/" + url + ".json";
+	var furl = "/data/" + url + ".json";
 	console.log(furl);
 	return fetch(furl).then(response => response.json());
 }
