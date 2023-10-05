@@ -96,10 +96,12 @@ export class App {
 
 				for (let i = 0; i < buckets.length; i++) {
 					for (let j = 0; j < buckets[i].items.length; j++) {
-						let audioItemURL = "/audio/" + buckets[i].items[j].itemName + ".mp3";
+						let audioItemURL = "/audio/" + this.dataURL + "/" + buckets[i].items[j].itemName + ".mp3";
 						this.cacheModel.addItemToAudioVisualResources(audioItemURL);
 					}
 				}
+
+				this.cacheModel.addItemToAudioVisualResources("/audio/" + this.dataURL + "/answer_feedback.mp3");
 
 				this.game = new Assessment(this.dataURL, this.unity);
 			}
