@@ -33,8 +33,6 @@ export class App {
 
 	cacheModel: CacheModel;
 
-	broadcastChannel: BroadcastChannel;
-
 	lang: string = "english";
 
 	constructor() {
@@ -65,8 +63,6 @@ export class App {
 		this.analytics = fanalytics;
 		logEvent(fanalytics, 'notification_received');
 		logEvent(fanalytics,"test initialization event",{});
-
-		this.broadcastChannel = new BroadcastChannel('as-message-channel');
 
 		console.log("firebase initialized");
 	}
