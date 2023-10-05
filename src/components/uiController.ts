@@ -2,7 +2,6 @@ import { qData, answerData } from './questionData';
 import { playAudio, playDing, playCorrect, getImg } from './audioLoader';
 import { randFrom, shuffleArray } from '../components/mathUtils';
 
-
 const landingCont = document.getElementById("landWrap");
 const gameCont = document.getElementById("gameWrap");
 const endCont = document.getElementById("endWrap");
@@ -25,6 +24,12 @@ var allstart;
 var shown = false;
 var allstars = [];
 var qansnum = 0;
+
+let contentLoaded = false;
+
+export function setContentLoaded(value: boolean) {
+	contentLoaded = value;
+}
 
 for (var xi = 0; xi < 20; xi += 1) {
 	const newstar = document.createElement("img");
@@ -77,7 +82,9 @@ b6.addEventListener("click", function () {
 });
 
 landingCont.addEventListener("click", function () {
-	showGame();
+	if (contentLoaded) {
+		showGame();
+	}
 })
 
 
