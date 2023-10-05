@@ -14,9 +14,13 @@ import { getAnalytics, logEvent } from 'firebase/analytics';
 import { Workbox } from 'workbox-window';
 import CacheModel from './components/cacheModel';
 import { setFeedbackText } from './components/uiController';
+import { setContentLoaded } from './components/uiController';
 
-const appVersion = "v0.0.4";
+const appVersion = "v0.0.7";
 
+let loadingScreen = document.getElementById("loadingScreen");
+
+const broadcastChannel: BroadcastChannel = new BroadcastChannel('as-message-channel');
 
 export class App {
 
