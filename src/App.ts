@@ -25,7 +25,6 @@ const broadcastChannel: BroadcastChannel = new BroadcastChannel('as-message-chan
 export class App {
 
 	/** Could be 'assessment' or 'survey' based on the data file */
-	private appType;
 	public dataURL: string;
 
 	public unity;
