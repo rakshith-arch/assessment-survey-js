@@ -1,8 +1,8 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
-workbox.precaching.precacheAndRoute([{"revision":"dee6c1f29303864a9bacda72ae784438","url":"css/style.css"},{"revision":"ba2586d8fc39d4417b49d18cbc95ce5c","url":"dist/bundle.js"},{"revision":"2364a2746dbef47fa2601198fe4ed894","url":"img/bg_crayon-1.png"},{"revision":"0eb874baac10d2a76c7cc657c756acdf","url":"img/bg_v01.jpg"},{"revision":"56484ec92a16940b09c0d9fea2e4b11b","url":"img/chest.png"},{"revision":"0ab4538bcfd8f9ed476513dedfc4758a","url":"img/hill_v01.png"},{"revision":"dc33b481685304c43d152362955b01f9","url":"img/monster.png"},{"revision":"7c15bf2645beb71a0876f99f84ea514b","url":"img/peekingMonster.js"},{"revision":"715c1be769f3bd2dddae2c9ef90123d1","url":"img/star.png"},{"revision":"4a368123fc4593ce83a4f774b2642b5f","url":"img/survey/laptop_and_phone.jpg"},{"revision":"ebe067e6890bf49c9924a5e5c43ca1d3","url":"img/survey/none.jpg"},{"revision":"0a7581118c8d8331370d69390d020b5c","url":"index.html"},{"revision":"101953208181818975e033743510cd06","url":"manifest.json"}], {});
+workbox.precaching.precacheAndRoute([{"revision":"8799d748dc932669a7921f9a2f1d97bd","url":"css/style.css"},{"revision":"e0de82506ba234c8d0817a016c15a23e","url":"dist/bundle.js"},{"revision":"2364a2746dbef47fa2601198fe4ed894","url":"img/bg_crayon-1.png"},{"revision":"0eb874baac10d2a76c7cc657c756acdf","url":"img/bg_v01.jpg"},{"revision":"56484ec92a16940b09c0d9fea2e4b11b","url":"img/chest.png"},{"revision":"0ab4538bcfd8f9ed476513dedfc4758a","url":"img/hill_v01.png"},{"revision":"38e43cd7b492b624fc3da67dea7b0433","url":"img/loadingImg.gif"},{"revision":"dc33b481685304c43d152362955b01f9","url":"img/monster.png"},{"revision":"7c15bf2645beb71a0876f99f84ea514b","url":"img/peekingMonster.js"},{"revision":"715c1be769f3bd2dddae2c9ef90123d1","url":"img/star.png"},{"revision":"4a368123fc4593ce83a4f774b2642b5f","url":"img/survey/laptop_and_phone.jpg"},{"revision":"ebe067e6890bf49c9924a5e5c43ca1d3","url":"img/survey/none.jpg"},{"revision":"e580a226acf359210aa200893cd56fb7","url":"index.html"},{"revision":"101953208181818975e033743510cd06","url":"manifest.json"}], {});
 
-const channel = new BroadcastChannel("cr-message-channel");
+const channel = new BroadcastChannel("as-message-channel");
 
 let version = 0.9;
 let cachingProgress = 0;
@@ -66,43 +66,34 @@ function updateCachingProgress(bookName) {
 }
 
 function cacheTheBookJSONAndImages(data) {
-  console.log("Caching the book JSON and images");
-  let bookData = data["bookData"];
-  let bookAudioAndImageFiles = [];
+  console.log("Caching the book JSON and images", data);
+  let appData = data["appData"];
+  let cachableAssets = [];
+
+  cachableAssets.push(appData["contentFilePath"]);
+  cachableAssets.push(...appData["audioVisualResources"])
+
+  // let audioVisualResources = appData["audioVisualResources"];
   
-  for (let i = 0; i < bookData["pages"].length; i++) {
-    let page = bookData["pages"][i];
-    for (let j = 0; j < page["visualElements"].length; j++) {
-      let visualElement = page["visualElements"][j];
-      if (visualElement["type"] === "audio") {
-        bookAudioAndImageFiles.push(`/BookContent/${data["bookData"]["bookName"]}/content/` + visualElement["audioSrc"]);
-        for (let k = 0; k < visualElement["audioTimestamps"]["timestamps"].length; k++) {
-          bookAudioAndImageFiles.push("/BookContent/LetsFlyLevel2En/content/" + visualElement["audioTimestamps"]["timestamps"][k]["audioSrc"]);
-        }
-      } else if (visualElement["type"] === "image" && visualElement["imageSource"] !== "empty_glow_image") {
-        bookAudioAndImageFiles.push(`/BookContent/${data["bookData"]["bookName"]}/content/` + visualElement["imageSource"]);
-      }
-    }
-  }
+  // for (let i = 0; i < audioVisualResources.length; i++) {
+  //   cachableAssets.push(audioVisualResources[i]);
+  // }
 
-  cachableAssetsCount = bookAudioAndImageFiles.length;
-  
+  cachableAssetsCount = cachableAssets.length;
 
-  bookAudioAndImageFiles.push(data["contentFile"]);
+  console.log("Cachable app assets: ", cachableAssets);
 
-  console.log("Book audio files: ", bookAudioAndImageFiles);
-
-  caches.open(bookData["bookName"]).then((cache) => {
-    for (let i = 0; i < bookAudioAndImageFiles.length; i++) {
-      cache.add(bookAudioAndImageFiles[i]).finally(() => {
-        updateCachingProgress(bookData["bookName"]);
+  caches.open(appData["appName"]).then((cache) => {
+    for (let i = 0; i < cachableAssets.length; i++) {
+      cache.add(cachableAssets[i]).finally(() => {
+        updateCachingProgress(appData["appName"]);
       }).catch((error) => {
         console.log("Error while caching the book JSON", error);
       });
     }
-    cache.addAll(bookAudioAndImageFiles).catch((error) => {
-      console.log("Error while caching the book JSON", error);
-    });
+    // cache.addAll(bookAudioAndImageFiles).catch((error) => {
+    //   console.log("Error while caching the book JSON", error);
+    // });
   });
 }
 

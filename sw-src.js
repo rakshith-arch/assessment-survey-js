@@ -2,7 +2,7 @@ importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox
 
 workbox.precaching.precacheAndRoute(self.__WB_MANIFEST, {});
 
-const channel = new BroadcastChannel("cr-message-channel");
+const channel = new BroadcastChannel("as-message-channel");
 
 let version = 0.9;
 let cachingProgress = 0;
@@ -66,43 +66,34 @@ function updateCachingProgress(bookName) {
 }
 
 function cacheTheBookJSONAndImages(data) {
-  console.log("Caching the book JSON and images");
-  let bookData = data["bookData"];
-  let bookAudioAndImageFiles = [];
+  console.log("Caching the book JSON and images", data);
+  let appData = data["appData"];
+  let cachableAssets = [];
+
+  cachableAssets.push(appData["contentFilePath"]);
+  cachableAssets.push(...appData["audioVisualResources"])
+
+  // let audioVisualResources = appData["audioVisualResources"];
   
-  for (let i = 0; i < bookData["pages"].length; i++) {
-    let page = bookData["pages"][i];
-    for (let j = 0; j < page["visualElements"].length; j++) {
-      let visualElement = page["visualElements"][j];
-      if (visualElement["type"] === "audio") {
-        bookAudioAndImageFiles.push(`/BookContent/${data["bookData"]["bookName"]}/content/` + visualElement["audioSrc"]);
-        for (let k = 0; k < visualElement["audioTimestamps"]["timestamps"].length; k++) {
-          bookAudioAndImageFiles.push("/BookContent/LetsFlyLevel2En/content/" + visualElement["audioTimestamps"]["timestamps"][k]["audioSrc"]);
-        }
-      } else if (visualElement["type"] === "image" && visualElement["imageSource"] !== "empty_glow_image") {
-        bookAudioAndImageFiles.push(`/BookContent/${data["bookData"]["bookName"]}/content/` + visualElement["imageSource"]);
-      }
-    }
-  }
+  // for (let i = 0; i < audioVisualResources.length; i++) {
+  //   cachableAssets.push(audioVisualResources[i]);
+  // }
 
-  cachableAssetsCount = bookAudioAndImageFiles.length;
-  
+  cachableAssetsCount = cachableAssets.length;
 
-  bookAudioAndImageFiles.push(data["contentFile"]);
+  console.log("Cachable app assets: ", cachableAssets);
 
-  console.log("Book audio files: ", bookAudioAndImageFiles);
-
-  caches.open(bookData["bookName"]).then((cache) => {
-    for (let i = 0; i < bookAudioAndImageFiles.length; i++) {
-      cache.add(bookAudioAndImageFiles[i]).finally(() => {
-        updateCachingProgress(bookData["bookName"]);
+  caches.open(appData["appName"]).then((cache) => {
+    for (let i = 0; i < cachableAssets.length; i++) {
+      cache.add(cachableAssets[i]).finally(() => {
+        updateCachingProgress(appData["appName"]);
       }).catch((error) => {
-        console.log("Error while caching the book JSON", error);
+        console.log("Error while caching an asset: ", error);
       });
     }
-    cache.addAll(bookAudioAndImageFiles).catch((error) => {
-      console.log("Error while caching the book JSON", error);
-    });
+    // cache.addAll(bookAudioAndImageFiles).catch((error) => {
+    //   console.log("Error while caching the book JSON", error);
+    // });
   });
 }
 
