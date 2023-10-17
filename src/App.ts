@@ -4,9 +4,9 @@
 
 import { getUUID, getUserSource, getDataFile } from './components/urlUtils';
 import { Survey } from './survey/survey';
-import { Assessment } from './assessment/assessment'
-import { UnityBridge } from './components/unityBridge'
-import { setUuid, linkAnalytics, sendInit } from './components/analyticsEvents'
+import { Assessment } from './assessment/assessment';
+import { UnityBridge } from './components/unityBridge';
+import { setUuid, linkAnalytics, sendInit } from './components/analyticsEvents';
 import { baseQuiz } from './baseQuiz';
 import { fetchAppData, getDataURL } from './components/jsonUtils';
 import { initializeApp } from 'firebase/app';
@@ -134,16 +134,31 @@ export class App {
 			console.log("Cache Model: ");
 			console.log(this.cacheModel);
 
-			// if (localStorage.getItem(book.bookName) == null) {
-            //     this.broadcastChannel.postMessage({
-            //         command: "Cache",
-            //         data: {
-            //             lang: this.lang,
-            //             bookData: book,
-            //             contentFile: this.contentFilePath,
-            //         }
-            //     });
-            // }
+			if (localStorage.getItem(this.cacheModel.appName) == null) {
+				loadingScreen!.style.display = "flex";
+                broadcastChannel.postMessage({
+                    command: "Cache",
+                    data: {
+                        appData: this.cacheModel,
+                    }
+                });
+            } else {
+				loadingScreen!.style.display = "none";
+			}
+
+			broadcastChannel.onmessage = (event) => {
+				console.log(event.data.command + " received from service worker!");
+				if (event.data.command == "Activated") {
+					broadcastChannel.postMessage({
+						command: "Cache",
+						data: {
+							appData: this.cacheModel,
+						}
+					});
+				}
+			};
+
+			navigator.serviceWorker.addEventListener("message", handleServiceWorkerMessage);
 
 		} else {
 			console.warn("Service workers are not supported in this browser.");
@@ -160,9 +175,52 @@ export class App {
 			console.log("Service worker registration failed: " + err);
 		}
 	}
-
 }
 
+broadcastChannel.addEventListener("message", handleServiceWorkerMessage);
+
+function handleServiceWorkerMessage(event): void {
+    if (event.data.msg == "Loading") {
+        let progressValue = parseInt(event.data.data.progress);
+        handleLoadingMessage(event, progressValue);
+
+    }
+    if (event.data.msg == "UpdateFound") {
+        console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>.,update Found");
+        handleUpdateFoundMessage();
+    }
+}
+
+function handleLoadingMessage(event, progressValue): void {
+    let progressBar = document.getElementById("progressBar");
+    if (progressValue < 100) {
+        progressBar!.style.width = progressValue + "%";
+    } else if (progressValue >= 100) {
+        loadingScreen!.style.display = "none";
+		setContentLoaded(true);
+        readLanguageDataFromCacheAndNotifyAndroidApp(event.data.data.bookName);
+        // add book with a name to local storage as cached
+        localStorage.setItem(event.data.data.bookName, "true");
+    }
+}
+
+function readLanguageDataFromCacheAndNotifyAndroidApp(bookName: string) {
+    //@ts-ignore
+    if (window.Android) {
+        let isContentCached: boolean = localStorage.getItem(bookName) !== null;
+        //@ts-ignore
+        window.Android.cachedStatus(isContentCached);
+    }
+}
+
+function handleUpdateFoundMessage(): void {
+    let text = "Update Found.\nPlease accept the update by pressing Ok.";
+    if (confirm(text) == true) {
+        window.location.reload();
+    } else {
+        text = "Update will happen on the next launch.";
+    }
+}
 
 const app = new App();
 app.spinUp();
