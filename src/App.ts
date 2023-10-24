@@ -175,6 +175,10 @@ export class App {
 			console.log("Service worker registration failed: " + err);
 		}
 	}
+
+	public GetDataURL(): string {
+		return this.dataURL;
+	}
 }
 
 broadcastChannel.addEventListener("message", handleServiceWorkerMessage);
