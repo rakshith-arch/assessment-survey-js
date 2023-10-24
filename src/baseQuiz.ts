@@ -2,19 +2,20 @@ import { App } from './App';
 import { qData } from './components/questionData';
 import { sendFinished } from './components/analyticsEvents';
 import { showQuestion, showGame, showEnd, setButtonAction, setFeedbackVisibile } from './components/uiController';
+import { UnityBridge } from './components/unityBridge';
 
-export abstract class baseQuiz {
-	public aLink: App;
+export abstract class BaseQuiz {
+	protected app: App;
 	public dataURL: string;
-	public unity;
+	public unityBridge: UnityBridge;
 
-	public abstract run(applink: App): void;
-	public abstract tryAnswer(ans: number, elapsed: number): void;
-	public abstract hasAnotherQueston(): boolean;
+	public abstract Run(applink: App): void;
+	public abstract TryAnswer(ans: number, elapsed: number): void;
+	public abstract HasQuestionsLeft(): boolean;
 
 	public onEnd(): void {
 		sendFinished();
 		showEnd();
-		this.aLink.unity.sendClose();
+		this.app.unityBridge.SendClose();
 	}
 }
