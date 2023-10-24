@@ -17,9 +17,9 @@ enum searchStage {
 	LinearSearchDown
 }
 
-export class Assessment extends baseQuiz {
+export class Assessment extends BaseQuiz {
 
-	public unity;
+	public unityBridge;
 	public curNode: TNode;
 	public curQ: qData;
 	public buckets: bucket[];
