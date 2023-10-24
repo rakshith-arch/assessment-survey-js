@@ -88,7 +88,7 @@ function cacheTheBookJSONAndImages(data) {
       cache.add(cachableAssets[i]).finally(() => {
         updateCachingProgress(appData["appName"]);
       }).catch((error) => {
-        console.log("Error while caching the book JSON", error);
+        console.log("Error while caching an asset: ", error);
       });
     }
     // cache.addAll(bookAudioAndImageFiles).catch((error) => {
