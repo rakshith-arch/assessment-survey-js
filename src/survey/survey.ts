@@ -39,8 +39,6 @@ export class Survey extends BaseQuiz {
 		readyForNext(this.getNextQuestion());
 	}
 
-
-
 	public onQuestionEnd = () => {
 		setFeedbackVisibile(false);
 
@@ -57,28 +55,24 @@ export class Survey extends BaseQuiz {
 	}
 
 
-	public tryAnswer = (ans: number, elapsed: number) => {
-		sendAnswered(this.qList[this.qNum], ans, elapsed)
+	public TryAnswer = (ans: number, elapsed: number) => {
+		sendAnswered(this.questionsData[this.currentQuestionIndex], ans, elapsed)
 		setFeedbackVisibile(true);
 		addStar();
 		setTimeout(() => { this.onQuestionEnd() }, 2000);
 	}
 
 	public buildQuestionList = () => {
-		var qs = fetchSurveyQuestions(this.aLink.dataURL);
-		return qs;
+		const surveyQuestions = fetchSurveyQuestions(this.app.dataURL);
+		return surveyQuestions;
 	}
 
-	public hasAnotherQueston(): boolean {
-		if ((this.qList.length - 1) >= this.qNum) {
-			return true;
-		} else {
-			return false;
-		}
+	public HasQuestionsLeft(): boolean {
+		return this.currentQuestionIndex <= (this.questionsData.length - 1);
 	}
 
 	public getNextQuestion(): qData {
-		var res = this.qList[this.qNum];
-		return res;
+		var questionData = this.questionsData[this.currentQuestionIndex];
+		return questionData;
 	}
 }
