@@ -13,10 +13,9 @@ import { initializeApp } from 'firebase/app';
 import { getAnalytics, logEvent } from 'firebase/analytics';
 import { Workbox } from 'workbox-window';
 import CacheModel from './components/cacheModel';
-import { setFeedbackText } from './components/uiController';
-import { setContentLoaded } from './components/uiController';
+import { setFeedbackText, setContentLoaded } from './components/uiController';
 
-const appVersion = "v0.0.7";
+const appVersion = "v0.0.8";
 
 let loadingScreen = document.getElementById("loadingScreen");
 
