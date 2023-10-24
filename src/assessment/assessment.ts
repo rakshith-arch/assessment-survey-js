@@ -6,11 +6,12 @@ import { qData, answerData } from '../components/questionData';
 import { sendAnswered, sendFinished, sendBucket } from '../components/analyticsEvents'
 import { App } from '../App';
 import { bucket, bucketItem } from './bucketData';
-import { BaseQuiz } from '../BaseQuiz';
+import { BaseQuiz } from '../baseQuiz';
 import { fetchAssessmentBuckets } from '../components/jsonUtils';
 import { TNode, sortedArrayToBST } from '../components/tNode';
-import {randFrom, shuffleArray } from '../components/mathUtils';
-import {preloadBucket} from '../components/audioLoader';
+import { randFrom, shuffleArray } from '../components/mathUtils';
+import { preloadBucket } from '../components/audioLoader';
+
 enum searchStage {
 	BinarySearch,
 	LinearSearchUp,
