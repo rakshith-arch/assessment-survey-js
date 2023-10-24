@@ -1,6 +1,10 @@
 import { qData, answerData } from './questionData';
 import { playAudio, playDing, playCorrect, getImg } from './audioLoader';
-import { randFrom, shuffleArray } from '../components/mathUtils';
+import { randFrom, shuffleArray } from './mathUtils';
+
+export default class UIController {
+	
+}
 
 const landingCont = document.getElementById("landWrap");
 const gameCont = document.getElementById("gameWrap");
