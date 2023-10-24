@@ -36,7 +36,7 @@ export class App {
 	lang: string = "english";
 
 	constructor() {
-		this.unity = new UnityBridge();
+		this.unityBridge = new UnityBridge();
 
 		console.log("Initializing app...");
 
@@ -88,7 +88,7 @@ export class App {
 			let appType = data["appType"];
 
 			if (appType == "survey") {
-				this.game = new Survey(this.dataURL, this.unity);
+				this.game = new Survey(this.dataURL, this.unityBridge);
 			} else if (appType == "assessment") {
 				// Get and add all the audio assets to the cache model
 
@@ -103,10 +103,10 @@ export class App {
 
 				this.cacheModel.addItemToAudioVisualResources("/audio/" + this.dataURL + "/answer_feedback.mp3");
 
-				this.game = new Assessment(this.dataURL, this.unity);
+				this.game = new Assessment(this.dataURL, this.unityBridge);
 			}
 
-			this.game.unity = this.unity;
+			this.game.unityBridge = this.unityBridge;
 
 			setUuid(getUUID(), getUserSource());
 			linkAnalytics(this.analytics, this.dataURL);
