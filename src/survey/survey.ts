@@ -54,7 +54,6 @@ export class Survey extends BaseQuiz {
 		}, 500);
 	}
 
-
 	public TryAnswer = (ans: number, elapsed: number) => {
 		sendAnswered(this.questionsData[this.currentQuestionIndex], ans, elapsed)
 		setFeedbackVisibile(true);
