@@ -54,7 +54,7 @@ export class Assessment extends BaseQuiz {
 	}
 
 	public buildBuckets = () => {
-		var res = fetchAssessmentBuckets(this.aLink.dataURL).then(result => {
+		var res = fetchAssessmentBuckets(this.app.GetDataURL()).then(result => {
 			this.buckets = result;
 			this.numBuckets = result.length;
 			console.log("buckets: " + this.buckets);
@@ -79,7 +79,7 @@ export class Assessment extends BaseQuiz {
 		this.curBucket.tested = true;
 	}
 
-	public tryAnswer = (ans: number, elapsed: number) => {
+	public TryAnswer = (ans: number, elapsed: number) => {
 
 			sendAnswered(this.curQ, ans, elapsed)
 			this.curBucket.numTried += 1;
@@ -101,7 +101,7 @@ export class Assessment extends BaseQuiz {
 		setFeedbackVisibile(false);
 		setTimeout(() => {
 
-			if (this.hasAnotherQueston()) {
+			if (this.HasQuestionsLeft()) {
 				readyForNext(this.getNextQuestion());
 			}
 			else {
@@ -167,11 +167,11 @@ export class Assessment extends BaseQuiz {
 		if (this.curBucket != null)
 			sendBucket(this.curBucket, passed);
 		console.log("new  bucket is " + nbucket.bucketID);
-		preloadBucket(nbucket, this.aLink.dataURL);
+		preloadBucket(nbucket, this.app.GetDataURL());
 		this.initBucket(nbucket);
 	}
 
-	public hasAnotherQueston = () => {
+	public HasQuestionsLeft = () => {
 		//// TODO: check buckets, check if done
 		var stillMore = true;
 
