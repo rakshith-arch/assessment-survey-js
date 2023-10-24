@@ -22,7 +22,7 @@ export class UnityBridge {
 		}
 	}
 
-	public sendLoaded() {
+	public SendLoaded() {
 		if (this.unityReference !== null) {
 			this.unityReference.call("loaded");
 		}
@@ -31,7 +31,7 @@ export class UnityBridge {
 		}
 	}
 
-	public sendClose() {
+	public SendClose() {
 		if (this.unityReference !== null) {
 			this.unityReference.call("close");
 		}
