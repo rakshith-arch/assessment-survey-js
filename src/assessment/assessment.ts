@@ -33,18 +33,18 @@ export class Assessment extends BaseQuiz {
 	constructor(durl: string, nunity) {
 		super();
 		this.dataURL = durl;
-		this.unity = nunity;
+		this.unityBridge = nunity;
 		this.questionNum = 0;
 		console.log("app initialized");
-		setButtonAction(this.tryAnswer);
+		setButtonAction(this.TryAnswer);
 		setStartAction(this.startAssessment);
 	}
 
-	public run(applink: App): void {
-		this.aLink = applink;
+	public Run(applink: App): void {
+		this.app = applink;
 		this.buildBuckets().then(result => {
 			console.log(this.curBucket);
-			this.unity.sendLoaded();
+			this.unityBridge.sendLoaded();
 		});
 	}
 
