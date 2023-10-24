@@ -6,7 +6,7 @@ import { qData, answerData } from '../components/questionData';
 import { sendAnswered, sendFinished, sendBucket } from '../components/analyticsEvents'
 import { App } from '../App';
 import { bucket, bucketItem } from './bucketData';
-import { baseQuiz } from '../baseQuiz';
+import { BaseQuiz } from '../BaseQuiz';
 import { fetchAssessmentBuckets } from '../components/jsonUtils';
 import { TNode, sortedArrayToBST } from '../components/tNode';
 import {randFrom, shuffleArray } from '../components/mathUtils';
