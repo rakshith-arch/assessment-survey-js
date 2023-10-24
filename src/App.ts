@@ -7,7 +7,7 @@ import { Survey } from './survey/survey';
 import { Assessment } from './assessment/assessment';
 import { UnityBridge } from './components/unityBridge';
 import { setUuid, linkAnalytics, sendInit } from './components/analyticsEvents';
-import { baseQuiz } from './baseQuiz';
+import { BaseQuiz } from './baseQuiz';
 import { fetchAppData, getDataURL } from './components/jsonUtils';
 import { initializeApp } from 'firebase/app';
 import { getAnalytics, logEvent } from 'firebase/analytics';
@@ -27,9 +27,9 @@ export class App {
 	/** Could be 'assessment' or 'survey' based on the data file */
 	public dataURL: string;
 
-	public unity;
+	public unityBridge;
 	public analytics;
-	public game: baseQuiz;
+	public game: BaseQuiz;
 
 	cacheModel: CacheModel;
 
@@ -112,11 +112,11 @@ export class App {
 			linkAnalytics(this.analytics, this.dataURL);
 			sendInit();
 
-			this.game.run(this);
+			this.game.Run(this);
 		});
 	}
 
-	async registerServiceWorker(game: baseQuiz) {
+	async registerServiceWorker(game: BaseQuiz) {
 		console.log("Registering service worker...");
 
 		if ("serviceWorker" in navigator) {
