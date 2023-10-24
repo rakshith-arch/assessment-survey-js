@@ -45,7 +45,7 @@ export class Assessment extends BaseQuiz {
 		this.app = applink;
 		this.buildBuckets().then(result => {
 			console.log(this.curBucket);
-			this.unityBridge.sendLoaded();
+			this.unityBridge.SendLoaded();
 		});
 	}
 
