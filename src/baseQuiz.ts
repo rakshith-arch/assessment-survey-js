@@ -1,7 +1,6 @@
 import { App } from './App';
-import { qData } from './components/questionData';
 import { sendFinished } from './components/analyticsEvents';
-import { showQuestion, showGame, showEnd, setButtonAction, setFeedbackVisibile } from './components/uiController';
+import { showEnd } from './components/uiController';
 import { UnityBridge } from './components/unityBridge';
 
 export abstract class BaseQuiz {
