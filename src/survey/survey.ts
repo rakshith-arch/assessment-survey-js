@@ -44,16 +44,16 @@ export class Survey extends baseQuiz {
 	public onQuestionEnd = () => {
 		setFeedbackVisibile(false);
 
-		this.qNum += 1;
-				setTimeout(() => {
-		if (this.hasAnotherQueston()) {
-			readyForNext(this.getNextQuestion());
-		}
-		else {
-			console.log("no questions left");
-			this.onEnd();
-		}
-	}, 500);
+		this.currentQuestionIndex += 1;
+
+		setTimeout(() => {
+			if (this.HasQuestionsLeft()) {
+				readyForNext(this.getNextQuestion());
+			} else {
+				console.log("There are no questions left.");
+				this.onEnd();
+			}
+		}, 500);
 	}
 
 
