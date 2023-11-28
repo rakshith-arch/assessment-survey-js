@@ -1,10 +1,13 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
-workbox.precaching.precacheAndRoute([{"revision":"8799d748dc932669a7921f9a2f1d97bd","url":"css/style.css"},{"revision":"26bf05c3c561cb2db2594071124a069f","url":"dist/bundle.js"},{"revision":"2364a2746dbef47fa2601198fe4ed894","url":"img/bg_crayon-1.png"},{"revision":"0eb874baac10d2a76c7cc657c756acdf","url":"img/bg_v01.jpg"},{"revision":"56484ec92a16940b09c0d9fea2e4b11b","url":"img/chest.png"},{"revision":"0ab4538bcfd8f9ed476513dedfc4758a","url":"img/hill_v01.png"},{"revision":"38e43cd7b492b624fc3da67dea7b0433","url":"img/loadingImg.gif"},{"revision":"dc33b481685304c43d152362955b01f9","url":"img/monster.png"},{"revision":"7c15bf2645beb71a0876f99f84ea514b","url":"img/peekingMonster.js"},{"revision":"715c1be769f3bd2dddae2c9ef90123d1","url":"img/star.png"},{"revision":"4a368123fc4593ce83a4f774b2642b5f","url":"img/survey/laptop_and_phone.jpg"},{"revision":"ebe067e6890bf49c9924a5e5c43ca1d3","url":"img/survey/none.jpg"},{"revision":"e580a226acf359210aa200893cd56fb7","url":"index.html"},{"revision":"101953208181818975e033743510cd06","url":"manifest.json"}], {});
+workbox.precaching.precacheAndRoute([{"revision":"8799d748dc932669a7921f9a2f1d97bd","url":"css/style.css"},{"revision":"94d150f12d2c684d798c724f8539b657","url":"dist/bundle.js"},{"revision":"2364a2746dbef47fa2601198fe4ed894","url":"img/bg_crayon-1.png"},{"revision":"0eb874baac10d2a76c7cc657c756acdf","url":"img/bg_v01.jpg"},{"revision":"56484ec92a16940b09c0d9fea2e4b11b","url":"img/chest.png"},{"revision":"0ab4538bcfd8f9ed476513dedfc4758a","url":"img/hill_v01.png"},{"revision":"38e43cd7b492b624fc3da67dea7b0433","url":"img/loadingImg.gif"},{"revision":"dc33b481685304c43d152362955b01f9","url":"img/monster.png"},{"revision":"7c15bf2645beb71a0876f99f84ea514b","url":"img/peekingMonster.js"},{"revision":"715c1be769f3bd2dddae2c9ef90123d1","url":"img/star.png"},{"revision":"4a368123fc4593ce83a4f774b2642b5f","url":"img/survey/laptop_and_phone.jpg"},{"revision":"ebe067e6890bf49c9924a5e5c43ca1d3","url":"img/survey/none.jpg"},{"revision":"e580a226acf359210aa200893cd56fb7","url":"index.html"},{"revision":"101953208181818975e033743510cd06","url":"manifest.json"}], {
+  ignoreURLParametersMatching: [/^data/],
+  exclude: [/^lang\//],
+});
 
 const channel = new BroadcastChannel("as-message-channel");
 
-let version = 0.9;
+let version = 1.0;
 let cachingProgress = 0;
 let cachableAssetsCount = 0;
 
@@ -88,7 +91,7 @@ function cacheTheBookJSONAndImages(data) {
       cache.add(cachableAssets[i]).finally(() => {
         updateCachingProgress(appData["appName"]);
       }).catch((error) => {
-        console.log("Error while caching an asset: ", error);
+        console.log("Error while caching an asset: ", cachableAssets[i], error);
       });
     }
     // cache.addAll(bookAudioAndImageFiles).catch((error) => {

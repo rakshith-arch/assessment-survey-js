@@ -1,10 +1,13 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
-workbox.precaching.precacheAndRoute(self.__WB_MANIFEST, {});
+workbox.precaching.precacheAndRoute(self.__WB_MANIFEST, {
+  ignoreURLParametersMatching: [/^data/],
+  exclude: [/^lang\//],
+});
 
 const channel = new BroadcastChannel("as-message-channel");
 
-let version = 0.9;
+let version = 1.0;
 let cachingProgress = 0;
 let cachableAssetsCount = 0;
 
@@ -88,7 +91,7 @@ function cacheTheBookJSONAndImages(data) {
       cache.add(cachableAssets[i]).finally(() => {
         updateCachingProgress(appData["appName"]);
       }).catch((error) => {
-        console.log("Error while caching an asset: ", error);
+        console.log("Error while caching an asset: ", cachableAssets[i], error);
       });
     }
     // cache.addAll(bookAudioAndImageFiles).catch((error) => {
