@@ -80,24 +80,22 @@ export class Assessment extends BaseQuiz {
 	}
 
 	public TryAnswer = (ans: number, elapsed: number) => {
-
-			sendAnswered(this.curQ, ans, elapsed)
-			this.curBucket.numTried += 1;
-			if (this.curQ.answers[ans-1].answerName == this.curQ.correct){
-				this.curBucket.numCorrect += 1;
-				this.curBucket.numConsecutiveWrong = 0;
-				console.log("answered correctly");
-			}else{
-				this.curBucket.numConsecutiveWrong += 1;
-				console.log("answered incorrectly, " + this.curBucket.numConsecutiveWrong);
-			}
-			addStar();
-			setFeedbackVisibile(true);
-			setTimeout(() => { this.onQuestionEnd() }, 2000);
+		sendAnswered(this.curQ, ans, elapsed)
+		this.curBucket.numTried += 1;
+		if (this.curQ.answers[ans-1].answerName == this.curQ.correct){
+			this.curBucket.numCorrect += 1;
+			this.curBucket.numConsecutiveWrong = 0;
+			console.log("answered correctly");
+		}else{
+			this.curBucket.numConsecutiveWrong += 1;
+			console.log("answered incorrectly, " + this.curBucket.numConsecutiveWrong);
+		}
+		addStar();
+		setFeedbackVisibile(true);
+		setTimeout(() => { this.onQuestionEnd() }, 2000);
 	}
 
 	public onQuestionEnd = () => {
-
 		setFeedbackVisibile(false);
 		setTimeout(() => {
 
@@ -110,7 +108,6 @@ export class Assessment extends BaseQuiz {
 			}
 
 		}, 500);
-
 	}
 
 	public getNextQuestion = () => {
@@ -174,7 +171,6 @@ export class Assessment extends BaseQuiz {
 	public HasQuestionsLeft = () => {
 		//// TODO: check buckets, check if done
 		var stillMore = true;
-
 
 		if (this.curBucket.numCorrect >= 4) {
 			//passed this bucket
