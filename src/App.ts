@@ -95,7 +95,14 @@ export class App {
 
 				for (let i = 0; i < buckets.length; i++) {
 					for (let j = 0; j < buckets[i].items.length; j++) {
-						let audioItemURL = "/audio/" + this.dataURL + "/" + buckets[i].items[j].itemName + ".mp3";
+						let audioItemURL;
+						// Use to lower case for the Lugandan data
+						if (data["quizName"].includes("Luganda")) {
+							audioItemURL = "/audio/" + this.dataURL + "/" + buckets[i].items[j].itemName.toLowerCase() + ".mp3";
+						} else {
+							audioItemURL = "/audio/" + this.dataURL + "/" + buckets[i].items[j].itemName + ".mp3";
+						}
+
 						this.cacheModel.addItemToAudioVisualResources(audioItemURL);
 					}
 				}

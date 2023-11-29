@@ -92,11 +92,11 @@ function cacheTheBookJSONAndImages(data) {
         updateCachingProgress(appData["appName"]);
       }).catch((error) => {
         console.log("Error while caching an asset: ", cachableAssets[i], error);
+        // Identify missing audio files
+        // cachableAssets[i] = cachableAssets[i] + " ERROR WHILE CACHING!";
       });
     }
-    // cache.addAll(bookAudioAndImageFiles).catch((error) => {
-    //   console.log("Error while caching the book JSON", error);
-    // });
+    // console.log("After caching: ", cachableAssets);
   });
 }
 
