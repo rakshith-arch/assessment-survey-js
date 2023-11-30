@@ -1,13 +1,13 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 workbox.precaching.precacheAndRoute(self.__WB_MANIFEST, {
-  ignoreURLParametersMatching: [/^data/],
+  ignoreURLParametersMatching: [/^data/, /^cr_user_id/],
   exclude: [/^lang\//],
 });
 
 const channel = new BroadcastChannel("as-message-channel");
 
-let version = 1.0;
+let version = 1.1;
 let cachingProgress = 0;
 let cachableAssetsCount = 0;
 
