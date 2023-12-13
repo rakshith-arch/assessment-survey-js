@@ -245,6 +245,18 @@ button {
   flex-direction: column;
 }
 
+@media (min-width: 420px) {
+	#loading-screen {
+	  max-width: 420px;
+	}
+  }  
+#loading-gif {
+  display: flex;
+  height: 100%;
+  width: 100%;
+  position: absolute; /* Position it within #loading-screen */
+}
+
 #progressBarContainer {
   position: absolute;
   top: 70%;

@@ -1,6 +1,7 @@
 import { qData, answerData } from './questionData';
 import { playAudio, playDing, playCorrect, getImg } from './audioLoader';
 import { randFrom, shuffleArray } from './mathUtils';
+import { getDataFile } from './urlUtils';
 
 export default class UIController {
 	
@@ -9,6 +10,7 @@ export default class UIController {
 const landingCont = document.getElementById("landWrap");
 const gameCont = document.getElementById("gameWrap");
 const endCont = document.getElementById("endWrap");
+const playBtn = document.getElementById("startButton");
 const sD = document.getElementById("starWrapper");
 const qT = document.getElementById("qWrap");
 const pB = document.getElementById("pbutton");
@@ -85,11 +87,13 @@ b6.addEventListener("click", function () {
 	buttonPress(6);
 });
 
-landingCont.addEventListener("click", function () {
-	if (contentLoaded) {
+playBtn.addEventListener("click", function () {
+	if (localStorage.getItem(getDataFile())) {
 		showGame();
 	}
 })
+
+
 
 
 export function readyForNext(newQ: qData): void {
